@@ -69,6 +69,7 @@ The program also has a hitpoint system to make it more like a game. You can find
 
 #### Initialization Performance Comparison
 Multiple MonoBehaiours take a lot of time to initialize because MonoBehaviour is huge. Single MonoBehaviour also takes more time because it is still MonoBehaviour. Entitas is fast but not as fast as the Update Method Pattern, probably because of the overhead of the systems. The fastest is plain OOD.
+
 * Multiple MonoBehaiours initialization time ~171 ms.
 * Single MonoBehaiour initialization time ~105 ms.
 * Entitas initialization time ~38 ms.
