@@ -1,6 +1,6 @@
 ---
 layout: post
-title: A Performance Comparison of OOD and ECS Patterns within Unity
+title: A Performance Comparison Of OOD And ECS Patterns Within Unity
 ---
 **For** the last three months at the company, we, programmers, talked, discussed and thought a lot about the architectural design patterns because we wanted to make our individual development approaches alike and we also wanted to be faster. Finally we have decided on using **Entity-Component-System** architecture.
 
@@ -13,7 +13,7 @@ In short;
 * Component: Just data.
 * System: Runs the logic related to the component of an entity.
 
-Since Wikipedia has lots of information about what an ECS is, I will leave researching job to the reader.
+Since internet has lots of information about what an ECS is, I will leave researching job to the reader.
 
 ECS is very popular in game development and there are a bunch of ECS frameworks around.
 Some of the ones that I can find are (they have fancy names by the way);
@@ -32,61 +32,63 @@ Unity, at its core is also an entity-component based engine. The most advised pr
 3. Using Entitas. (version 0.35.0)
 4. Using plain OOD and [Update Method Pattern](http://gameprogrammingpatterns.com/update-method.html) which I used to use before Entitas.
 
-The test project is a simple project. The program creates 10000 cubes and all of the cubes run these two simple logic;
+The test project is a simple project. The program creates 5000 cubes and all of the cubes run these two simple logic;
 
 Move
 {% highlight c linenos %}
 void Update()
-		{
-			_transform.Translate(_xVel * Time.deltaTime, _yVel * Time.deltaTime, _zVel * Time.deltaTime, Space.World);
-			if (_transform.position.x < -TestConfig.BORDER || _transform.position.x > TestConfig.BORDER)
-			{
-				_transform.position = new Vector3(TestConfig.BORDER * Mathf.Sign(_transform.position.x), _transform.position.y, _transform.position.z);
-				_xVel *= -1f;
-			}
-			if (_transform.position.y < -TestConfig.BORDER || _transform.position.y > TestConfig.BORDER)
-			{
-				_transform.position = new Vector3(_transform.position.x, TestConfig.BORDER * Mathf.Sign(_transform.position.y), _transform.position.z);
-				_yVel *= -1f;
-			}
-			if (_transform.position.z < -TestConfig.BORDER || _transform.position.z > TestConfig.BORDER)
-			{
-				_transform.position = new Vector3(_transform.position.x, _transform.position.y, TestConfig.BORDER * Mathf.Sign(_transform.position.z));
-				_zVel *= -1f;
-			}
-		}
+{
+	_transform.Translate(_xVel * Time.deltaTime, _yVel * Time.deltaTime, _zVel * Time.deltaTime, Space.World);
+	if (_transform.position.x < -TestConfig.BORDER || _transform.position.x > TestConfig.BORDER)
+	{
+		_transform.position = new Vector3(TestConfig.BORDER * Mathf.Sign(_transform.position.x), _transform.position.y, _transform.position.z);
+		_xVel *= -1f;
+	}
+	if (_transform.position.y < -TestConfig.BORDER || _transform.position.y > TestConfig.BORDER)
+	{
+		_transform.position = new Vector3(_transform.position.x, TestConfig.BORDER * Mathf.Sign(_transform.position.y), _transform.position.z);
+		_yVel *= -1f;
+	}
+	if (_transform.position.z < -TestConfig.BORDER || _transform.position.z > TestConfig.BORDER)
+	{
+		_transform.position = new Vector3(_transform.position.x, _transform.position.y, TestConfig.BORDER * Mathf.Sign(_transform.position.z));
+		_zVel *= -1f;
+	}
+}
 {% endhighlight %}
 
 Rotate
 {% highlight c linenos %}
 void Update()
-		{
-			_transform.Rotate(_xVel * Time.deltaTime, _yVel * Time.deltaTime, _zVel * Time.deltaTime);
-		}
+{
+	_transform.Rotate(_xVel * Time.deltaTime, _yVel * Time.deltaTime, _zVel * Time.deltaTime);
+}
 {% endhighlight %}
 
-The program also has a score system, hitpoint system and some intrinsic calculations to make it more game like.
+The program also has a hitpoint system to make it more like a game. You can find all of these in the repo link at the end of this post.
 
-## Tell some about the initialization performance (remove this)
 ##### Initialization Performance Comparison
-Multiple MonoBehaiours take a lot of time to initialize because MonoBehaviour is huge. Single MonoBehaviour also takes more time because it is still MonoBehaviour. Entitas is fast but not as fast as the Update Method Pattern, probably because of the overhead of the systems. The fastest is Update Method Pattern.
+Multiple MonoBehaiours take a lot of time to initialize because MonoBehaviour is huge. Single MonoBehaviour also takes more time because it is still MonoBehaviour. Entitas is fast but not as fast as the Update Method Pattern, probably because of the overhead of the systems. The fastest is plain OOD.
 * Multiple MonoBehaiours initialization time ~171 ms.
 * Single MonoBehaiour initialization time ~105 ms.
 * Entitas initialization time ~38 ms.
-* Plain OOD and Update Method Pattern initialization time ~32 ms.
+* Plain OOD initialization time ~32 ms.
 
-## Tell some about the runtime performance (remove this)
 ##### Runtime Performance Comparison
-When it comes to runtime performance multiple MonoBehaviours and single MonoBehaviour is almost the same and worse than  the other two. Entitas is better but not as good as Update Method Pattern.
+When it comes to runtime performance multiple MonoBehaviours and single MonoBehaviour is almost the same and worse than  the other two. Entitas is better but not as good as plain OOD.
 
 * Multiple MonoBehaiours frame time ~14 ms / 71 frames per second
 * Single MonoBehaiour frame time ~14 ms / 71 frames per second
 * Entitas frame time ~12 ms / 83 frames per second
-* Plain OOD and Update Method Pattern frame time ~11 ms / 91 frames per seconds
+* Plain OOD frame time ~11 ms / 91 frames per seconds
+
+_These test are run on MacBook Pro Early 2015_.
 
 ## Conclusion
-At the end Entitas and Update Method Pattern is definitely better than using MonoBehaviours as components. Update Method Pattern is slightly faster while initializing and at runtime but having the flexibility of an ECS is definitely worth it.
+At the end Entitas and plain OOD is definitely better than using MonoBehaviours as components. Plain OOD is slightly faster while initializing and at runtime but it does not have the flexibility of an ECS. I think having the flexibility is better compared to the little performance gain especially if the project is relatively big.
 
-It is a trade off, because with a big mono you lose the flexibility of an ECS architecture
+In the same sense, for the ones that don't want to use any ECS architecture or plain OOD, having small scripts that extend MonoBehaviours is also better than a huge script that also extends MonoBehaviour.
 
 If you think that this article is wrong or missing, or maybe you have a question, please feel free to send me a message.
+
+[github repo](https://github.com/zehreken/entitas_unity_performance)
