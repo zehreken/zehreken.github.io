@@ -35,7 +35,7 @@ Unity, at its core is also an entity-component based engine. The most advised pr
 The test project is a simple project. The program creates 5000 cubes and all of the cubes run these two simple logic;
 
 Move
-{% highlight ruby linenos %}
+{% highlight c linenos %}
 void Update()
 {
 	_transform.Translate(_xVel * Time.deltaTime, _yVel * Time.deltaTime, _zVel * Time.deltaTime, Space.World);
@@ -58,7 +58,7 @@ void Update()
 {% endhighlight %}
 
 Rotate
-{% highlight ruby linenos %}
+{% highlight c linenos %}
 void Update()
 {
 	_transform.Rotate(_xVel * Time.deltaTime, _yVel * Time.deltaTime, _zVel * Time.deltaTime);
@@ -67,14 +67,14 @@ void Update()
 
 The program also has a hitpoint system to make it more like a game. You can find all of these in the repo link at the end of this post.
 
-##### Initialization Performance Comparison
+#### Initialization Performance Comparison
 Multiple MonoBehaiours take a lot of time to initialize because MonoBehaviour is huge. Single MonoBehaviour also takes more time because it is still MonoBehaviour. Entitas is fast but not as fast as the Update Method Pattern, probably because of the overhead of the systems. The fastest is plain OOD.
 * Multiple MonoBehaiours initialization time ~171 ms.
 * Single MonoBehaiour initialization time ~105 ms.
 * Entitas initialization time ~38 ms.
 * Plain OOD initialization time ~32 ms.
 
-##### Runtime Performance Comparison
+#### Runtime Performance Comparison
 When it comes to runtime performance multiple MonoBehaviours and single MonoBehaviour is almost the same and worse than  the other two. Entitas is better but not as good as plain OOD.
 
 * Multiple MonoBehaiours frame time ~14 ms / 71 frames per second
@@ -82,7 +82,7 @@ When it comes to runtime performance multiple MonoBehaviours and single MonoBeha
 * Entitas frame time ~12 ms / 83 frames per second
 * Plain OOD frame time ~11 ms / 91 frames per seconds
 
-_These test are run on MacBook Pro Early 2015_.
+These test are run on MacBook Pro Early 2015. You can find the source files in this [repo](https://github.com/zehreken/entitas_unity_performance).
 
 ## Conclusion
 At the end Entitas and plain OOD is definitely better than using MonoBehaviours as components. Plain OOD is slightly faster while initializing and at runtime but it does not have the flexibility of an ECS. I think having the flexibility is better compared to the little performance gain especially if the project is relatively big.
@@ -90,5 +90,3 @@ At the end Entitas and plain OOD is definitely better than using MonoBehaviours 
 In the same sense, for the ones that don't want to use any ECS architecture or plain OOD, having small scripts that extend MonoBehaviours is also better than a huge script that also extends MonoBehaviour.
 
 If you think that this article is wrong or missing, or maybe you have a question, please feel free to send me a message.
-
-[github repo](https://github.com/zehreken/entitas_unity_performance)
