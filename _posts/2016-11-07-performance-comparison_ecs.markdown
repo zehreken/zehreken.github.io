@@ -24,18 +24,18 @@ Some of the ones that I can find are (they have fancy names by the way);
 * [EntityX (C++)](https://github.com/alecthomas/entityx)
 * [Anax (C++)](https://github.com/miguelmartin75/anax)
 
-Since Entitas is the most popular one and we use Unity as our engine, we have decided to use Entitas. I have decided to create a simple project that we can test the performance of several development approaches.
+Since Entitas is the most popular one and we use Unity as our engine, we have decided to use Entitas. I have decided to create a simple project that to test the performance of several development approaches.
 Unity, at its core is also an entity-component based engine. The most advised programming approach with Unity is writing simple MonoBehaviours and attaching them to GameObjects, either through the editor or using the generic AddComponent method. But is there anything wrong with this approach? Yes, it is slow. And to make my point, I have compared 4 different development approaches in the project.
 
 1. Using simple and small scripts which extend MonoBehavoiur.
 2. Using a single script which also extends MonoBehavior that has all the data and logic in it.
 3. Using Entitas. (version 0.35.0)
-4. Using plain OOD and [Update Method Pattern](http://gameprogrammingpatterns.com/update-method.html) which I used to use before Entitas.
+4. Using plain Object Oriented Development and [Update Method Pattern](http://gameprogrammingpatterns.com/update-method.html) which I used to use before Entitas.
 
 The test project is a simple project. The program creates 5000 cubes and all of the cubes run these two simple logic;
 
 Move
-{% highlight c linenos %}
+{% highlight ruby linenos %}
 void Update()
 {
 	_transform.Translate(_xVel * Time.deltaTime, _yVel * Time.deltaTime, _zVel * Time.deltaTime, Space.World);
@@ -58,14 +58,14 @@ void Update()
 {% endhighlight %}
 
 Rotate
-{% highlight c linenos %}
+{% highlight ruby linenos %}
 void Update()
 {
 	_transform.Rotate(_xVel * Time.deltaTime, _yVel * Time.deltaTime, _zVel * Time.deltaTime);
 }
 {% endhighlight %}
 
-The program also has a hitpoint system to make it more like a game. You can find all of these in the repo link at the end of this post.
+The program also has a hitpoint system to make it more like a game.
 
 ## Initialization Performance Comparison
 Multiple MonoBehaiours take a lot of time to initialize because MonoBehaviour is huge. Single MonoBehaviour also takes more time because it is still MonoBehaviour. Entitas is fast but not as fast as the Update Method Pattern, probably because of the overhead of the systems. The fastest is plain OOD.
@@ -76,7 +76,7 @@ Multiple MonoBehaiours take a lot of time to initialize because MonoBehaviour is
 * Plain OOD initialization time ~32 ms.
 
 ## Runtime Performance Comparison
-When it comes to runtime performance multiple MonoBehaviours and single MonoBehaviour is almost the same and worse than  the other two. Entitas is better but not as good as plain OOD.
+When it comes to runtime performance multiple MonoBehaviours and single MonoBehaviour is almost the same and worse than the other two. Entitas is better but not as good as plain OOD.
 
 * Multiple MonoBehaiours frame time ~14 ms / 71 frames per second
 * Single MonoBehaiour frame time ~14 ms / 71 frames per second
@@ -88,6 +88,6 @@ These test are run on MacBook Pro Early 2015. You can find the source files in t
 ## Conclusion
 At the end Entitas and plain OOD is definitely better than using MonoBehaviours as components. Plain OOD is slightly faster while initializing and at runtime but it does not have the flexibility of an ECS. I think having the flexibility is better compared to the little performance gain especially if the project is relatively big.
 
-In the same sense, for the ones that don't want to use any ECS architecture or plain OOD, having small scripts that extend MonoBehaviours is also better than a huge script that also extends MonoBehaviour.
+In the same sense, for the ones who don't want to use any ECS architecture or plain OOD, having small scripts that extend MonoBehaviours is also better than a huge script that also extends MonoBehaviour.
 
 If you think that this article is wrong or missing, or maybe you have a question, please feel free to send me a message.
