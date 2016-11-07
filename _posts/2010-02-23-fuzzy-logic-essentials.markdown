@@ -11,7 +11,7 @@ We said, in fuzzy logic, an element can **partially** belong to a set, a fuzzy s
 
 The graph above shows the **degrees of membership** of the black ones to the closeness fuzzy set according to their distance to the green one. As you see, the closest one has the highest degree of membership and the farmost one has the lowest.
 
-{% highlight ruby linenos %}
+{% highlight ruby %}
 private function calculateDistance():void
 {
 	for (i = 0; i < smallBacteriaArray.length; i++)
