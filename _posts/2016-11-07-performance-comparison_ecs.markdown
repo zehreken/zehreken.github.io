@@ -28,7 +28,7 @@ Since Entitas is the most popular one and we use Unity as our engine, we have de
 Unity, at its core is also an entity-component based engine. The most advised programming approach with Unity is writing simple MonoBehaviours and attaching them to GameObjects, either through the editor or using the generic AddComponent method. But is there anything wrong with this approach? Yes, it is slow. And to make my point, I have compared 4 different development approaches in the project.
 
 1. Using simple and small scripts which extend MonoBehavoiur.
-2. Using a single script which also extends MonoBehavior that has all the data and logic in it.
+2. Using a single script which also extends MonoBehaviour that has all the data and logic in it.
 3. Using Entitas. (version 0.35.0)
 4. Using plain Object Oriented Development and [Update Method Pattern](http://gameprogrammingpatterns.com/update-method.html) which I used to use before Entitas.
 
@@ -71,18 +71,18 @@ The program also has a hitpoint system to make it more like a game.
 <small>Simple simulation</small>
 
 ## Initialization Performance Comparison
-Multiple MonoBehaiours take a lot of time to initialize because MonoBehaviour is huge. Single MonoBehaviour also takes more time because it is still MonoBehaviour. Entitas is fast but not as fast as the Update Method Pattern, probably because of the overhead of the systems. The fastest is plain OOD.
+Multiple MonoBehavoiurs take a lot of time to initialize because MonoBehaviour is huge. Single MonoBehaviour also takes more time because it is still MonoBehaviour. Entitas is fast but not as fast as the Update Method Pattern, probably because of the overhead of the systems. The fastest is plain OOD.
 
-* Multiple MonoBehaiours initialization time ~171 ms.
-* Single MonoBehaiour initialization time ~105 ms.
+* Multiple MonoBehavoiurs initialization time ~171 ms.
+* Single MonoBehavoiur initialization time ~105 ms.
 * Entitas initialization time ~38 ms.
 * Plain OOD initialization time ~32 ms.
 
 ## Runtime Performance Comparison
 When it comes to runtime performance multiple MonoBehaviours and single MonoBehaviour is almost the same and worse than the other two. Entitas is better but not as good as plain OOD.
 
-* Multiple MonoBehaiours frame time ~14 ms / 71 frames per second
-* Single MonoBehaiour frame time ~14 ms / 71 frames per second
+* Multiple MonoBehavoiurs frame time ~14 ms / 71 frames per second
+* Single MonoBehavoiur frame time ~14 ms / 71 frames per second
 * Entitas frame time ~12 ms / 83 frames per second
 * Plain OOD frame time ~11 ms / 91 frames per seconds
 
