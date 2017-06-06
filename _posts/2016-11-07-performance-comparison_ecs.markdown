@@ -86,7 +86,7 @@ When it comes to runtime performance multiple MonoBehaviours and single MonoBeha
 * Entitas frame time ~12 ms / 83 frames per second
 * Plain OOD frame time ~11 ms / 91 frames per seconds
 
-These test are run on MacBook Pro Early 2015. You can find the source files in this [repo](https://github.com/zehreken/entitas_unity_performance).
+These test are run on MacBook Pro Early 2015. You can find the source files in this [file](/assets/2016/entitas_unity_performance.zip).
 
 ## Conclusion
 At the end Entitas and plain OOD is definitely better than using MonoBehaviours as components. Plain OOD is slightly faster while initializing and at runtime but it does not have the flexibility of an ECS. I think having the flexibility is better compared to the little performance gain especially if the project is relatively big.
