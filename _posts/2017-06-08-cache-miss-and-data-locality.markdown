@@ -10,10 +10,6 @@ In the past years, the increase in CPU speed compared to Memory speed is enormou
 The reason for cache misses is bad data locality. Let's examine this simple code piece written in c++.
 
 {% highlight ruby %}
-#include <iostream>
-#include <time.h>
-#include <stack>
-
 class Big
 {
 	private:
@@ -25,27 +21,9 @@ class Big
 		float getSizeInKB();
 		float getSizeInMB();
 };
+{% endhighlight %}
 
-void Big::setActor(int actor)
-{
-	this->actor = actor;
-}
-
-int Big::getActor()
-{
-	return this->actor;
-}
-
-float Big::getSizeInKB()
-{
-	return sizeof(Big) / 1024.f;
-}
-
-float Big::getSizeInMB()
-{
-	return sizeof(Big) / (1024.f * 1024.f);
-}
-
+{% highlight ruby %}
 class Small
 {
 	private:
@@ -56,27 +34,9 @@ class Small
 		float getSizeInKB();
 		float getSizeInMB();
 };
+{% endhighlight %}
 
-void Small::setActor(int actor)
-{
-	this->actor = actor;
-}
-
-int Small::getActor()
-{
-	return this->actor;
-}
-
-float Small::getSizeInKB()
-{
-	return sizeof(Small) / 1024.f;
-}
-
-float Small::getSizeInMB()
-{
-	return sizeof(Small) / (1024.f * 1024.f);
-}
-
+{% highlight ruby %}
 int main()
 {
 	using namespace std;
