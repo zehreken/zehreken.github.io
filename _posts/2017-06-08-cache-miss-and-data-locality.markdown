@@ -9,6 +9,7 @@ In the past years, the increase in CPU speed compared to Memory speed is enormou
 ## Why
 The reason for cache misses is bad data locality. Let's examine this simple code piece written in c++.
 
+A class when instanced creates an object which is 1MB in size
 {% highlight ruby %}
 class Big
 {
@@ -23,6 +24,7 @@ class Big
 };
 {% endhighlight %}
 
+A class when instanced creates an object which is 32b in size
 {% highlight ruby %}
 class Small
 {
@@ -39,45 +41,19 @@ class Small
 {% highlight ruby %}
 int main()
 {
-	using namespace std;
-	
 	const int SIZE = 50000;
 	
 	Big* bigs = new Big[SIZE];
-	clock_t t1, t2;
-	t1 = clock();
 	for (int i = 0; i < SIZE; i++)
 	{
 		bigs[i].setActor(i);
 	}
-	t2 = clock();
-	float diffBig = ((float)t2 - (float)t1) / CLOCKS_PER_SEC;
-	cout << "Running time for bigs: " << diffBig << endl;
-	cout << "Size of big(KB): " << bigs[0].getSizeInKB() << endl;
-	cout << "Size of bigs(KB): " << bigs[0].getSizeInKB() * SIZE << endl;
-	cout << "Address of bigs: " << bigs << endl;
-	cout << "Address of bigs: " << &bigs[0] << endl;
-	
-	// ==========
 	
 	Small* smalls = new Small[SIZE];
-	clock_t t3, t4;
-	t3 = clock();
 	for (int i = 0; i < SIZE; i++)
 	{
 		smalls[i].setActor(i);
 	}
-	t4 = clock();
-	float diffSmall = ((float)t4 - (float)t3) / CLOCKS_PER_SEC;
-	cout << "\nRunning time for smalls: " << diffSmall << endl;
-	cout << "Size of small(KB): " << smalls[0].getSizeInKB() << endl;
-	cout << "Size of smalls(KB): " << smalls[0].getSizeInKB() * SIZE << endl;
-	cout << "Address of smalls: " << smalls << endl;
-	cout << "Address of smalls: " << &smalls[0] << endl;
-
-	cout << "Result: " << (diffBig / diffSmall) << " times faster" << endl;
-
-	cout << "End of program" << endl;
 	
 	return 0;
 }
