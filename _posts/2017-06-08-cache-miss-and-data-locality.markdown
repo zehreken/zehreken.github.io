@@ -14,7 +14,7 @@ A class when instanced creates an object which is 1MB in size
 class Big
 {
 	private:
-		int actor;
+		int actor; // 32b primitive type
 		int clutter[262144]; // (1MB - 32b) array makes sure that sizeof big is exatly 1MB
 	public:
 		void setActor(int size);
@@ -38,8 +38,9 @@ class Small
 };
 {% endhighlight %}
 
+Here, we loop through the arrays
 {% highlight ruby %}
-int main()
+void loop()
 {
 	const int SIZE = 50000;
 	
@@ -54,12 +55,10 @@ int main()
 	{
 		smalls[i].setActor(i);
 	}
-	
-	return 0;
 }
 {% endhighlight %}
 
-
+On average the second loop completes ~360 times faster than the first loop. The process is the same, which is setting an int field of an object. Why is that? Because the _clutter_ in the Big object causes the cpu to miss the cached data. Because the L1 and L2 caches are full of unnecessary data.
 
 
 
