@@ -15,7 +15,7 @@ class Big
 {
 	private:
 		int actor; // 32b primitive type
-		int clutter[262144]; // (1MB - 32b) array makes sure that sizeof big is exatly 1MB
+		int clutter[262144]; // (1MB - 32b) array makes sure that size of big is exactly 1MB
 	public:
 		void setActor(int size);
 		int getActor();
@@ -60,12 +60,31 @@ void loop()
 
 On average the second loop completes ~360 times faster than the first loop. The process is the same, which is setting an int field of an object. Why is that? Because the _clutter_ in the Big object causes the cpu to miss the cached data. Because the L1 and L2 caches are full of unnecessary data.
 
+Let's examine how our data is placed on the actual memory using lldb. You can also use gdb, they are very similar by the way.
+
+I have compiled the script above using clang++ with -g flag to enable debugging with extra information. Here is the simple compile command.
+clang++ -g -o p main.cpp
+
+I load the program to lldb using
+lldb p
+
+and then add a simple breakpoint to pause the process without terminating it.
+b main.cpp: 110
+
+at some point lldb show us the addresses of our two arrays, using those addresses we can examine the memory and see what they have
+Address of bigs: 0x101000000
+Address of smalls: 0x1000c4000
+
+memory read [address]
 
 
 Nice start
 
 https://ark.intel.com/products/52224/Intel-Core-i5-2410M-Processor-3M-Cache-up-to-2_90-GHz
 https://en.0wikipedia.org/index.php?q=aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvTGlzdF9vZl9JbnRlbF9Db3JlX2k1X21pY3JvcHJvY2Vzc29ycw
+
+g flag
+https://stackoverflow.com/questions/10475040/gcc-g-vs-g3-gdb-flag-what-is-the-difference
 
 L2 cache = 2 × 256 KB
 L3 cache = 3 MB
