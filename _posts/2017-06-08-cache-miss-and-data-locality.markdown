@@ -43,13 +43,13 @@ Here, we loop through the arrays
 void loop()
 {
 	const int SIZE = 50000;
-	
+
 	Big* bigs = new Big[SIZE];
 	for (int i = 0; i < SIZE; i++)
 	{
 		bigs[i].setActor(i);
 	}
-	
+
 	Small* smalls = new Small[SIZE];
 	for (int i = 0; i < SIZE; i++)
 	{
@@ -87,7 +87,7 @@ memory read -fx 0x1000c4000 0x1000c4000+128
 0x1000c4060: 0x00000018 0x00000019 0x0000001a 0x0000001b
 0x1000c4070: 0x0000001c 0x0000001d 0x0000001e 0x0000001f
 
-Look at how nicely the elements are stacked on the memory. The first element 
+Look at how nicely the elements are stacked on the memory. The first element is 0, the second is 1, the third is 2 and so on as expected.
 
 
 Nice start
