@@ -39,7 +39,7 @@ class Small
 {% endhighlight %}
 
 Here, we loop through the arrays
-{% highlight ruby %}
+```javascript
 void loop()
 {
 	const int SIZE = 50000;
@@ -56,7 +56,7 @@ void loop()
 		smalls[i].setActor(i);
 	}
 }
-{% endhighlight %}
+```
 
 On average the second loop completes ~360 times faster than the first loop. The process is the same, which is setting an int field of an object. Why is that? Because the _clutter_ in the Big object causes the cpu to miss the cached data. Because the L1 and L2 caches are full of unnecessary data.
 
@@ -77,7 +77,7 @@ Address of smalls: 0x1000c4000
 
 lets examine the first 32 elements of the _smalls_ array using
 memory read -fx 0x1000c4000 0x1000c4000+128
-
+```javascript
 0x1000c4000: 0x00000000 0x00000001 0x00000002 0x00000003
 0x1000c4010: 0x00000004 0x00000005 0x00000006 0x00000007
 0x1000c4020: 0x00000008 0x00000009 0x0000000a 0x0000000b
@@ -86,6 +86,8 @@ memory read -fx 0x1000c4000 0x1000c4000+128
 0x1000c4050: 0x00000014 0x00000015 0x00000016 0x00000017
 0x1000c4060: 0x00000018 0x00000019 0x0000001a 0x0000001b
 0x1000c4070: 0x0000001c 0x0000001d 0x0000001e 0x0000001f
+...
+```
 
 Look at how nicely the elements are stacked on the memory. The first element is 0, the second is 1, the third is 2 and so on as expected.
 
