@@ -16,7 +16,7 @@ class Big
 {
 	private:
 		int actor; // 32b primitive type
-		int clutter[262144]; // (1MB - 32b) array makes sure that size of big is exactly 1MB
+		int clutter[262144]; // (1MB - 32b) Size of big is exactly 1MB
 	public:
 		void setActor(int size);
 		int getActor();
