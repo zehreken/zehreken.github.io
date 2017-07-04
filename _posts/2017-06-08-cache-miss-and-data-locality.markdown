@@ -65,26 +65,31 @@ On average the second loop completes ~360 times faster than the first loop. The 
 Let's examine how our data is placed on the actual memory using lldb. You can also use gdb, they are very similar by the way.
 
 I have compiled the script above using clang++ with -g flag to enable debugging with extra information. Here is the simple compile command.
-```python
+{% highlight ruby %}
 clang++ -g -o p main.cpp
-```
+{% endhighlight %}
 
 I load the program to lldb using
-```python
+{% highlight ruby %}
 lldb p
-```
+{% endhighlight %}
 
 and then add a simple breakpoint to pause the process without terminating it.
-```python
+{% highlight ruby %}
 b main.cpp: 110
-```
+{% endhighlight %}
 
 at some point lldb show us the addresses of our two arrays, using those addresses we can examine the memory and see what they have, it may show different addresses of course.
+{% highlight ruby %}
 Address of bigs: 0x101000000
 Address of smalls: 0x1000c4000
+{% endhighlight %}
 
 lets examine the first 32 elements of the _smalls_ array using
+{% highlight ruby %}
 memory read -fx 0x1000c4000 0x1000c4000+128
+{% endhighlight %}
+
 {% highlight ruby %}
 0x1000c4000: 0x00000000 0x00000001 0x00000002 0x00000003
 0x1000c4010: 0x00000004 0x00000005 0x00000006 0x00000007
@@ -100,7 +105,10 @@ memory read -fx 0x1000c4000 0x1000c4000+128
 Look at how nicely the elements are stacked on the memory. The first element is 0, the second is 1, the third is 2 and so on as expected.
 
 Not let's examine the first 32 elements of the _bigs_ array using
+{% highlight ruby %}
 memory read -fx 0x100200000 0x100200000+128
+{% endhighlight %}
+
 {% highlight ruby %}
 0x100200000: 0x00000000 0xffffffff 0xffffffff 0xffffffff
 0x100200010: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
