@@ -11,9 +11,7 @@ This is called a **cache miss**. Whenever the CPU wants some piece of data and c
 ## Why
 The reason for cache misses is bad data locality. Let's examine this simple code piece written in c++.
 
-A class when instanced creates an object which is 1MB in size
 {% highlight ruby %}
-######
 class Big
 {
 	private:
@@ -25,10 +23,9 @@ class Big
 		float getSizeInKB();
 		float getSizeInMB();
 };
-######
 {% endhighlight %}
+###### A class when instanced creates an object which is 1MB in size
 
-A class when instanced creates an object which is 32b in size
 {% highlight ruby %}
 class Small
 {
@@ -41,8 +38,8 @@ class Small
 		float getSizeInMB();
 };
 {% endhighlight %}
+###### A class when instanced creates an object which is 32b in size
 
-Here, we loop through the arrays
 {% highlight ruby %}
 void loop()
 {
@@ -61,19 +58,26 @@ void loop()
 	}
 }
 {% endhighlight %}
+###### Here, we loop through the arrays
 
-On average the second loop completes ~360 times faster than the first loop. The process is the same, which is setting an int field of an object. Why is that? Because the _clutter_ in the Big object causes the cpu to miss the cached data. Because the L1 and L2 caches are full of unnecessary data.
+On average the second loop completes ~360 times faster than the first loop. The process is the same, which is setting an int field of an object. Why is that? Because the **clutter** in the Big object causes the cpu to miss the cached data. Because the L1 and L2 caches are full of unnecessary data.
 
 Let's examine how our data is placed on the actual memory using lldb. You can also use gdb, they are very similar by the way.
 
 I have compiled the script above using clang++ with -g flag to enable debugging with extra information. Here is the simple compile command.
+```python
 clang++ -g -o p main.cpp
+```
 
 I load the program to lldb using
+```python
 lldb p
+```
 
 and then add a simple breakpoint to pause the process without terminating it.
+```python
 b main.cpp: 110
+```
 
 at some point lldb show us the addresses of our two arrays, using those addresses we can examine the memory and see what they have, it may show different addresses of course.
 Address of bigs: 0x101000000
