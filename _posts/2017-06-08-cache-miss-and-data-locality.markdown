@@ -64,7 +64,7 @@ void loop()
 ###### Here, we loop through the arrays
 
 
-On average the second loop completes ~360 times faster than the first loop. The process is the same, which is setting an int field of an object. Why is that? Because the **clutter** in the Big object causes the cpu to miss the cached data. Because the L1 and L2 caches are full of unnecessary data.
+On average the second loop completes ~360 times faster than the first loop. The process is the same, which is setting an int field of an object. Why is that? Because the **clutter** in the Big object causes the cpu to miss the cached data, because the L1 and L2 caches are full of unnecessary data.
 
 Let's examine how our data is placed on the actual memory using lldb. You can also use gdb, they are very similar by the way.
 
@@ -106,9 +106,9 @@ memory read -fx 0x1000c4000 0x1000c4000+128
 ...
 {% endhighlight %}
 
-Look at how nicely the elements are stacked on the memory. The first element is 0, the second is 1, the third is 2 and so on as expected.
+Look at how nicely the elements are stored on the memory. The first element is 0, the second is 1, the third is 2 and so on as expected.
 
-Not let's examine the first 32 elements of the _bigs_ array using
+Now let's examine the first 32 elements of the _bigs_ array using
 {% highlight ruby %}
 memory read -fx 0x100200000 0x100200000+128
 {% endhighlight %}
@@ -126,12 +126,10 @@ memory read -fx 0x100200000 0x100200000+128
 {% endhighlight %}
 See, it's full of unnecessary data that causes the CPU to miss the cache.
 
-## What is the solution
+### Conclusion
 It has been a very long time since the hype of Data Oriented Programming but it seems like DOD is the solution. Frankly, I don't think how CPU and Memory manage data will change ever. It is very difficult and also illogical.
 
 I have been programming data oriented for almost a year now. At first (like most of the things I first encounter) I thought it was the holy grail and will solve every problem. Right now I think there are places for OOD and DOD(and in that sense other programming paradigms) in the same software. Both of them have their strengths and weaknesses. Till memory speeds catch up with CPU speeds, using DOD is a very good idea.
-
-Nice start
 
 https://ark.intel.com/products/52224/Intel-Core-i5-2410M-Processor-3M-Cache-up-to-2_90-GHz
 https://en.0wikipedia.org/index.php?q=aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvTGlzdF9vZl9JbnRlbF9Db3JlX2k1X21pY3JvcHJvY2Vzc29ycw
