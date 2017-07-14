@@ -8,7 +8,6 @@ In the past years, the increase in CPU speed compared to memory speed is enormou
 
 This is called a **cache miss**. Whenever the CPU wants some piece of data and can't find it, it is a cache miss. And it looks to a higher level cache, if it can't find it there it is another cache miss and it looks to a higher level cache and so on till it can find it.
 
-## Cache Miss
 ### Cache Miss
 The reason for a cache miss is bad data locality. Let's examine this simple code piece written in c++.
 
