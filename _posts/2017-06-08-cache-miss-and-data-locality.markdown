@@ -16,15 +16,16 @@ class Big
 {
 	private:
 		int actor; // 32b primitive type
-		int clutter[262144]; // (1MB - 32b) Size of big is exactly 1MB
+		int clutter[262144]; // (1KB - 32b) Size of big is exactly 1KB
 	public:
 		void setActor(int size);
 		int getActor();
 		float getSizeInKB();
 		float getSizeInMB();
+		void fillClutter();
 };
 {% endhighlight %}
-###### A class when instanced creates an object which is 1MB in size
+###### A class when instanced creates an object which is 1KB in size
 
 
 {% highlight ruby %}
@@ -63,26 +64,31 @@ void loop()
 ###### Here, we loop through the arrays
 
 
-On average the second loop completes ~360 times faster than the first loop. The process is the same, which is setting an int field of an object. Why is that? Because the **clutter** in the Big object causes the cpu to miss the cached data, because the L1 and L2 caches are full of unnecessary data.
+On average the second loop completes ~7 times faster than the first loop on my machine. The process is the same, which is setting an int field of an object. Why is that? Because the **clutter** in the Big object causes the cpu to miss the cached data, because the L1 and L2 caches are full of unnecessary data.
 
 Let's examine how our data is placed on the actual memory using lldb. You can also use gdb, they are very similar by the way.
 
-I have compiled the script above using clang++ with -g flag to enable debugging with extra information. Here is the simple compile command.
+Compile the script above using clang++ with -g flag to enable debugging with extra information. Here is the simple compile command.
 {% highlight ruby %}
 clang++ -g -o p main.cpp
 {% endhighlight %}
 
-I load the program to lldb using
+Load the program to lldb using
 {% highlight ruby %}
 lldb p
 {% endhighlight %}
 
 and then add a simple breakpoint to pause the process without terminating it.
 {% highlight ruby %}
-b main.cpp: 110
+(lldb) b main.cpp: 125
 {% endhighlight %}
 
-at some point lldb show us the addresses of our two arrays, using those addresses we can examine the memory and see what they have, it may show different addresses of course.
+Run the program.
+{% highlight ruby %}
+(lldb) run
+{% endhighlight %}
+
+At some point lldb will show the addresses of our two arrays because it is the output of our program, using those addresses we can examine the memory and see what they have, it may show different addresses on your computer.
 {% highlight ruby %}
 Address of bigs: 0x101000000
 Address of smalls: 0x1000c4000
@@ -102,7 +108,7 @@ memory read -fx 0x1000c4000 0x1000c4000+128
 0x1000c4050: 0x00000014 0x00000015 0x00000016 0x00000017
 0x1000c4060: 0x00000018 0x00000019 0x0000001a 0x0000001b
 0x1000c4070: 0x0000001c 0x0000001d 0x0000001e 0x0000001f
-...
+...		
 {% endhighlight %}
 
 Look at how nicely the elements are stored on the memory. The first element is 0, the second is 1, the third is 2 and so on as expected.
@@ -128,7 +134,11 @@ See, it's full of unnecessary data that causes the CPU to miss the cache.
 ### Conclusion
 It has been a very long time since the hype of Data Oriented Programming but it seems like DOD is the solution. Frankly, I don't think how CPU and Memory manage data will change ever. It is very difficult and also illogical.
 
-I have been programming data oriented for almost a year now. At first (like most of the things I first encounter) I thought it was the holy grail and will solve every problem. Right now I think there are places for OOD and DOD(and in that sense other programming paradigms) in the same software. Both of them have their strengths and weaknesses. Till memory speeds catch up with CPU speeds, using DOD is a very good idea.
+I have been programming in a data oriented way for almost a year now. At first (like most of the things I first encounter) I thought it was the holy grail and will solve every problem. Right now I think there are places for OOD and DOD(and in that sense other programming paradigms) in the same software. Both of them have their strengths and weaknesses. Till memory speeds catch up with CPU speeds, using DOD is a very good idea.
+
+You can find the source files in this repository.
+
+If you think that this blog post is wrong or missing, please send me a message.
 
 https://ark.intel.com/products/52224/Intel-Core-i5-2410M-Processor-3M-Cache-up-to-2_90-GHz
 https://en.0wikipedia.org/index.php?q=aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvTGlzdF9vZl9JbnRlbF9Db3JlX2k1X21pY3JvcHJvY2Vzc29ycw
@@ -138,5 +148,3 @@ https://stackoverflow.com/questions/10475040/gcc-g-vs-g3-gdb-flag-what-is-the-di
 
 L2 cache = 2 × 256 KB
 L3 cache = 3 MB
-
-## Observations
