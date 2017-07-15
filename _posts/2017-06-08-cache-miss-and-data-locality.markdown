@@ -6,7 +6,7 @@ title: Cache Miss and Data Locality
 
 In the past years, the increase in CPU speed compared to memory speed is enormous. As good as it sounds, it is not actually a good thing. In the past, CPU speed and Memory speed were close and they worked in harmony. But today, because of the speed difference, CPU waits for the Memory for data and wastes those precious cycles on doing nothing.
 
-This is called a **cache miss**. Whenever the CPU wants some piece of data and can't find it, it is a cache miss. And it looks to a higher level cache, if it can't find it there it is another cache miss and it looks to a higher level cache and so on till it can find it.
+This is called a **cache miss**. Whenever the CPU wants some piece of data and can't find it, it is a cache miss. And it looks to a higher level cache, if it can't find it there it is another cache miss and it looks to a higher level cache and so on till it can find it. The computer I am writing this post on is a Mid 2011 Mac Mini and according to the specs it has 2 256KB L2 caches and one 3MB L3 cache. The smaller the size of cache the faster the cache is.
 
 ### Cache Miss
 The reason for a cache miss is bad data locality. Let's examine this simple code piece written in c++.
