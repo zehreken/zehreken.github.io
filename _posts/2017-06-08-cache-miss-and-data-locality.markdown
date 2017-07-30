@@ -2,11 +2,11 @@
 layout: post
 title: Cache Miss and Data Locality
 ---
-**Programmers** working in the game industry are proud people, even the gameplay programmers like me. And the good ones are right about it. It is a hard job. We care about performance, we want our code to be fast, sometimes more than necessary. But we usually look for the problem in the wrong place, we try to optimize our code by using faster algorithms but never check or care about where we put our data.
+**Programmers** working in the game industry are proud people. And the good ones are right about it. It is a hard job. We care about performance, we want our code to be fast, sometimes more than necessary. But we usually look for the problem in the wrong place, we try to optimize our code by using faster algorithms but never check or care about where we put our data.
 
-In the past years, the increase in CPU speed compared to memory speed is enormous. As good as it sounds, it is not actually a good thing. In the past, CPU speed and Memory speed were close and they worked in harmony. But today, because of the speed difference, CPU waits for the Memory for data and wastes those precious cycles on doing nothing.
+In the past years, the increase in CPU speed compared to the increase in memory speed is enormous. As good as it sounds, it is not actually a good thing. In the past, CPU speed and memory speed were close and they worked in harmony. But today, because of the speed difference, CPU waits for the memory for data and wastes those precious cycles on doing nothing.
 
-This is called a **cache miss**. Whenever the CPU wants some piece of data and can't find it, it is a cache miss. And it looks to a higher level cache, if it can't find it there it is another cache miss and it looks to a higher level cache and so on till it can find it. The computer I am writing this post on is a Mid 2011 Mac Mini and according to the specs it has 2 256KB L2 caches and one 3MB L3 cache. The smaller the size of cache the faster the cache is.
+This is called a **cache miss**. Whenever the CPU wants some piece of data and can't find it, it is a cache miss. And it looks to a higher level cache, if it can't find it there it is another cache miss and it looks into a higher level cache and so on till it can find it. The computer I am writing this post on is a Mid 2011 Mac Mini and according to the CPU specs it has 2 256KB L1 caches and one 3MB L2 cache. The smaller the size of cache the faster the cache is.
 
 ### Cache Miss
 The reason for a cache miss is bad data locality. Let's examine this simple code piece written in c++.
@@ -85,7 +85,7 @@ and then add a simple breakpoint to pause the process without terminating it.
 
 Run the program.
 {% highlight ruby %}
-(lldb) run
+run
 {% endhighlight %}
 
 At some point lldb will show the addresses of our two arrays because it is the output of our program, using those addresses we can examine the memory and see what they have, it may show different addresses on your computer.
@@ -132,9 +132,9 @@ memory read -fx 0x100200000 0x100200000+128
 See, it's full of unnecessary data that causes the CPU to miss the cache.
 
 ### Conclusion
-It has been a very long time since the hype of Data Oriented Programming but it seems like DOD is the solution. Frankly, I don't think how CPU and Memory manage data will change ever. It is very difficult and also illogical.
+It has been a very long time since the hype of Data Oriented Programming but it seems like DOD is the solution. Frankly, I don't think the way how CPU and memory manage data will ever change. It is very difficult and also illogical.
 
-I have been programming in a data oriented way for almost a year now. At first (like most of the things I first encounter) I thought it was the holy grail and will solve every problem. Right now I think there are places for OOD and DOD(and in that sense other programming paradigms) in the same software. Both of them have their strengths and weaknesses. Till memory speeds catch up with CPU speeds, using DOD is a very good idea.
+I have been programming in a data oriented way for almost a year now. At first (like most of the things I first encounter) I thought it was the holy grail and will solve each and every problem. Right now I think there are places for OOD and DOD (and in that sense other programming paradigms) in the same software. Both of them have their strengths and weaknesses. Till memory speed catches up with CPU speed, using DOD is a very good idea.
 
 You can find the source files in this repository.
 
