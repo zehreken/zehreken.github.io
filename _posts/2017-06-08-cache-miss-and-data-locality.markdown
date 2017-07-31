@@ -90,8 +90,8 @@ run
 
 At some point lldb will show the addresses of our two arrays because it is the output of our program, using those addresses we can examine the memory and see what they have, it may show different addresses on your computer.
 {% highlight ruby %}
-Address of bigs: 0x101000000
 Address of smalls: 0x1000c4000
+Address of bigs: 0x101000000
 {% endhighlight %}
 
 lets examine the first 32 elements of the _smalls_ array using
@@ -115,7 +115,7 @@ Look at how nicely the elements are stored on the memory. The first element is 0
 
 Now let's examine the first 32 elements of the _bigs_ array using
 {% highlight ruby %}
-memory read -fx 0x100200000 0x100200000+128
+memory read -fx 0x101000000 0x101000000+128
 {% endhighlight %}
 
 {% highlight ruby %}
