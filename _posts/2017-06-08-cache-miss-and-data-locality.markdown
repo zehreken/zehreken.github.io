@@ -6,7 +6,7 @@ title: Cache Miss and Data Locality
 
 In the past years, the increase in CPU speed compared to the increase in memory speed is enormous. As good as it sounds, it is not actually a good thing. In the past, CPU speed and memory speed were close and they worked in harmony. But today, because of the speed difference, CPU waits for the memory for data and wastes those precious cycles on doing nothing.
 
-This is called a **cache miss**. Whenever the CPU wants some piece of data and can't find it, it is a cache miss. And it looks to a higher level cache, if it can't find it there it is another cache miss and it looks into a higher level cache and so on till it can find it. The computer I am writing this post on is a Mid 2011 Mac Mini and according to the CPU specs it has 2 256KB L1 caches and one 3MB L2 cache. The smaller the size of cache the faster the cache is.
+This is called a **cache miss**. Whenever the CPU wants some piece of data and can't find it, it is a cache miss. And it looks to a higher level cache, if it can't find it there it is another cache miss and it looks into a higher level cache and so on till it can find it. The computer I am writing this post on is a Mid 2011 Mac Mini and according to the CPU specs it has one **32KB L1 cache** and one **256KB L2 cache** on each core,  and one **3MB L3 cache** on chip. The smaller the size of the cache the faster the cache is.
 
 ### Cache Miss
 The reason for a cache miss is bad data locality. Let's examine this simple code piece written in c++.
@@ -139,12 +139,3 @@ I have been programming in a data oriented way for almost a year now. At first (
 You can find the source files in this repository.
 
 If you think that this blog post is wrong or missing, please send me a message.
-
-https://ark.intel.com/products/52224/Intel-Core-i5-2410M-Processor-3M-Cache-up-to-2_90-GHz
-https://en.0wikipedia.org/index.php?q=aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvTGlzdF9vZl9JbnRlbF9Db3JlX2k1X21pY3JvcHJvY2Vzc29ycw
-
-g flag
-https://stackoverflow.com/questions/10475040/gcc-g-vs-g3-gdb-flag-what-is-the-difference
-
-L2 cache = 2 × 256 KB
-L3 cache = 3 MB
