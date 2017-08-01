@@ -132,9 +132,8 @@ memory read -fx 0x101000000 0x101000000+128
 See, it's full of unnecessary data that causes the CPU to miss the cache.
 
 ### Conclusion
-It has been a very long time since the hype of Data Oriented Programming but it seems like DOD is the solution. Frankly, I don't think the way how CPU and memory manage data will ever change. It is very difficult and also illogical.
 
-I have been programming in a data oriented way for almost a year now. At first (like most of the things I first encounter) I thought it was the holy grail and will solve each and every problem. Right now I think there are places for OOD and DOD (and in that sense other programming paradigms) in the same software. Both of them have their strengths and weaknesses. Till memory speed catches up with CPU speed, using DOD is a very good idea.
+It has been a very long time since the hype of Data Oriented Programming and I have been programming in a data oriented way for almost a year now. At first (like most of the things I first encounter) I thought it was the holy grail and will solve each and every problem but now I think there is a place for OOD and DOD (and in that sense other programming paradigms) in the same software. Both of them have their strengths and weaknesses. Till memory speed catches up with CPU speed, using DOD is a very good idea.
 
 You can find the source files in this repository.
 
