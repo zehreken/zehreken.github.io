@@ -94,7 +94,7 @@ Address of smalls: 0x1000c4000
 Address of bigs: 0x101000000
 {% endhighlight %}
 
-lets examine the first 32 elements of the _smalls_ array using
+Lets examine the first 32 elements of the _smalls_ array using
 {% highlight ruby %}
 memory read -fx 0x1000c4000 0x1000c4000+128
 {% endhighlight %}
