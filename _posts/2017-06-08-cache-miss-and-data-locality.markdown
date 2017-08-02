@@ -64,7 +64,7 @@ void loop()
 ###### Here, we loop through the arrays
 
 
-On average the second loop completes ~7 times faster than the first loop on my machine. The process is the same, which is setting an int field of an object. Why is that? Because the **clutter** in the Big object causes the cpu to miss the cached data, because the L1 and L2 caches are full of unnecessary data.
+On average the second loop completes ~7 times faster than the first loop on my machine. The process is the same, which is setting an int field of an object. Why is that? Because the **clutter** in the Big object causes the CPU to miss the cached data, because the L1 and L2 caches are full of unnecessary data.
 
 Let's examine how our data is placed on the actual memory using lldb. You can also use gdb, they are very similar by the way.
 
