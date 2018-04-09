@@ -1,4 +1,5 @@
-yout: post
+---
+layout: post
 title: Struct vs. Class in .NET
 ---
 Lately, I've made a very important mistake while using structs in our persistency system(save/load game).
