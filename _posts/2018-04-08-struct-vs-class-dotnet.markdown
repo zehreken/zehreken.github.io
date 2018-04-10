@@ -2,12 +2,12 @@
 layout: post
 title: Struct vs. Class in .NET
 ---
-Lately, I've made a very important mistake while using structs in our persistency system(save/load game).
-So I wanted to write this post, which may help to others especially Unity developers. Since they mostly use .NET.
+**Lately**, I've made a very important mistake while using structs in our persistency system(save/load game).
+So I wanted to write this post, which may help to others especially Unity developers. Since they mostly use C#.
 In their games.
 
 So what is the difference between a **struct** and a **class**?
-Everybody should and probably do know by heart that; struct is a *value type* and class is a *reference type*.
+Everybody should and probably do know by heart that; struct is a *value type* and class is a *reference type* in C#.
 The things is most people do not know what this means and what are the effects.
 I am going to give some examples to explain these effects.
 
