@@ -61,4 +61,6 @@ public static MyStruct RecursiveA(MyStruct ms)
 }
 {% endhighlight %}
 
+* Add ref and out keywords to pass structs by reference
+
 If you think that this blog post is wrong or missing, please send me a message.
