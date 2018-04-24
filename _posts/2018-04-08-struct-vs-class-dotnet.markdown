@@ -61,6 +61,23 @@ public static MyStruct RecursiveA(MyStruct ms)
 }
 {% endhighlight %}
 
-* Add ref and out keywords to pass structs by reference
+* If you use the ref keyword, the struct will be passed by reference(its location in memory)
+{% highlight ruby %}
+public static MyStruct RecursiveA(ref MyStruct ms)  
+{  
+	ms.a += 1;
+	if (ms.a < 10)
+	{
+		RecursiveA(ref ms);
+	}
+	return ms;
+}
+// When this terminates the value of ms.a will be 10
+RecursiveA(ref ms);
+{% endhighlight %}
+
+### Conclusion
+
+I think it is clear that a mutable struct is not a good idea. They are good for storing read-only data. Whenever you need mutable data, you should class instead of struct.
 
 If you think that this blog post is wrong or missing, please send me a message.
