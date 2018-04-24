@@ -78,6 +78,6 @@ RecursiveA(ref ms);
 
 ### Conclusion
 
-I think it is clear that a mutable struct is not a good idea. They are good for storing read-only data. Whenever you need mutable data, you should class instead of struct.
+I think it is clear that a mutable struct is not a good idea. They are good for storing read-only data. Whenever you need mutable data, you should use a class instead of a struct.
 
 If you think that this blog post is wrong or missing, please send me a message.
