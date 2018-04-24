@@ -31,7 +31,7 @@ public static void UpdateA(this MyStruct ms)
 }
 {% endhighlight %}
 
-* Still a result of being a value type, you should be careful with recursion
+* Still a result of being a value type, you should be careful with **recursion**
 {% highlight ruby %}
 public static MyStruct RecursiveA(MyStruct ms)  
 {  
@@ -61,7 +61,7 @@ public static MyStruct RecursiveA(MyStruct ms)
 }
 {% endhighlight %}
 
-* If you use the ref keyword, the struct will be passed by reference(its location in memory)
+* If you use the **ref** keyword, the struct will be passed by reference(its location in memory)
 {% highlight ruby %}
 public static MyStruct RecursiveA(ref MyStruct ms)  
 {  
