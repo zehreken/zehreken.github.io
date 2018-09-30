@@ -31,7 +31,7 @@ public static void UpdateA(this MyStruct ms)
 }
 {% endhighlight %}
 
-* Still a result of being a value type, you should be careful with recursion
+* Still a result of being a value type, you should be careful with **recursion**
 {% highlight ruby %}
 public static MyStruct RecursiveA(MyStruct ms)  
 {  
@@ -60,5 +60,24 @@ public static MyStruct RecursiveA(MyStruct ms)
 	return ms;
 }
 {% endhighlight %}
+
+* If you use the **ref** keyword, the struct will be passed by reference(its location in memory)
+{% highlight ruby %}
+public static MyStruct RecursiveA(ref MyStruct ms)  
+{  
+	ms.a += 1;
+	if (ms.a < 10)
+	{
+		RecursiveA(ref ms);
+	}
+	return ms;
+}
+// When this terminates the value of ms.a will be 10
+RecursiveA(ref ms);
+{% endhighlight %}
+
+### Conclusion
+
+I think it is clear that a mutable struct is not a good idea. They are good for storing read-only data. Whenever you need mutable data, you should use a class instead of a struct.
 
 If you think that this blog post is wrong or missing, please send me a message.
