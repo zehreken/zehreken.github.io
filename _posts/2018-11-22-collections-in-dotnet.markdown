@@ -1,15 +1,24 @@
-
 ---
 layout: post
 title: Collections in .NET
 ---
-Yesterday, I was surfing on msdn and reading .NET documentation and when hit the topic _collections_ I was surprised that there are some generic collection types I have never heard of. I was also ashamed to be honest. It has been 5 years since I started using C# professionally and I have never used their LinkedList and Stack implementations. Whenever I needed a LinkedList I wrote my own, which is fun or whenever I needed a Stack, I used List as a stack.
-In this post I want to try them one by one, come up with use cases and test their performance.
-Last month, I was trying to decide on what data structure to use for a hexagonal grid. I checked .Net's documentation and surprised that there are a lot of different collections, for a really diverse case of uses. I'm familiar with some of them but not familiar with the rest.
+Yesterday, I was surfing on msdn and reading .NET documentation and when I hit the topic _collections_ I was surprised that there are some generic collection types that I have never heard of.
+
+It has been 5 years since I started using C# professionally and I have never used their LinkedList and Stack implementations. Whenever I needed a LinkedList I wrote my own or whenever I needed a Stack, I used List as a stack.
+In this post I want to try them one by one, try to come up with use cases and test their performance.
 
 #### Dictionary
+A Dictionary lets you store key-value pairs. You can reach the stored value by its key, so the keys should be *unique*.
+You will get an exception if you try to add the same key twise. 
+Lately, I have started implementing the grids in the game using Dictionary class. Before that I was using multidimensional arrays, but now I create hash from the coordinates of the tile and add hash-tile pair to the dictionary.
 #### HashSet
+A HashSet is like a list but stores unique values. But unlike dictionary, a HashSet won't throw an exception if you try to add the same value more than once. Add method returns false if you try to add a value that is already in the set. I have used HashSet to store valid words in a word game like scrabble. The good thing about a HashSet is look-up speed is super fast.
 #### LinkedList
+A LinkedList is a collection of nodes, each node has a reference to the next node. That way, these nodes create a list. In .NET a LinkedList is doubly linked. Which means a node has two references, one for the previous node and one for the next.
 #### List
+A List is a one of the basic collections. It is really straightforward. You create an instance and start adding basicly.
 #### Queue
+A Queue is a collection that works in a first-in, first-out fashion. With Enqueue method you add a new element at the end of the queue and with Dequeue method you will get the first element from the queue.
+I use Queue type to order user input as commands to make sure that they are always in the correct order. 
 #### Stack
+A Stack is a collection that works in a last-in, first-out fashion. With Push method you add a new element to the top of the stack and with Pop method you get element on the top.
