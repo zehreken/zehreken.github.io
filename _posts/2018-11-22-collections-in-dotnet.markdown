@@ -16,9 +16,29 @@ A HashSet is like a list but stores unique values. But unlike dictionary, a Hash
 ### LinkedList
 A LinkedList is a collection of nodes, each node has a reference to the next node. That way, these nodes create a list. In .NET a LinkedList is doubly linked. Which means a node has two references, one for the previous node and one for the next.
 ### List
-A List is a one of the basic collections. It is really straightforward. You create an instance and start adding basicly.
+A List is a one of the basic collections. It is really straightforward. You create an instance and start adding new elements.
 ### Queue
 A Queue is a collection that works in a first-in, first-out fashion. With Enqueue method you add a new element at the end of the queue and with Dequeue method you will get the first element from the queue.
 I use Queue type to order user input as commands to make sure that they are always in the correct order. 
 ### Stack
 A Stack is a collection that works in a last-in, first-out fashion. With Push method you add a new element to the top of the stack and with Pop method you get element on the top.
+
+### Performance
+I've tried to test basic performance of the collections above. Frankly, I'm not sure if this test tells enough about their performance, since some of the collections are structurally different, especially LinkedList.
+All of the collections has a method to add a new element and luckily they all have a method to check if an elements exists in it or not.
+I have based my tests on these two properties.
+The size of each collection is 10000 and the tick counts below are the averages of 1000 repeats.
+
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+
+
+
+
+
+
+
+Also test **capacity** property.
