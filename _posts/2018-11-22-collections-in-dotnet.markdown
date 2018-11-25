@@ -34,27 +34,27 @@ The size of each collection is 10000 and the tick counts below are the averages 
 | --- | --- |
 | 2408.91 | 22.11 |
 
-HashSet
+##### HashSet
 | add | reach |
 | --- | --- |
 | 4594.83 | 21.97 |
 
-LinkedList
+##### LinkedList
 | add | reach |
 | --- | --- |
 | 2735.02 | 7244.52 |
 
-List
+##### List
 | add | reach |
 | --- | --- |
 | 607.61 | 6924.83 |
 
-Queue
+##### Queue
 | add | reach |
 | --- | --- |
 | 394.46 | 14394.67 |
 
-Stack
+##### Stack
 | add | reach |
 | --- | --- |
 | 350.45 | 9107.59 |
