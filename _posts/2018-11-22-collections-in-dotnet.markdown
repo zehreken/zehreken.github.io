@@ -29,7 +29,7 @@ All of the collections has a method to add a new element and luckily they all ha
 I have based my tests on these two properties.
 The size of each collection is 10000 and the tick counts below are the averages of 1000 repeats.
 
-Dictionary
+##### Dictionary
 | add | reach |
 | --- | --- |
 | 2408.91 | 22.11 |
