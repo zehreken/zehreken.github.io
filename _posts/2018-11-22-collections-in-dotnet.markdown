@@ -55,6 +55,7 @@ The size of each collection is 10000 and the tick counts below are the averages 
 | 394.46 | 14394.67 |
 
 ##### Stack
+
 | add | reach |
 | --- | --- |
 | 350.45 | 9107.59 |
