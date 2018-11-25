@@ -33,22 +33,27 @@ Dictionary
 | add | reach |
 | --- | --- |
 | 2408.91 | 22.11 |
+
 HashSet
 | add | reach |
 | --- | --- |
 | 4594.83 | 21.97 |
+
 LinkedList
 | add | reach |
 | --- | --- |
 | 2735.02 | 7244.52 |
+
 List
 | add | reach |
 | --- | --- |
 | 607.61 | 6924.83 |
+
 Queue
 | add | reach |
 | --- | --- |
 | 394.46 | 14394.67 |
+
 Stack
 | add | reach |
 | --- | --- |
