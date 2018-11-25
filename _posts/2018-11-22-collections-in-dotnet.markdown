@@ -29,10 +29,31 @@ All of the collections has a method to add a new element and luckily they all ha
 I have based my tests on these two properties.
 The size of each collection is 10000 and the tick counts below are the averages of 1000 repeats.
 
-| Dictionary | Dictionary | HashSet | HashSet | LinkedList | LinkedList | List | List | Queue | Queue | Stack | Stack |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| add | reach | add | reach | add | reach | add | reach | add | reach | add | reach |
-| 2408.91 | 22.11 | 4594.83 | 21.97 | 2735.02 | 7244.52 | 607.61 | 6924.83 | 394.46 | 14394.67 | 350.45 | 9107.59 |
+Dictionary
+| add | reach |
+| --- | --- |
+| 2408.91 | 22.11 |
+HashSet
+| add | reach |
+| --- | --- |
+| 4594.83 | 21.97 |
+LinkedList
+| add | reach |
+| --- | --- |
+| 2735.02 | 7244.52 |
+List
+| add | reach |
+| --- | --- |
+| 607.61 | 6924.83 |
+Queue
+| add | reach |
+| --- | --- |
+| 394.46 | 14394.67 |
+Stack
+| add | reach |
+| --- | --- |
+| 350.45 | 9107.59 |
+
 
 
 
