@@ -35,4 +35,7 @@ Shader "ShaderLib/DiffuseWhite"
 }
 {% endhighlight %}
 
-This is a **surface** shader.
+This is a **surface** shader. Because it uses the surf method defined in this line
+{% highlight ruby %}
+#pragma surface surf Lambert
+{% endhighlight %}
