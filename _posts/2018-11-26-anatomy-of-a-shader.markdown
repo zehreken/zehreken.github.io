@@ -2,7 +2,7 @@
 layout: post
 title: Anatomy of a Shader
 ---
-Shaders are always a popular topic in game development. Obviously, you need nice and fast shaders if you want your game to look nice and to play fast. I tried to learn shaders several times but didn't succeed a lot honestly. I can read shaders and sometimes modify them, I can also write very simple but not useful shaders but it is not enough. I want to learn more and I want to blog about it to progress faster. Hopefully these posts will help others as well.
+Shaders are always a popular topic in game development. Obviously, you need nice and fast shaders if you want your game to look nice and to play fast. I tried to learn shaders several times but didn't succeed a lot honestly. I can read shaders and sometimes modify them, I can also write very simple but not so useful shaders but it is not enough. I want to learn more and I want to blog about it to progress faster. Hopefully these posts will help others as well.
 
 Let's examine a very simple shader.
 
@@ -35,7 +35,11 @@ Shader "ShaderLib/DiffuseWhite"
 }
 {% endhighlight %}
 
-This is a **surface** shader. Because it uses the surf method defined in this line
+This is a **surface** shader. Because it uses the surface function defined in this line.
 {% highlight ruby %}
 #pragma surface surf Lambert
+{% endhighlight %}
+The name _surf_ is defined in this line as well, so if you want to use another name for your surface function, you can define it like
+{% highlight ruby %}
+#pragma surface function_name Lambert
 {% endhighlight %}
