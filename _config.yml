@@ -25,6 +25,7 @@ github_username:  zehreken
 # Build settings
 markdown: kramdown
 theme: minima
+remote_theme: pmarsceill/just-the-docs
 plugins:
   - jekyll-feed
 
