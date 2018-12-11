@@ -1,6 +1,6 @@
 ---
 layout: post
-title: A Performance Comparison Of OOD And ECS Patterns Within Unity
+title: Performance Comparison of OOD and ECS Patterns within Unity
 ---
 **For** the last three months at the company, we, programmers, talked, discussed and thought a lot about the architectural design patterns because we wanted to make our individual development approaches alike and we also wanted to be faster. Finally we have decided on using **Entity-Component-System** architecture.
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: A Review About Google AI Challenge
+title: A Review about Google AI Challenge
 ---
 **Hello** again, in this post, I would like talk about **Google AI Challenge**, an artificial intelligence contest organized by the University of Waterloo Computer Science Club and sponsored by Google. The contest has ended months ago, actually on December 1st 2010 but the contest’s website is still active and includes useful information, source and fun stuff about AI programming.
 
