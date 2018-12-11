@@ -16,7 +16,7 @@
 title: lab.guchanalkan.com
 email: zehreken@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Experiments about programming, tips about game development
+  Experiments about programming, tips about game development.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: zehreken
