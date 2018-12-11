@@ -67,7 +67,7 @@ void Update()
 
 The program also has a hitpoint system to make it more like a game.
 
-![Alt text](/assets/performance_comparison_ecs.png)  
+![Alt text](/assets/2016/performance_comparison_ecs.png)  
 <small>Simple simulation</small>
 
 ## Initialization Performance Comparison

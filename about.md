@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 My name is Güçhan Alkan.  
-![Ahoy!](/assets/01050034.jpg)  
+![Ahoy!](/assets/about/01050034.jpg)  
 Note to self: Complete this page.
 
 Ask why it gets dark, nobody blames you.  
