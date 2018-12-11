@@ -10,7 +10,7 @@ I will try to explain the concept as simple as possible for true beginners like 
 
 First of all, we should know about the area we are searching for the shortest path. The area can be a **grid** or a **graph**. Actually this makes no difference.
 
-![Alt text](/assets/astar_illustration00.png)  
+![Alt text](/assets/2010/astar_illustration00.png)  
 <small>Here are an illustration of a grid and an illustration of a graph</small>
 
 A square in a grid or a circle in a graph is called a node. A node is the most basic element in a search algorithm. We should know well about the nodes. A node has 3 important properties.
@@ -27,7 +27,7 @@ I will to try to explain the algorithm step by step because I think this is the 
 
 **1.** Examine the search area. Define the start and finish nodes. Calculate each H cost (heuristic) from each node to the finish node. Note that, right now all of the G cost values for each node is “0”. You will get a grid like this.
 
-![Alt text](/assets/astar_illustration01.png)  
+![Alt text](/assets/2010/astar_illustration01.png)  
 <small>H costs are calculated according to the rule: no diagonal movement</small>
 
 **2.** Add the start node to the frontier list, right now start node is the only node in the frontier list, so we select the start node as the best node. (minimum F cost)
@@ -46,8 +46,8 @@ I’ve developed a simple application for the sake of better understanding of A*
 * “Find Path” button starts the simulation
 * “Switch Type” button lets you choose between the step by step and instant simulation types
 
-<object width="500" height="500" data="/assets/a_star_pathfinding.swf"></object>  
+<object width="500" height="500" data="/assets/2010/a_star_pathfinding.swf"></object>  
  
 If you think that this article is wrong or missing, or maybe you have a question, please feel free to send me a message.
 
-[download source files](/assets/a_star_pathfinding_source.zip)
+[download source files](/assets/2010/a_star_pathfinding_source.zip)
