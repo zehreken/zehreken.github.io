@@ -23,3 +23,5 @@ If you can implement these services robust and easy to use, then the developers 
 ##### Template
 Having a prototype template is an important asset for faster prototyping as well. It gives developers a solid entrance point, also helps new developers understand the flow. 
 It would be better if it has the services above already implemented. A simple UI layer is also very useful. For hyper casual games, it is a play button, some text fields for score and other simple instructions and maybe a settings button.
+##### Third Party
+Another important point is using other people's code. There are lots of free and paid tools for game development. Before creating your own tool, you should check github and stores and it's highly likely that you are going to find a better implementation of the tool you have in mind.
