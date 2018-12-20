@@ -20,11 +20,29 @@ Some examples
 * Score service
 * Logging service
 If you can implement these services robust and easy to use, then the developers won't worry about them, they will use them and it will really impact development speed.
+
+
 ### Template
 Having a prototype template is an important asset for faster prototyping as well. It gives developers a solid entrance point, also helps new developers understand the development flow. 
 It would be better if it has the services above already implemented. A simple UI layer is also very useful. For hyper casual games, it is a play button, some text fields for score and other simple instructions and maybe a settings button.
+
+
 ### Third Party
 Another important point is using other people's code. There are lots of free and paid tools for game development. Before creating your own tool, you should check github and stores and it's highly likely that you are going to find a better implementation of the tool you have in mind.
 * SRDebugger
 * Console Pro
 * Camera extension etc.
+
+
+### DRY and SOLID Principle
+
+### Don't Write code that is not needed
+This looks like an obvious thing but most of the times programmers are tempted to write unnecessary code because the topic is fun and challenging.
+
+### Modularity
+
+### Keep it simple
+Don't worry about performance of your prototype, if it is playable then the performance is good. You can optimize if the core mechanic is successful.
+
+### Composition over Inheritance
+
