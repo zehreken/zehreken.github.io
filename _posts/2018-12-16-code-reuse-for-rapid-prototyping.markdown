@@ -9,7 +9,7 @@ To be successful in the hyper casual game market, you need to be fast at prototy
 The fastest way to create an MVP is writing less code obviously, and to write less code you need to reuse the one you have already written.
 
 ### Code Reuse
-In the software industry everybody, especially managers love the term _code reuse_. But it is always hard to reuse the code, no programmer wants to use others' code since she needs to understand what the code is doing first. And probably she finds it easier to write it herself.
+In the software industry everybody, especially managers love the term **code reuse**. But it is always hard to reuse the code, no programmer wants to use others' code since she needs to understand what the code is doing first. And probably she finds it easier to write it herself.
 So to promote code reuse, you need to write reusable code. How is this possible?
 
 ### Service Locator Pattern
@@ -18,7 +18,8 @@ Some examples
 * Advertisement service
 * Audio service
 * Score service
-* Logging service
+* Logging service etc.
+
 If you can implement these services robust and easy to use, then the developers won't worry about them, they will use them and it will really impact development speed.
 
 
@@ -33,16 +34,14 @@ Another important point is using other people's code. There are lots of free and
 * Console Pro
 * Camera extension etc.
 
+### DRY Principle
+DRY stands for **don't repeat yourself** and it is explained all over the internet more than once. It simply states that if you have the same logic written in your code more than once, put that in another procedure and call it.
 
-### DRY and SOLID Principle
-
-### Don't Write code that is not needed
+### Don't Write Code That is not Needed
 This looks like an obvious thing but most of the times programmers are tempted to write unnecessary code because the topic is fun and challenging.
 
 ### Modularity
+Write your classes, functions and methods in a way that they do only one aspect of the desired functionality, so that you can reuse the necessary ones in other projects later on.
 
-### Keep it simple
-Don't worry about performance of your prototype, if it is playable then the performance is good. You can optimize if the core mechanic is successful.
-
-### Composition over Inheritance
-
+### Keep It Simple
+Don't worry about performance of your prototype, if it is playable then the performance is good. You can optimize later if the core mechanic is successful.
