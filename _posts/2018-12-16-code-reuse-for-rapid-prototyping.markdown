@@ -16,6 +16,7 @@ So to promote code reuse, you need to write reusable code. How is this possible?
 Some functionalities are needed in almost every game. For hyper casual games, the most important one is an advertisement service. Other systems may be audio, store, idle time calculation for idle games, logging, etc.
 Some examples
 * Advertisement service
+* Analytics service
 * Audio service
 * Score service
 * Logging service etc.
