@@ -13,7 +13,7 @@ These 2 simple rules are:
 **2. Cohesion**: To move towards the average position of the local boids.
 
 ![Alt text](/assets/2013/boids_simulation.png)  
-<small>Boid structure</small>
+###### Boid structure
 
 By local boids, we mean the boids in a certain range of each boid. The separation range and cohesion range are **independent** and can be different. In the application, cohesion range is greater than separation range and separation coefficient is greater than cohesion coefficient. This causes each boid to move as close as possible to other boids but not to collide with them.
 

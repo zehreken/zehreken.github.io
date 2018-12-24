@@ -11,7 +11,7 @@ I will try to explain the concept as simple as possible for true beginners like 
 First of all, we should know about the area we are searching for the shortest path. The area can be a **grid** or a **graph**. Actually this makes no difference.
 
 ![Alt text](/assets/2012/astar_illustration00.png)  
-<small>Here are an illustration of a grid and an illustration of a graph</small>
+###### Here are an illustration of a grid and an illustration of a graph
 
 A square in a grid or a circle in a graph is called a node. A node is the most basic element in a search algorithm. We should know well about the nodes. A node has 3 important properties.
 
@@ -21,14 +21,14 @@ A square in a grid or a circle in a graph is called a node. A node is the most b
 
 **F score**: F score is the sum of G score and H score. **F = G + H**
 
-# Pseudo Algorithm
+### Pseudo Algorithm
 
 I will to try to explain the algorithm step by step because I think this is the easiest way to do.
 
 **1.** Examine the search area. Define the start and finish nodes. Calculate each H cost (heuristic) from each node to the finish node. Note that, right now all of the G cost values for each node is “0”. You will get a grid like this.
 
 ![Alt text](/assets/2012/astar_illustration01.png)  
-<small>H costs are calculated according to the rule: no diagonal movement</small>
+###### H costs are calculated according to the rule: no diagonal movement
 
 **2.** Add the start node to the frontier list, right now start node is the only node in the frontier list, so we select the start node as the best node. (minimum F cost)
 

@@ -68,9 +68,9 @@ void Update()
 The program also has a hitpoint system to make it more like a game.
 
 ![Alt text](/assets/2016/performance_comparison_ecs.png)  
-<small>Simple simulation</small>
+###### Simple simulation
 
-## Initialization Performance Comparison
+### Initialization Performance Comparison
 Multiple MonoBehavoiurs take a lot of time to initialize because MonoBehaviour is huge. Single MonoBehaviour also takes more time because it is still MonoBehaviour. Entitas is fast but not as fast as the Update Method Pattern, probably because of the overhead of the systems. The fastest is plain OOD.
 
 * Multiple MonoBehavoiurs initialization time ~171 ms.
@@ -78,7 +78,7 @@ Multiple MonoBehavoiurs take a lot of time to initialize because MonoBehaviour i
 * Entitas initialization time ~38 ms.
 * Plain OOD initialization time ~32 ms.
 
-## Runtime Performance Comparison
+### Runtime Performance Comparison
 When it comes to runtime performance multiple MonoBehaviours and single MonoBehaviour is almost the same and worse than the other two. Entitas is better but not as good as plain OOD.
 
 * Multiple MonoBehavoiurs frame time ~14 ms / 71 frames per second
@@ -88,7 +88,7 @@ When it comes to runtime performance multiple MonoBehaviours and single MonoBeha
 
 These test are run on MacBook Pro Early 2015. You can find the source files in this [file](/assets/2016/entitas_unity_performance.zip).
 
-## Conclusion
+### Conclusion
 At the end Entitas and plain OOD is definitely better than using MonoBehaviours as components. Plain OOD is slightly faster while initializing and at runtime but it does not have the flexibility of an ECS. I think having the flexibility is better compared to the little performance gain especially if the project is relatively big.
 
 In the same sense, for the ones who don't want to use any ECS architecture or plain OOD, having small scripts that extend MonoBehaviours is also better than a huge script that also extends MonoBehaviour.

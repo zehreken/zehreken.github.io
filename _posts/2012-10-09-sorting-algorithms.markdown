@@ -30,7 +30,7 @@ I think, this time I’ve come up with an application which explains itself but 
 
 <object width="500" height="500" data="/assets/2012/sorting_algorithms.swf"></object>
 
-# Instructions
+### Instructions
 All of the grey squares are buttons and all of the green squares are sorting nodes
 
 * By clicking (De)Select All button, you can select or deselect all of the sorting nodes.
