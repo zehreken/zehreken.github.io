@@ -46,3 +46,6 @@ Write your classes, functions and methods in a way that they do only one aspect 
 
 ### Keep It Simple
 Don't worry about performance of your prototype, if it is playable then the performance is good. You can optimize later if the core mechanic is successful.
+
+### Conclusion
+The hyper casual market is already very crowded since it is very easy to create(or clone) an hyper casual game using current game development tools and I personally think that the profits from those games will go down soon. The most important thing to be successful in this genre is being super fast. So be fast, release fast and with a bit of luck and a good partnership with a publisher, you can create the next big hyper casual game.
