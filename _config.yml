@@ -28,9 +28,7 @@ twitter_username: zehreken
 github_username: zehreken
 
 # Build settings
-# theme: minima
-remote_theme: b2a3e8/jekyll-theme-console
-theme: jekyll-theme-console
+theme: minima
 plugins:
   - jekyll-feed
 
@@ -38,13 +36,17 @@ header_pages:
   - index.md
   - about.md
 
-style: light # dark (default) or light
-listen_for_clients_preferred_style: false # true or false (default)
-
-footer: '<a href="https://github.com/zehreken">github</a> <a href="https://twitter.com/zehreken">twitter</a>'
-
 google_analytics: UA-60769427-1
 
+# Minima date format
+# refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
+minima:
+  date_format: "%Y-%m-%d"
+  social_links:
+    twitter: zehreken
+    github: zehreken
+
+show_excerpts: true
 
 # Exclude from processing.
 # The following items will not be processed, by default.
