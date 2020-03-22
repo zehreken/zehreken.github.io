@@ -1,0 +1,4 @@
+I"<p><strong>Lately</strong>, I’ve made a very important mistake while using structs in our persistency system(save/load game).
+So I wanted to write this post, which may help others, especially <strong>Unity</strong> developers. Since they mostly use C#
+in their programs.</p>
+:ET

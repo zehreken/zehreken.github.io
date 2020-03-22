@@ -1,0 +1,101 @@
+I"e.<p><strong>For</strong> the last three months at the company, we, programmers, talked, discussed and thought a lot about the architectural design patterns because we wanted to make our individual development approaches alike and we also wanted to be faster. Finally we have decided on using <strong>Entity-Component-System</strong> architecture.</p>
+
+<p>So what is an ECS?
+An ECS is an architectural pattern which follows <strong>composition over inheritance</strong> to support flexibility.</p>
+
+<p>In short;</p>
+
+<ul>
+  <li>Entity: A general purpose object, typically a single integer.</li>
+  <li>Component: Just data.</li>
+  <li>System: Runs the logic related to the component of an entity.</li>
+</ul>
+
+<p>Since internet has lots of information about what an ECS is, I will leave researching job to the reader.</p>
+
+<p>ECS is very popular in game development and there are a bunch of ECS frameworks around.
+Some of the ones that I can find are (they have fancy names by the way);</p>
+
+<ul>
+  <li><a href="https://github.com/sschmid/Entitas-CSharp">Entitas (C#)</a></li>
+  <li><a href="https://github.com/thelinuxlich/artemis_CSharp">Artemis (C#)</a></li>
+  <li><a href="https://github.com/andoowhy/EgoCS">EgoCS (C#)</a></li>
+  <li><a href="https://github.com/alecthomas/entityx">EntityX (C++)</a></li>
+  <li><a href="https://github.com/miguelmartin75/anax">Anax (C++)</a></li>
+</ul>
+
+<p>Since Entitas is the most popular one and we use Unity as our engine, we have decided to use Entitas. I have decided to create a simple project that to test the performance of several development approaches.
+Unity, at its core is also an entity-component based engine. The most advised programming approach with Unity is writing simple MonoBehaviours and attaching them to GameObjects, either through the editor or using the generic AddComponent method. But is there anything wrong with this approach? Yes, it is slow. And to make my point, I have compared 4 different development approaches in the project.</p>
+
+<ol>
+  <li>Using simple and small scripts which extend MonoBehavoiur.</li>
+  <li>Using a single script which also extends MonoBehaviour that has all the data and logic in it.</li>
+  <li>Using Entitas. (version 0.35.0)</li>
+  <li>Using plain Object Oriented Development and <a href="http://gameprogrammingpatterns.com/update-method.html">Update Method Pattern</a> which I used to use before Entitas.</li>
+</ol>
+
+<p>The test project is a simple project. The program creates 5000 cubes and all of the cubes run these two simple logic;</p>
+
+<p>Move</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">void</span> <span class="no">Update</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">_transform</span><span class="o">.</span><span class="no">Translate</span><span class="p">(</span><span class="n">_xVel</span> <span class="o">*</span> <span class="no">Time</span><span class="p">.</span><span class="nf">deltaTime</span><span class="p">,</span> <span class="n">_yVel</span> <span class="o">*</span> <span class="no">Time</span><span class="p">.</span><span class="nf">deltaTime</span><span class="p">,</span> <span class="n">_zVel</span> <span class="o">*</span> <span class="no">Time</span><span class="p">.</span><span class="nf">deltaTime</span><span class="p">,</span> <span class="no">Space</span><span class="o">.</span><span class="no">World</span><span class="p">);</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">x</span> <span class="o">&lt;</span> <span class="o">-</span><span class="no">TestConfig</span><span class="o">.</span><span class="no">BORDER</span> <span class="o">||</span> <span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">x</span> <span class="o">&gt;</span> <span class="no">TestConfig</span><span class="o">.</span><span class="no">BORDER</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">_transform</span><span class="p">.</span><span class="nf">position</span> <span class="o">=</span> <span class="n">new</span> <span class="no">Vector3</span><span class="p">(</span><span class="no">TestConfig</span><span class="o">.</span><span class="no">BORDER</span> <span class="o">*</span> <span class="no">Mathf</span><span class="o">.</span><span class="no">Sign</span><span class="p">(</span><span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">x</span><span class="p">),</span> <span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">y</span><span class="p">,</span> <span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">z</span><span class="p">);</span>
+		<span class="n">_xVel</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span><span class="n">f</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">y</span> <span class="o">&lt;</span> <span class="o">-</span><span class="no">TestConfig</span><span class="o">.</span><span class="no">BORDER</span> <span class="o">||</span> <span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">y</span> <span class="o">&gt;</span> <span class="no">TestConfig</span><span class="o">.</span><span class="no">BORDER</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">_transform</span><span class="p">.</span><span class="nf">position</span> <span class="o">=</span> <span class="n">new</span> <span class="no">Vector3</span><span class="p">(</span><span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">x</span><span class="p">,</span> <span class="no">TestConfig</span><span class="o">.</span><span class="no">BORDER</span> <span class="o">*</span> <span class="no">Mathf</span><span class="o">.</span><span class="no">Sign</span><span class="p">(</span><span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">y</span><span class="p">),</span> <span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">z</span><span class="p">);</span>
+		<span class="n">_yVel</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span><span class="n">f</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">z</span> <span class="o">&lt;</span> <span class="o">-</span><span class="no">TestConfig</span><span class="o">.</span><span class="no">BORDER</span> <span class="o">||</span> <span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">z</span> <span class="o">&gt;</span> <span class="no">TestConfig</span><span class="o">.</span><span class="no">BORDER</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">_transform</span><span class="p">.</span><span class="nf">position</span> <span class="o">=</span> <span class="n">new</span> <span class="no">Vector3</span><span class="p">(</span><span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">x</span><span class="p">,</span> <span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">y</span><span class="p">,</span> <span class="no">TestConfig</span><span class="o">.</span><span class="no">BORDER</span> <span class="o">*</span> <span class="no">Mathf</span><span class="o">.</span><span class="no">Sign</span><span class="p">(</span><span class="n">_transform</span><span class="p">.</span><span class="nf">position</span><span class="p">.</span><span class="nf">z</span><span class="p">));</span>
+		<span class="n">_zVel</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span><span class="n">f</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Rotate</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">void</span> <span class="no">Update</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">_transform</span><span class="o">.</span><span class="no">Rotate</span><span class="p">(</span><span class="n">_xVel</span> <span class="o">*</span> <span class="no">Time</span><span class="p">.</span><span class="nf">deltaTime</span><span class="p">,</span> <span class="n">_yVel</span> <span class="o">*</span> <span class="no">Time</span><span class="p">.</span><span class="nf">deltaTime</span><span class="p">,</span> <span class="n">_zVel</span> <span class="o">*</span> <span class="no">Time</span><span class="p">.</span><span class="nf">deltaTime</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The program also has a hitpoint system to make it more like a game.</p>
+
+<p><img src="/assets/2016/performance_comparison_ecs.png" alt="Alt text" /></p>
+<h6 id="simple-simulation">Simple simulation</h6>
+
+<h3 id="initialization-performance-comparison">Initialization Performance Comparison</h3>
+<p>Multiple MonoBehavoiurs take a lot of time to initialize because MonoBehaviour is huge. Single MonoBehaviour also takes more time because it is still MonoBehaviour. Entitas is fast but not as fast as the Update Method Pattern, probably because of the overhead of the systems. The fastest is plain OOD.</p>
+
+<ul>
+  <li>Multiple MonoBehavoiurs initialization time ~171 ms.</li>
+  <li>Single MonoBehavoiur initialization time ~105 ms.</li>
+  <li>Entitas initialization time ~38 ms.</li>
+  <li>Plain OOD initialization time ~32 ms.</li>
+</ul>
+
+<h3 id="runtime-performance-comparison">Runtime Performance Comparison</h3>
+<p>When it comes to runtime performance multiple MonoBehaviours and single MonoBehaviour is almost the same and worse than the other two. Entitas is better but not as good as plain OOD.</p>
+
+<ul>
+  <li>Multiple MonoBehavoiurs frame time ~14 ms / 71 frames per second</li>
+  <li>Single MonoBehavoiur frame time ~14 ms / 71 frames per second</li>
+  <li>Entitas frame time ~12 ms / 83 frames per second</li>
+  <li>Plain OOD frame time ~11 ms / 91 frames per seconds</li>
+</ul>
+
+<p>These test are run on MacBook Pro Early 2015. You can find the source files in this <a href="/assets/2016/entitas_unity_performance.zip">file</a>.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+<p>At the end Entitas and plain OOD is definitely better than using MonoBehaviours as components. Plain OOD is slightly faster while initializing and at runtime but it does not have the flexibility of an ECS. I think having the flexibility is better compared to the little performance gain especially if the project is relatively big.</p>
+
+<p>In the same sense, for the ones who don’t want to use any ECS architecture or plain OOD, having small scripts that extend MonoBehaviours is also better than a huge script that also extends MonoBehaviour.</p>
+
+<p>If you think that this article is wrong or missing, or maybe you have a question, please feel free to send me a message.</p>
+:ET

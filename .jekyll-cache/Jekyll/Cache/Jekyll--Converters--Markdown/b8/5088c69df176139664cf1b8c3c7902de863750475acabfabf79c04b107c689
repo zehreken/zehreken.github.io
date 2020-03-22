@@ -1,0 +1,82 @@
+I"I<p><strong>Lately</strong>, I’ve made a very important mistake while using structs in our persistency system(save/load game).
+So I wanted to write this post, which may help others, especially <strong>Unity</strong> developers. Since they mostly use C#
+in their programs.</p>
+
+<p>So what is the difference between a <strong>struct</strong> and a <strong>class</strong>?
+Everybody should and probably do know by heart that, struct is a <em>value type</em> and class is a <em>reference type</em> in C#.
+The things is most people do not know what this means and what are the effects.
+I am going to give some examples to explain these effects.</p>
+
+<ul>
+  <li>The <strong>new</strong> keyword. You can create a struct without using the <strong>new</strong> keyword, but then you need to assign all of the fields manually</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">struct</span> <span class="no">MyStruct</span>
+<span class="p">{</span>
+	<span class="kp">public</span> <span class="n">int</span> <span class="n">a</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="no">MyStruct</span> <span class="n">myStruct</span><span class="p">;</span>
+<span class="n">myStruct</span><span class="p">.</span><span class="nf">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="sr">//</span> <span class="no">Don</span><span class="err">'</span><span class="n">t</span> <span class="k">do</span> <span class="n">this</span> <span class="n">and</span> <span class="n">you</span> <span class="n">are</span> <span class="n">going</span> <span class="n">to</span> <span class="n">get</span> <span class="n">a</span> <span class="n">compile</span> <span class="n">error</span></code></pre></figure>
+
+<p>If you use the new keyword, then the fields will be assigned to their default values. (e.g. 0 for int)</p>
+
+<ul>
+  <li>Extension methods for structs won’t modify the actual object</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="kp">public</span> <span class="n">static</span> <span class="n">void</span> <span class="no">UpdateA</span><span class="p">(</span><span class="n">this</span> <span class="no">MyStruct</span> <span class="n">ms</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">ms</span><span class="p">.</span><span class="nf">a</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="sr">//</span> <span class="no">The</span> <span class="n">passed</span> <span class="n">ms</span> <span class="n">object</span><span class="s1">'s field '</span><span class="n">a</span><span class="err">'</span> <span class="n">is</span> <span class="n">still</span> <span class="mi">1</span><span class="p">,</span> <span class="n">remember</span> <span class="n">pass</span> <span class="n">by</span> <span class="n">value</span>
+<span class="p">}</span></code></pre></figure>
+
+<ul>
+  <li>Still a result of being a value type, you should be careful with <strong>recursion</strong></li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="kp">public</span> <span class="n">static</span> <span class="no">MyStruct</span> <span class="no">RecursiveA</span><span class="p">(</span><span class="no">MyStruct</span> <span class="n">ms</span><span class="p">)</span>  
+<span class="p">{</span>  
+	<span class="n">ms</span><span class="p">.</span><span class="nf">a</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">ms</span><span class="p">.</span><span class="nf">a</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="no">RecursiveA</span><span class="p">(</span><span class="n">ms</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">ms</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">ms</span> <span class="o">=</span> <span class="no">RecursiveA</span><span class="p">(</span><span class="n">ms</span><span class="p">);</span></code></pre></figure>
+
+<p>The function above will still terminate when ms.a is 10 but the value of the actual ms.a will be 1.
+You can solve this problem by using a class of course or you can assign ms inside the function like this.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="kp">public</span> <span class="n">static</span> <span class="no">MyStruct</span> <span class="no">RecursiveA</span><span class="p">(</span><span class="no">MyStruct</span> <span class="n">ms</span><span class="p">)</span>  
+<span class="p">{</span>  
+	<span class="n">ms</span><span class="p">.</span><span class="nf">a</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">ms</span><span class="p">.</span><span class="nf">a</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">ms</span> <span class="o">=</span> <span class="no">RecursiveA</span><span class="p">(</span><span class="n">ms</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">ms</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<ul>
+  <li>If you use the <strong>ref</strong> keyword, the struct will be passed by reference(its location in memory)</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="kp">public</span> <span class="n">static</span> <span class="no">MyStruct</span> <span class="no">RecursiveA</span><span class="p">(</span><span class="n">ref</span> <span class="no">MyStruct</span> <span class="n">ms</span><span class="p">)</span>  
+<span class="p">{</span>  
+	<span class="n">ms</span><span class="p">.</span><span class="nf">a</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="k">if</span> <span class="p">(</span><span class="n">ms</span><span class="p">.</span><span class="nf">a</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="no">RecursiveA</span><span class="p">(</span><span class="n">ref</span> <span class="n">ms</span><span class="p">);</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">ms</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="sr">//</span> <span class="no">When</span> <span class="n">this</span> <span class="n">terminates</span> <span class="n">the</span> <span class="n">value</span> <span class="n">of</span> <span class="n">ms</span><span class="p">.</span><span class="nf">a</span> <span class="n">will</span> <span class="n">be</span> <span class="mi">10</span>
+<span class="no">RecursiveA</span><span class="p">(</span><span class="n">ref</span> <span class="n">ms</span><span class="p">);</span></code></pre></figure>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>I think it is clear that a mutable struct is not a good idea. They are good for storing read-only data. Whenever you need mutable data, you should use a class instead of a struct.</p>
+
+<p>If you think that this blog post is wrong or missing, please send me a message.</p>
+:ET
