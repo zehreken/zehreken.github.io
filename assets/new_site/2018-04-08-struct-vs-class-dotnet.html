@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lab.guchanalkan.com | programmer's blog</title>
+<meta name="generator" content="https://github.com/zehreken/simple-blog-generator.git" />
+<meta property="og:title" content="lab.guchanalkan.com" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="programmer's blog" />
+<meta property="og:description" content="programmers's blog" />
+<link rel="canonical" href="/" />
+<meta property="og:url" content="/" />
+<meta property="og:site_name" content="lab.guchanalkan.com" />
+<script type="application/ld+json">
+{"@type":"WebSite","url":"/","name":"lab.guchanalkan.com","description":"programmer's blog","headline":"lab.guchanalkan.com","@context":"https://schema.org"}</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-60769427-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+</head>
+<body>
+<div class="wrapper">
+<header><h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1></header>
+<hr>
+<h2>Struct vs. Class in .NET</h2>
+<h4>2018-04-08</h4>
+<p><strong>Lately</strong>, I've made a very important mistake while using structs in our persistency system(save/load game).
+So I wanted to write this post, which may help others, especially <strong>Unity</strong> developers. Since they mostly use C#
+in their programs.</p>
+<p>So what is the difference between a <strong>struct</strong> and a <strong>class</strong>?
+Everybody should and probably do know by heart that, struct is a <em>value type</em> and class is a <em>reference type</em> in C#.
+The things is most people do not know what this means and what are the effects.
+I am going to give some examples to explain these effects.</p>
+<ul>
+<li>The <strong>new</strong> keyword. You can create a struct without using the <strong>new</strong> keyword, but then you need to assign all of the fields manually</li>
+</ul>
+<pre><code>struct MyStruct
+{
+	public int a;
+}
+MyStruct myStruct;
+myStruct.a = 1; // Don't do this and you are going to get a compile error
+</code></pre>
+<p>If you use the new keyword, then the fields will be assigned to their default values. (e.g. 0 for int)</p>
+<ul>
+<li>Extension methods for structs won't modify the actual object</li>
+</ul>
+<pre><code>public static void UpdateA(this MyStruct ms)
+{
+	ms.a += 1; // The passed ms object's field 'a' is still 1, remember pass by value
+}
+</code></pre>
+<ul>
+<li>Still a result of being a value type, you should be careful with <strong>recursion</strong></li>
+</ul>
+<pre><code>public static MyStruct RecursiveA(MyStruct ms)  
+{  
+	ms.a += 1;
+	if (ms.a &lt; 10)
+	{
+		RecursiveA(ms);
+	}
+	return ms;
+}
+
+ms = RecursiveA(ms);
+</code></pre>
+<p>The function above will still terminate when ms.a is 10 but the value of the actual ms.a will be 1.
+You can solve this problem by using a class of course or you can assign ms inside the function like this.</p>
+<pre><code>public static MyStruct RecursiveA(MyStruct ms)  
+{  
+	ms.a += 1;
+	if (ms.a &lt; 10)
+	{
+		ms = RecursiveA(ms);
+	}
+	return ms;
+}
+</code></pre>
+<ul>
+<li>If you use the <strong>ref</strong> keyword, the struct will be passed by reference(its location in memory)</li>
+</ul>
+<pre><code>public static MyStruct RecursiveA(ref MyStruct ms)  
+{  
+	ms.a += 1;
+	if (ms.a &lt; 10)
+	{
+		RecursiveA(ref ms);
+	}
+	return ms;
+}
+// When this terminates the value of ms.a will be 10
+RecursiveA(ref ms);
+</code></pre>
+<h3>Conclusion</h3>
+<p>I think it is clear that a mutable struct is not a good idea. They are good for storing read-only data. Whenever you need mutable data, you should use a class instead of a struct.</p>
+<p>If you think that this blog post is wrong or missing, please send me a message.</p>
+
+<hr>
+<footer>
+  <p><a href="/">lab.guchanalkan.com</a> | 
+  Contact: <a href="mailto:zehreken@gmail.com">mail</a> | 
+  <a href="https://github.com/zehreken">github</a> | 
+  <a href="https://twitter.com/zehreken">twitter</a></p>
+</footer>
+</div>
+</body>
+</html>

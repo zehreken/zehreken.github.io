@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lab.guchanalkan.com | programmer's blog</title>
+<meta name="generator" content="https://github.com/zehreken/simple-blog-generator.git" />
+<meta property="og:title" content="lab.guchanalkan.com" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="programmer's blog" />
+<meta property="og:description" content="programmers's blog" />
+<link rel="canonical" href="/" />
+<meta property="og:url" content="/" />
+<meta property="og:site_name" content="lab.guchanalkan.com" />
+<script type="application/ld+json">
+{"@type":"WebSite","url":"/","name":"lab.guchanalkan.com","description":"programmer's blog","headline":"lab.guchanalkan.com","@context":"https://schema.org"}</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-60769427-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+</head>
+<body>
+<div class="wrapper">
+<header><h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1></header>
+<hr>
+<h2>Perceptron</h2>
+<h4>2010-05-20</h4>
+<p><strong>In</strong> the previous post, we have discussed some of the major elements of artificial neural networks. It is time to examine the structure of a simple neural network, <strong>perceptron</strong>. A perceptron is the simplest type of neural networks. It has an input layer, an output layer and no hidden layer. In practice, the usage of perceptrons is limited, but in theory perceptrons are important, their structure is easy to understand because of their simplicity. Below, there is an application I’ve created to understand the structure and process of neural networks more easily. By the way, you can download the source files. The perceptron has 1 input layer consists of 2 neurons and 1 output layer consists of 1 neuron. The pinky fields are input fields, that means you can set the values of them. An input value can be either 1 or 0. Even with this simplest neural network, perceptron, you can have a program that changes behaviour when needed. You can train the application as an <strong>AND gate</strong> or an <strong>OR gate</strong>. Here is a table shows the output values according to the input values for AND and OR gates.</p>
+<p><img src="/assets/2010/perceptron_OR_AND.jpg" alt="Alt text" /></p>
+<h6>Tables for OR and AND gates</h6>
+<p>It is time to explain the perceptron application. As you can see, there are values on the leftside of the application. <strong>input1</strong> and <strong>input2</strong> stand for the input values for neuron 1 and neuron 2. <strong>weight1.1</strong> is the weight value from the first input neuron to the output neuron and <strong>weight1.2</strong> is the weight value from the second input neuron to the output neuron. <strong>Sum</strong> is the product of activation function, in this application, activation function is a step function. And lastly, <strong>decision</strong> is true if desired value is equal to the output value, otherwise it is false.</p>
+<p><object width="500" height="200" data="/assets/2010/perceptron.swf"></object></p>
+<h6>Perceptron</h6>
+<p>First, you should define the desired value, and then the input values. Let’s say 1 for desired value, 0 for input1 and 1 for input2, if you click train button, an iteration takes place and network tries to adapt to the situtation. In other words, the network tries to return an output value of 1 because the desired value is 1. Of course, the network can not return the desired value after the first iteration, try to observe the change in the respective weight value for each input neuron. In this way, after a number of iterations, you can make the neural network be an AND gate or an OR gate. In the next post, the subject is curve-fitting, see you.</p>
+<p>If you think that this article is wrong or missing, or maybe you have a question, please feel free to send me a message.</p>
+<p><a href="/assets/2010/perceptron_source.zip">download source files</a></p>
+
+<hr>
+<footer>
+  <p><a href="/">lab.guchanalkan.com</a> | 
+  Contact: <a href="mailto:zehreken@gmail.com">mail</a> | 
+  <a href="https://github.com/zehreken">github</a> | 
+  <a href="https://twitter.com/zehreken">twitter</a></p>
+</footer>
+</div>
+</body>
+</html>
