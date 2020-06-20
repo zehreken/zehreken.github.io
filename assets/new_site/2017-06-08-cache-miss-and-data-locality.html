@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang='en_US'>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,11 +29,12 @@ if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNo
 </script>
 </head>
 <body>
-<div class="wrapper">
+<div class="wrapper"> <!-- unnecessary -->
 <header><h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1></header>
 <hr>
 <h2>Cache Miss and Data Locality</h2>
 <h4>2017-06-08</h4>
+<main>
 <p><strong>Programmers</strong> working in the game industry are proud people. And they (the good ones at least) have the right to be. It is a hard job. We care about performance, and we want our code to be fast - sometimes more than necessary. But we usually look for problems in the wrong places, we try to optimize our code by using faster algorithms but never check or care about where we put our data.</p>
 <p>In recent years, the increase in CPU speed compared to the increase in memory speed is enormous. As good as it sounds, it is not actually a good thing. In the past, CPU speed and memory speed were similar and they worked in harmony. But today, because of the speed difference, CPU waits for the memory for data and wastes precious cycles doing nothing.</p>
 <p>This is called a <strong>cache miss</strong>. Whenever the CPU wants some piece of data and can't find it, it is a cache miss. And it looks to a higher level cache, if it can't find it there, that's another cache miss. It will keep looking into higher and higher level cahes and until it can find what it's looking for.</p>
@@ -135,6 +136,7 @@ Address of bigs: 0x101000000
 <p>You can find the source files in this <a href="/assets/2017/dod_tests-master.zip">file</a>.</p>
 <p>If you think that this blog post is wrong or missing, please send me a message.</p>
 
+</main>
 <hr>
 <footer>
   <p><a href="/">lab.guchanalkan.com</a> | 

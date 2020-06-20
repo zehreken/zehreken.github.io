@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang='en_US'>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,11 +29,12 @@ if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNo
 </script>
 </head>
 <body>
-<div class="wrapper">
+<div class="wrapper"> <!-- unnecessary -->
 <header><h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1></header>
 <hr>
 <h2>Struct vs. Class in .NET</h2>
 <h4>2018-04-08</h4>
+<main>
 <p><strong>Lately</strong>, I've made a very important mistake while using structs in our persistency system(save/load game).
 So I wanted to write this post, which may help others, especially <strong>Unity</strong> developers. Since they mostly use C#
 in their programs.</p>
@@ -106,6 +107,7 @@ RecursiveA(ref ms);
 <p>I think it is clear that a mutable struct is not a good idea. They are good for storing read-only data. Whenever you need mutable data, you should use a class instead of a struct.</p>
 <p>If you think that this blog post is wrong or missing, please send me a message.</p>
 
+</main>
 <hr>
 <footer>
   <p><a href="/">lab.guchanalkan.com</a> | 
