@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang='en_US'>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lab.guchanalkan.com | programmer's blog</title>
+<meta name="generator" content="https://github.com/zehreken/simple-blog-generator.git" />
+<meta property="og:title" content="lab.guchanalkan.com" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="programmer's blog" />
+<meta property="og:description" content="programmers's blog" />
+<link rel="canonical" href="/" />
+<meta property="og:url" content="/" />
+<meta property="og:site_name" content="lab.guchanalkan.com" />
+<script type="application/ld+json">
+{"@type":"WebSite","url":"/","name":"lab.guchanalkan.com","description":"programmer's blog","headline":"lab.guchanalkan.com","@context":"https://schema.org"}</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-60769427-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+</head>
+<body>
+<div class="wrapper"> <!-- unnecessary -->
+<header><h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1></header>
+<hr> <!-- line -->
+<main>
+<h6>2017-06-08</h6>
+<h1>Cache Miss and Data Locality</h1>
+<p><strong>Programmers</strong> working in the game industry are proud people. And they (the good ones at least) have the right to be. It is a hard job. We care about performance, and we want our code to be fast - sometimes more than necessary. But we usually look for problems in the wrong places, we try to optimize our code by using faster algorithms but never check or care about where we put our data.</p>
+<p>In recent years, the increase in CPU speed compared to the increase in memory speed is enormous. As good as it sounds, it is not actually a good thing. In the past, CPU speed and memory speed were similar and they worked in harmony. But today, because of the speed difference, CPU waits for the memory for data and wastes precious cycles doing nothing.</p>
+<p>This is called a <strong>cache miss</strong>. Whenever the CPU wants some piece of data and can't find it, it is a cache miss. And it looks to a higher level cache, if it can't find it there, that's another cache miss. It will keep looking into higher and higher level cahes and until it can find what it's looking for.</p>
+<p>The computer I am writing this post on is a Mid 2011 Mac Mini and according to the CPU specs it has one <strong>32KB L1 cache</strong> and one <strong>256KB L2 cache</strong> on each core, and one <strong>3MB L3 cache</strong> on chip. The smaller the size of the cache the faster the cache is.</p>
+<h3>Cache Miss</h3>
+<p>The reason for a cache miss is bad data locality. Let's examine this simple code piece written in c++.</p>
+<pre><code>class Big
+{
+	private:
+		int actor; // 32b primitive type
+		int clutter[262144]; // (1KB - 32b) Size of big is exactly 1KB
+	public:
+		void setActor(int size);
+		int getActor();
+		float getSizeInKB();
+		float getSizeInMB();
+		void fillClutter();
+};
+</code></pre>
+<h6>A class when instanced creates an object which is 1KB in size</h6>
+<pre><code>class Small
+{
+	private:
+		int actor;
+	public:
+		void setActor(int size);
+		int getActor();
+		float getSizeInKB();
+		float getSizeInMB();
+};
+</code></pre>
+<h6>A class when instanced creates an object which is 32b in size</h6>
+<pre><code>void loop()
+{
+	const int SIZE = 50000;
+
+	Big* bigs = new Big[SIZE];
+	for (int i = 0; i &lt; SIZE; i++)
+	{
+		bigs[i].setActor(i);
+	}
+
+	Small* smalls = new Small[SIZE];
+	for (int i = 0; i &lt; SIZE; i++)
+	{
+		smalls[i].setActor(i);
+	}
+}
+</code></pre>
+<h6>Here, we loop through the arrays</h6>
+<p>On average the second loop completes ~7 times faster than the first loop on my machine. The process is the same, which is setting an int field of an object. Why is that? Because the <strong>clutter</strong> in the Big object causes the CPU to miss the cached data, because the L1 and L2 caches are full of unnecessary data.</p>
+<p>Let's examine how our data is placed on the actual memory using <strong>lldb</strong>. You can also use <strong>gdb</strong>, they are very similar.</p>
+<p>Compile the script above using clang++ with -g flag to enable debugging with extra information. Here is the simple compile command.</p>
+<pre><code>clang++ -g -o p main.cpp
+</code></pre>
+<p>Load the program to lldb using</p>
+<pre><code>lldb p
+</code></pre>
+<p>and then add a simple breakpoint to pause the process without terminating it.</p>
+<pre><code>(lldb) b main.cpp: 125
+</code></pre>
+<p>Run the program.</p>
+<pre><code>run
+</code></pre>
+<p>At some point lldb will show the addresses of our two arrays because it is the output of our program, using those addresses we can examine the memory and see what they have - it may show different addresses on your computer.</p>
+<pre><code>Address of smalls: 0x1000c4000
+Address of bigs: 0x101000000
+</code></pre>
+<p>Lets examine the first 32 elements of the <em>smalls</em> array using</p>
+<pre><code>memory read -fx 0x1000c4000 0x1000c4000+128
+</code></pre>
+<pre><code>0x1000c4000: 0x00000000 0x00000001 0x00000002 0x00000003
+0x1000c4010: 0x00000004 0x00000005 0x00000006 0x00000007
+0x1000c4020: 0x00000008 0x00000009 0x0000000a 0x0000000b
+0x1000c4030: 0x0000000c 0x0000000d 0x0000000e 0x0000000f
+0x1000c4040: 0x00000010 0x00000011 0x00000012 0x00000013
+0x1000c4050: 0x00000014 0x00000015 0x00000016 0x00000017
+0x1000c4060: 0x00000018 0x00000019 0x0000001a 0x0000001b
+0x1000c4070: 0x0000001c 0x0000001d 0x0000001e 0x0000001f
+...
+</code></pre>
+<p>Look at how nicely the elements are stored on the memory. The first element is 0, the second is 1, the third is 2 and so on, as expected.</p>
+<p>Now let's examine the first 32 elements of the <em>bigs</em> array using</p>
+<pre><code>memory read -fx 0x101000000 0x101000000+128
+</code></pre>
+<pre><code>0x100200000: 0x00000000 0xffffffff 0xffffffff 0xffffffff
+0x100200010: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
+0x100200020: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
+0x100200030: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
+0x100200040: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
+0x100200050: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
+0x100200060: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
+0x100200070: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
+...
+</code></pre>
+<p>See, it's full of unnecessary data that causes the CPU to miss the cache.</p>
+<h3>Conclusion</h3>
+<p>It has been a very long time since the hype of Data Oriented Programming, and I have been programming in a data oriented way for almost a year now. At first (like most of the things I first encounter) I thought it was the holy grail and will solve each and every problem, but now I think there is a place for OOD and DOD (and in that sense other programming paradigms) in the same software. Both of them have their strengths and weaknesses. Till memory speed catches up with CPU speed, using DOD is a very good idea.</p>
+<p>You can find the source files in this <a href="/assets/2017/dod_tests-master.zip">file</a>.</p>
+<p>If you think that this blog post is wrong or missing, please send me a message.</p>
+
+</main>
+<hr> <!-- line -->
+<footer>
+  <p><a href="https://github.com/zehreken">github</a> | 
+  <a href="https://twitter.com/zehreken">twitter</a> | 
+  <a href="mailto:zehreken@gmail.com">mail</a></p>
+</footer>
+</div>
+</body>
+</html>
