@@ -1,23 +1,23 @@
 * {
     margin:0;
-   padding:0;
-   border:0;
-   outline:0;
-   text-decoration:none;
-   font-weight:inherit;
-   font-style:inherit;
-   color:inherit;
-   font-size:100%;
-   font-family:inherit;
-   vertical-align:baseline;
-   list-style:none;
-   border-collapse:separate;
-   border-spacing:0;
+    padding:0;
+    border:0;
+    outline:0;
+    text-decoration:none;
+    font-weight:inherit;
+    font-style:inherit;
+    color:inherit;
+    font-size:100%;
+    font-family:inherit;
+    vertical-align:baseline;
+    list-style:none;
+    border-collapse:separate;
+    border-spacing:0;
     -webkit-font-smoothing: antialiased;
-   -moz-osx-font-smoothing: grayscale;
+    -moz-osx-font-smoothing: grayscale;
 }
 *:focus {
-    outline: none
+    outline: none 
 }
 @font-face {
     font-family: 'OpenSans-Bold';
@@ -53,7 +53,7 @@ body hr {
     clear:both;
 }
 body header a#logo img {
-    width:15%
+    width:15% 
 }
 body main > h1 {
     font-family: "OpenSans-Bold", "Helvetica Neue", Helvetica, Arial;
@@ -85,8 +85,7 @@ body main > h6 {
     font-size:10px;
     text-transform: capitalize;
     padding-left: 3px;
-    padding-top:0px;
-    padding-bottom:0px;
+    color: gray;
 }
 body main > h1:hover {
     background-color: rgb(255, 219, 88);
@@ -105,7 +104,7 @@ body main > ul {
     font-family: "OpenSans-Regular";
     font-size:12px;
     line-height: 20px;
-    padding-left:2px
+    padding-left:2px 
 }
 body hr {
     border:0;
@@ -127,8 +126,8 @@ body main > ul li:hover a {
     text-decoration: none;
 }
 body main > p {
-    line-height: 18px;
-    font-size:12px;
+    line-height: small;
+    font-size: small;
     text-decoration: none;
     padding-left:2px;
 }
@@ -136,7 +135,7 @@ body main > p a {
     text-decoration: underline;
 }
 body main > p a:hover {
-   text-decoration: none;
+    text-decoration: none;
 }
 body main > p strong {
     font-weight: bold 
@@ -150,13 +149,13 @@ body main > p i {
 }
 body main > p.quote {
     padding: 30px;
-   font-size: 20px;
-   font-style: italic;
+    font-size: 20px;
+    font-style: italic;
     max-width: 400px 
 }
 body main > ul.jump {
     columns:2;
-    line-height: 20px
+    line-height: 20px 
 }
 body main > ul.jump li {
     list-style-type: decimal-leading-zero;
@@ -178,10 +177,10 @@ body main > p iframe {
     max-width: 640px;
     width:100%;
     margin-top:0px;
-    padding:0px
+    padding:0px 
 }
 body main > pre {
-   background-color: rgb(211, 211, 211);
+    background-color: rgb(211, 211, 211);
     color:rgb(44, 43, 43);
     max-width: 700px;
     padding: 10px;
