@@ -117,8 +117,8 @@ body main > ul li:hover a {
     text-decoration: none;
 }
 body main > p {
-    line-height: small;
-    font-size: small;
+    line-height: medium;
+    font-size: medium;
     text-decoration: none;
     padding-left: 2px;
     padding-top: 10px;
