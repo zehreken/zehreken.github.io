@@ -33,9 +33,18 @@ if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNo
 <header><h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1></header>
 <hr> <!-- line -->
 <main>
-<h6></h6>
-<h1></h1>
-<p><a href="2020-08-08-profile-rust-on-macos.html">- Profile Rust on macOS</a><br><a href="2019-09-17-a-look-into-rust-with-cellular-automata.html">- A Look into Rust with Cellular Automata</a><br><a href="2018-12-16-code-reuse-for-rapid-prototyping.html">- Code Reuse for Rapid Prototyping</a><br><a href="2018-11-26-anatomy-of-a-surface-shader.html">- Anatomy of a Surface Shader</a><br><a href="2018-11-22-collections-in-dotnet.html">- Collections in .NET</a><br><a href="2018-04-08-struct-vs-class-dotnet.html">- Struct vs. Class in .NET</a><br><a href="2017-06-08-cache-miss-and-data-locality.html">- Cache Miss and Data Locality</a><br><a href="2016-11-07-performance-comparison-ecs.html">- Performance Comparison of OOD and ECS Patterns within Unity</a><br><a href="2016-05-17-case-study-on-string-performance.html">- Case Study on Using RegEx to Improve Game Performance</a><br><a href="2013-02-03-boids-simulation.html">- Boids (Flock) Simulation</a><br><a href="2012-10-09-sorting-algorithms.html">- Sorting Algorithms</a><br><a href="2012-05-24-astar-pathfinding-tutorial.html">- A* Pathfinding Tutorial</a><br><a href="2010-12-07-a-review-about-google-ai-challenge.html">- A Review about Google AI Challenge</a><br><a href="2010-05-20-perceptron.html">- Perceptron</a><br><a href="2010-05-09-what-is-artificial-neural-network.html">- What Is Artificial Neural Network?</a><br><a href="2010-02-23-fuzzy-logic-essentials.html">- Fuzzy Logic Essentials</a><br><a href="2010-02-12-what-is-fuzzy-logic.html">- What Is Fuzzy Logic?</a><br></p>
+<h6>2020-08-08</h6>
+<h1>Profile Rust on macOS</h1>
+<p>I've been writing Rust for a while and I think it is time to profile my Rust programs. There are not many options on macOS unfortunately but the one option we have which is Xcode Instruments is pretty good.</p>
+<p>Run Xcode,
+In the top menu, go to
+Xcode&gt;Open Developer Tool&gt;Instruments
+you can choose Time Profiler to profile CPU.
+Run your Rust program with cargo run --release because if you don't, your program will run significantly slower.</p>
+<p>Go to &quot;All Processes&quot; on the top left of the screen and find your program. Press record and you should see the CPU time your program takes.</p>
+<h3>1st title</h3>
+<p>normal text</p>
+<h6>small text</h6>
 
 </main>
 <hr> <!-- line -->
