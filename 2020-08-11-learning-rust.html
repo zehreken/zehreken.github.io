@@ -33,18 +33,21 @@ if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNo
 <header><h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1></header>
 <hr> <!-- line -->
 <main>
-<h5>Last updated: 2020-08-08</h5>
-<h1>Profile Rust on macOS</h1>
-<p>I've been writing Rust for a while and I think it is time to profile my Rust programs. There are not many options on macOS unfortunately but the one option we have which is Xcode Instruments is pretty good.</p>
-<p>Run Xcode,
-In the top menu, go to
-Xcode&gt;Open Developer Tool&gt;Instruments
-you can choose Time Profiler to profile CPU.
-Run your Rust program with cargo run --release because if you don't, your program will run significantly slower.</p>
-<p>Go to &quot;All Processes&quot; on the top left of the screen and find your program. Press record and you should see the CPU time your program takes.</p>
-<h3>1st title</h3>
-<p>normal text</p>
-<h6>small text</h6>
+<h5>Last updated: 2020-08-11</h5>
+<h1>Learning Rust</h1>
+<p><strong>Here</strong> is a list of stuff that I've found interesting and important while trying to learn Rust Language.</p>
+<ul>
+<li>std::mem::replace</li>
+<li>https://rust-unofficial.github.io/too-many-lists/index.html
+A very good learning material, will give a deeper understanding after you finish the Rustbook.</li>
+<li>rustc --explain [error code]</li>
+</ul>
+<h3>into_iter, iter and iter_mut</h3>
+<ul>
+<li>The iterator returned by into_iter may yield any of T, &amp;T or &amp;mut T, depending on the context.</li>
+<li>The iterator returned by iter will yield &amp;T, by convention.</li>
+<li>The iterator returned by iter_mut will yield &amp;mut T, by convention.</li>
+</ul>
 
 </main>
 <hr> <!-- line -->
