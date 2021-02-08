@@ -33,28 +33,31 @@ if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNo
 <header><h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1></header>
 <hr> <!-- line -->
 <main>
-<h5>edited on 2010-02-23</h5>
+<h5>created on 2010-02-23, edited on 2020-09-26</h5>
 <h1>Fuzzy Logic Essentials</h1>
-<p><strong>We</strong> said, in fuzzy logic, an element can <strong>partially</strong> belong to a set, a fuzzy set, unlike in traditional logic. Let’s see how. In the application below there are ten black circles and a green circle. Let’s assume they are some kind of living creatures, maybe bacterias, and the green ones eats the black ones to survive. The question is, how it decides which black one to eat. The green bacteria or circle or thing, whatever you call, only minds the distance and size of the black bacterias, and it likes the close and midsized ones. So, we have two <strong>fuzzy variables</strong>, first one is closeness and second one is midsized-ness, thereby we have two <strong>fuzzy sets</strong>, closeness and midsized-ness fuzzy sets. This is one of the main characteristics of fuzzy logic, we can express <strong>numerical variables as linguistic variables</strong>, e.g. very close, not so close...</p>
+<p><strong>We</strong> said, in fuzzy logic, an element can <strong>partially</strong> belong to a set, a fuzzy set, unlike in traditional logic. Let’s see how. In the application below there are ten black circles and a green circle. Let’s assume they are some kind of living creatures, maybe bacterias, and the green one eats the black ones to survive. The question is, how it decides which black one to eat. The green bacteria or circle or thing, whatever you call, only minds the distance and size of the black bacterias, and it likes the close and midsized ones. So, we have two <strong>fuzzy variables</strong>, first one is closeness and second one is midsized-ness, thereby we have two <strong>fuzzy sets</strong>, closeness and midsized-ness fuzzy sets. This is one of the main characteristics of fuzzy logic, we can express <strong>numerical values as linguistic values</strong>, e.g. very close, not so close...</p>
 <p><img src="/assets/2010/fuzzy_logic_essentials_chart.jpg" alt="Alt text" /></p>
-<h6>Black bacterias’ degrees of membership to the closeness fuzzy set</h6>
+<h6>Membership degrees to the closeness fuzzy set for black bacterias</h6>
 <p>The graph above shows the <strong>degrees of membership</strong> of the black ones to the closeness fuzzy set according to their distance to the green one. As you see, the closest one has the highest degree of membership and the farmost one has the lowest.</p>
 <pre><code>private function calculateDistance():void
 {
-	for (i = 0; i &lt; smallBacteriaArray.length; i++)
-	{
-		distance = Math.sqrt(Math.pow((this.x - smallBacteriaArray[i].x), 2) + Math.pow((this.y - smallBacteriaArray[i].y), 2)); //simple formula to calcute the distance between two points
-		if (distance &gt; 250)
-		{
-			closenessArray[i] = 0; //if the distance is greater than 250 pixels, the degree of membership to the closeness fuzzy set is 0
-		}
-		else
-		{
-			distance /= 250; //normalizing values
-			distance = 1 - distance; 
-			closenessArray[i] = Math.pow(distance, 2);
-		}
-	}
+  for (i = 0; i &lt; smallBacteriaArray.length; i++)
+  {
+    // Simple formula to calcute the distance between two points
+    distance = Math.sqrt(Math.pow((this.x - smallBacteriaArray[i].x), 2) + Math.pow((this.y - smallBacteriaArray[i].y), 2));
+	if (distance &gt; 250)
+    {
+      // If the distance is greater than 250 pixels,
+      // the degree of membership to the closeness fuzzy set is 0
+      closenessArray[i] = 0;
+    }
+    else
+    {
+      distance /= 250; //normalizing values
+      distance = 1 - distance;
+      closenessArray[i] = Math.pow(distance, 2);
+    }
+  }
 }
 </code></pre>
 <p>To calculate the degrees of membership to the midsized-ness fuzzy set, the process is very similar to the one above. Alright, we have calculated the degrees of membership but how do we use them? In practice we can use these membership values to decide or to make something decide. For example if you are interested in something that is close to you then you should choose the one which has the greatest degree of membership to the closeness fuzzy set. Programming with fuzzy logic is like having <strong>unlimited number of if clauses but with high performance</strong>.</p>
