@@ -10,6 +10,7 @@
 
   gtag('config', 'UA-60769427-1');
 </script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,41 +40,76 @@
 <li>https://rust-unofficial.github.io/too-many-lists/index.html
 A very good learning material, will give a deeper understanding after you finish the Rustbook.</li>
 <li>rustc --explain [error code]</li>
+<li>I always liked the material and documents from Microsoft, this one is also very good
+https://docs.microsoft.com/en-us/learn/paths/rust-first-steps/</li>
 </ul>
+<h3>Variables</h3>
+<p>Variables are often calleed <em>bindings</em> in Rust. It makes sense since by default variables are immutable in Rust.
+Any variable that goes out of scope is <em>dropped</em>. Dropping means releasing the resources that are tied(bound) to that variable.
+Only one thing can own a piece of data at a time in Rust.</p>
+<p>A small note about lifetimes</p>
+<pre class="prettyprint">
+struct MyStruct<'lifetime>(&'lifetime str);
+</pre>
+<p>This annotation means that the lifetime of MyStruct can not outlive the reference that holds in its fields</p>
 <h3>into_iter, iter and iter_mut</h3>
 <ul>
 <li>The iterator returned by into_iter may yield any of T, &amp;T or &amp;mut T, depending on the context.</li>
 <li>The iterator returned by iter will yield &amp;T, by convention.</li>
 <li>The iterator returned by iter_mut will yield &amp;mut T, by convention.</li>
 </ul>
+<h3>Arrays</h3>
+<p>An array can be defined in two ways:</p>
+<ul>
+<li>A comma-separated list inside brackets</li>
+<li>The initial value, followed by a semicolon, and then the length of the array in brackets
+Arrays are useful when you want your data allocated on the stack rather than the heap. They're also useful when you want to ensure you always have a fixed number of elements.</li>
+</ul>
+<h3>Option</h3>
+<p>Option<T> enum is used when the absence of a value is a possibility, known as null reference in some other languages.
+The two examples below are identical, a good explanation for <em>if let</em></p>
+<pre class="prettyprint">
+// 1
+let some_number: Option<u8> = Some(7);
+match some_number {
+    Some(7) => println!("That's my lucky number!"),
+    _ => {},
+}
+// 2
+let some_number: Option<u8> = Some(7);
+if let Some(7) = some_number {
+    println!("That's my lucky number!");
+}
+</pre>
 <h3>Conditional Compilation for Debug and Release Builds</h3>
 <p>Here is a way to conditionally compile Rust code for Debug and Release builds</p>
-<pre><code>#[cfg(debug_assertions)]
+<pre class="prettyprint">
+#[cfg(debug_assertions)]
 fn example() {
-    println!(&quot;Debugging enabled&quot;);
+    println!("Debugging enabled");
 }
 
 #[cfg(not(debug_assertions))]
 fn example() {
-    println!(&quot;Debugging disabled&quot;);
+    println!("Debugging disabled");
 }
 
 fn main() {
     if cfg!(debug_assertions) {
-        println!(&quot;Debugging enabled&quot;);
+        println!("Debugging enabled");
     } else {
-        println!(&quot;Debugging disabled&quot;);
+        println!("Debugging disabled");
     }
 
     #[cfg(debug_assertions)]
-    println!(&quot;Debugging enabled&quot;);
+    println!("Debugging enabled");
 
     #[cfg(not(debug_assertions))]
-    println!(&quot;Debugging disabled&quot;);
+    println!("Debugging disabled");
 
     example();
 }
-</code></pre>
+</pre>
 
 </main>
 <hr> <!-- line -->

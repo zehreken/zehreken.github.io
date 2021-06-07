@@ -10,6 +10,7 @@
 
   gtag('config', 'UA-60769427-1');
 </script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -37,13 +38,14 @@
 <p><img src="/assets/2010/fuzzy_logic_essentials_chart.jpg" alt="Alt text" /></p>
 <h6>Membership degrees to the closeness fuzzy set for black bacterias</h6>
 <p>The graph above shows the <strong>degrees of membership</strong> of the black ones to the closeness fuzzy set according to their distance to the green one. As you see, the closest one has the highest degree of membership and the farmost one has the lowest.</p>
-<pre><code>private function calculateDistance():void
+<pre class="prettyprint">
+private function calculateDistance():void
 {
-  for (i = 0; i &lt; smallBacteriaArray.length; i++)
+  for (i = 0; i < smallBacteriaArray.length; i++)
   {
     // Simple formula to calcute the distance between two points
     distance = Math.sqrt(Math.pow((this.x - smallBacteriaArray[i].x), 2) + Math.pow((this.y - smallBacteriaArray[i].y), 2));
-	if (distance &gt; 250)
+	if (distance > 250)
     {
       // If the distance is greater than 250 pixels,
       // the degree of membership to the closeness fuzzy set is 0
@@ -57,7 +59,7 @@
     }
   }
 }
-</code></pre>
+</pre>
 <p>To calculate the degrees of membership to the midsized-ness fuzzy set, the process is very similar to the one above. Alright, we have calculated the degrees of membership but how do we use them? In practice we can use these membership values to decide or to make something decide. For example if you are interested in something that is close to you then you should choose the one which has the greatest degree of membership to the closeness fuzzy set. Programming with fuzzy logic is like having <strong>unlimited number of if clauses but with high performance</strong>.</p>
 <p><object width="500" height="500" data="/assets/2010/fuzzy_logic_essentials.swf"></object></p>
 <h6>Fuzzy logic essentials</h6>

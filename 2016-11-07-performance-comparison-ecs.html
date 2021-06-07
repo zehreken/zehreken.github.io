@@ -10,6 +10,7 @@
 
   gtag('config', 'UA-60769427-1');
 </script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -62,32 +63,34 @@ Unity, at its core is also an entity-component based engine. The most advised pr
 </ol>
 <p>The test project is a simple project. The program creates 5000 cubes and all of the cubes run these two simple logic;</p>
 <p>Move</p>
-<pre><code>void Update()
+<pre class="prettyprint">
+void Update()
 {
 	_transform.Translate(_xVel * Time.deltaTime, _yVel * Time.deltaTime, _zVel * Time.deltaTime, Space.World);
-	if (_transform.position.x &lt; -TestConfig.BORDER || _transform.position.x &gt; TestConfig.BORDER)
+	if (_transform.position.x < -TestConfig.BORDER || _transform.position.x > TestConfig.BORDER)
 	{
 		_transform.position = new Vector3(TestConfig.BORDER * Mathf.Sign(_transform.position.x), _transform.position.y, _transform.position.z);
 		_xVel *= -1f;
 	}
-	if (_transform.position.y &lt; -TestConfig.BORDER || _transform.position.y &gt; TestConfig.BORDER)
+	if (_transform.position.y < -TestConfig.BORDER || _transform.position.y > TestConfig.BORDER)
 	{
 		_transform.position = new Vector3(_transform.position.x, TestConfig.BORDER * Mathf.Sign(_transform.position.y), _transform.position.z);
 		_yVel *= -1f;
 	}
-	if (_transform.position.z &lt; -TestConfig.BORDER || _transform.position.z &gt; TestConfig.BORDER)
+	if (_transform.position.z < -TestConfig.BORDER || _transform.position.z > TestConfig.BORDER)
 	{
 		_transform.position = new Vector3(_transform.position.x, _transform.position.y, TestConfig.BORDER * Mathf.Sign(_transform.position.z));
 		_zVel *= -1f;
 	}
 }
-</code></pre>
+</pre>
 <p>Rotate</p>
-<pre><code>void Update()
+<pre class="prettyprint">
+void Update()
 {
 	_transform.Rotate(_xVel * Time.deltaTime, _yVel * Time.deltaTime, _zVel * Time.deltaTime);
 }
-</code></pre>
+</pre>
 <p>The program also has a hitpoint system to make it more like a game.</p>
 <p><img src="/assets/2016/performance_comparison_ecs.png" alt="Alt text" /></p>
 <h6>Simple simulation</h6>
