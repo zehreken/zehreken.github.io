@@ -187,13 +187,13 @@ body main > p iframe {
     padding:0px 
 }
 body main > pre {
-    background-color: rgb(200, 200, 200);
+    /* background-color: rgb(240, 240, 240); */
     color:rgb(44, 43, 43);
     max-width: 700px;
-    padding: 10px;
+    padding: 30px;
     margin-top: 0;
     padding-top: 0;
-    font-size: 12px;
+    font-size: 13px;
 }
 body main > table, th, td {
     border: 1px solid black;
@@ -250,6 +250,20 @@ body footer > p i {
         columns: 1 !important 
    }
 }
-span {
-    background-color: var(--main-color);
+ol.linenums {
+	margin-top: 0; margin-bottom: 0
 }
+.prettyprint ol.linenums > li {
+	list-style-type: decimal;
+}
+/* Alternate shading for lines */
+li.L0,
+li.L2,
+li.L4,
+li.L6,
+li.L8 {background: #fff3c9}
+li.L1,
+li.L3,
+li.L5,
+li.L7,
+li.L9 { background: #ffe78f}

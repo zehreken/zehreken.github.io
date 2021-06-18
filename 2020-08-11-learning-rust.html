@@ -32,7 +32,7 @@
 <header><h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1></header>
 <hr> <!-- line -->
 <main>
-<h5>created on 2020-08-29, edited on 2020-08-29</h5>
+<h5>created on 2020-08-29, edited on 2021-06-13</h5>
 <h1>Learning Rust</h1>
 <p><strong>Here</strong> is a list of stuff that I find interesting and important while trying to learn the Rust Language.</p>
 <ul>
@@ -48,7 +48,7 @@ https://docs.microsoft.com/en-us/learn/paths/rust-first-steps/</li>
 Any variable that goes out of scope is <em>dropped</em>. Dropping means releasing the resources that are tied(bound) to that variable.
 Only one thing can own a piece of data at a time in Rust.</p>
 <p>A small note about lifetimes</p>
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 struct MyStruct<'lifetime>(&'lifetime str);
 </pre>
 <p>This annotation means that the lifetime of MyStruct can not outlive the reference that holds in its fields</p>
@@ -68,7 +68,7 @@ Arrays are useful when you want your data allocated on the stack rather than the
 <h3>Option</h3>
 <p>Option<T> enum is used when the absence of a value is a possibility, known as null reference in some other languages.
 The two examples below are identical, a good explanation for <em>if let</em></p>
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 // 1
 let some_number: Option<u8> = Some(7);
 match some_number {
@@ -81,9 +81,41 @@ if let Some(7) = some_number {
     println!("That's my lucky number!");
 }
 </pre>
+<h3>Traits</h3>
+<p>Two ways of having trait bounds</p>
+<pre class="prettyprint linenums">
+// 1
+fn fn_one(value: &impl Trait) { ... }
+// 2
+fn fn_two&lt;T: Trait&gt;(value: &T) { ... }
+</pre>
+<p>Iterator trait looks like this in Rust standard library
+One interesting thing is 'type Item'. It means every implementation of Iterator should return an associated type Item. </p>
+<pre class="prettyprint linenums">
+trait Iterator {
+    type Item;
+    fn next(&mut self) -> Option&lt;Self::Item&gt;;
+}
+</pre>
+<h3>(?) syntax sugar</h3>
+<p>(?) is used to propagate errors. The two functions below are equivalent.</p>
+<pre class="prettyprint linenums">
+fn function_1() -> Result(Success, Failure) {
+	match operation_that_might_fail() {
+		Ok(success) => success,
+		Err(failure) => return Err(failure),
+	}
+}
+
+fn function_2() -> Result(Success, Failuer) {
+	operation_that_might_fail()?
+}
+</pre>
+<p>Fun topic about string literals
+https://doc.rust-lang.org/reference/tokens.html#raw-string-literals</p>
 <h3>Conditional Compilation for Debug and Release Builds</h3>
 <p>Here is a way to conditionally compile Rust code for Debug and Release builds</p>
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 #[cfg(debug_assertions)]
 fn example() {
     println!("Debugging enabled");
