@@ -32,13 +32,16 @@
 <header><h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1></header>
 <hr> <!-- line -->
 <main>
-<h5>created on 2019-09-17, edited on 2019-09-17</h5>
+<h5>created on 2019-09-17, edited on 2021-06-24</h5>
 <h1>A Look into Rust with Cellular Automata</h1>
-<p><strong>Nowadays</strong>, I'm trying to learn <strong>Rust</strong>, a programmming language. I kept hearing the name Rust a lot in the past and read some articles here and there but never got interested. This post will be a documentation to keep track of what I've learnt so far. I will also write about <a href="https://en.wikipedia.org/wiki/Cellular_automaton"><strong>cellular automata</strong></a> because it is fun to implement and it requires you to use basic structures of the language.</p>
+<p><strong>Nowadays</strong> I'm trying to learn <strong>Rust</strong>, a relatively new programmming language which gets a lot of attention lately. I kept hearing the name Rust a lot in the past and read some articles here and there but never had the time to learn it. This post will be a documentation to keep track of my progress. I will try to implement a <a href="https://en.wikipedia.org/wiki/Cellular_automaton"><strong>cellular automata</strong></a> and use as many features as Rust provides.</p>
+<p>So what is a cellular automata? I already provided a link above but basically it is a system that can be complex with some simple set of rules. That's how understand it and that's why I love it.</p>
+<p>I'm using <a href="https://github.com/not-fl3/macroquad"><strong>macroquad</strong></a>, a nice library written in Rust, to provide an easy way for game development. The author claims that macroquad is especially created to avoid some Rust specific concepts like lifetimes and ownership. And of course that sounds counter-intuitive since I want to learn rust but the main reason I chose this library is that it is so easy to create wasm binaries.</p>
+<p>So obviously we should add macroquad to the Cargo.toml as a dependency.</p>
 <p><canvas id="glcanvas" tabindex='1'></canvas>
 <!-- Minified and statically hosted version of https://github.com/not-fl3/miniquad/blob/master/native/sapp-wasm/js/gl.js -->
 <script src="https://not-fl3.github.io/miniquad-samples/gl.js"></script>
-<script>load('quad.wasm');</script> <!-- Your compiled wasm file --></p>
+<script>load('assets/2021/automata.wasm');</script> <!-- Your compiled wasm file --></p>
 </main>
 
 </main>

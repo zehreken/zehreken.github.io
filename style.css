@@ -245,8 +245,8 @@ body footer > p i {
 canvas {
 	margin: 0px;
 	padding: 0px;
-	width: 700px;
-	height: 350px;
+	width: 640px;
+	height: 512px;
 	overflow: hidden;
 	position: absolute;
 	background: black;
