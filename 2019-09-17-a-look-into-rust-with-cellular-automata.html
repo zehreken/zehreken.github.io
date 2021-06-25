@@ -38,11 +38,51 @@
 <p>So what is a cellular automata? I already provided a link above but basically it is a system that can be complex with some simple set of rules. That's how understand it and that's why I love it.</p>
 <p>I'm using <a href="https://github.com/not-fl3/macroquad"><strong>macroquad</strong></a>, a nice library written in Rust, to provide an easy way for game development. The author claims that macroquad is especially created to avoid some Rust specific concepts like lifetimes and ownership. And of course that sounds counter-intuitive since I want to learn rust but the main reason I chose this library is that it is so easy to create wasm binaries.</p>
 <p>So obviously we should add macroquad to the Cargo.toml as a dependency.</p>
-<p><canvas id="glcanvas" tabindex='1'></canvas>
+<p><canvas style='width: 640px;height: 512px;overflow: hidden;background: black;z-index: 0;' tabindex='1'></canvas></p>
 <!-- Minified and statically hosted version of https://github.com/not-fl3/miniquad/blob/master/native/sapp-wasm/js/gl.js -->
-<script src="https://not-fl3.github.io/miniquad-samples/gl.js"></script>
-<script>load('assets/2021/automata.wasm');</script> <!-- Your compiled wasm file --></p>
-</main>
+<script src='https://not-fl3.github.io/miniquad-samples/gl.js'></script>
+<script>load('assets/2021/automata.wasm');</script> <!-- Your compiled wasm file -->
+<p>Testing the space below.
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0</p>
 
 </main>
 <hr> <!-- line -->
