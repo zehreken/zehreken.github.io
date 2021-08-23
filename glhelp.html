@@ -32,15 +32,12 @@
 <header><h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1></header>
 <hr> <!-- line -->
 <main>
-<h5>created on 2020-10-03, edited on 2020-10-03</h5>
-<h1>Projects</h1>
-<p>Here are some of my hobby projects.</p>
-<h3>modul</h3>
-<p><a href="https://github.com/zehreken/modul">modul</a> is a music making program written in Rust. It might not be doing much now but the goal is creating a live performance capable music program. It currently can sample audio and loop and then write to disk. It also has some capability to visualize each audio channel.</p>
-<h3>TAS</h3>
-<p><a href="https://mogze.itch.io/tas">TAS</a> is a top down shooter I released in 2014 for iOS and Android. It was a very bad game from a game design perspective. I occasionally work on it to get better at game design.</p>
-<h3>GLhelp</h3>
-<p><a href="https://lab.guchanalkan.com/glhelp">GLhelp</a></p>
+<h5>created on 2021-08-23, edited on 2021-08-23</h5>
+<h1>GL Help</h1>
+<p><canvas id="glcanvas" tabindex='1' style='width: 700px;height: 512px;overflow: hidden;background: black;z-index: 0;'></canvas></p>
+<!-- Minified and statically hosted version of https://github.com/not-fl3/miniquad/blob/master/native/sapp-wasm/js/gl.js -->
+<script src="https://not-fl3.github.io/miniquad-samples/gl.js"></script>
+<script>load('/assets/2021/glhelp.wasm');</script> <!-- Your compiled wasm file -->
 
 </main>
 <hr> <!-- line -->
