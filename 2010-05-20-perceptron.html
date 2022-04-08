@@ -1,40 +1,46 @@
 <!DOCTYPE html>
 <html lang='en_US'>
-<head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-60769427-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'UA-60769427-1');
-</script>
-<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>lab.guchanalkan.com | programming notes</title>
-<meta name="generator" content="https://github.com/zehreken/simple-blog-generator.git" />
-<meta property="og:title" content="lab.guchanalkan.com" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="programming notes" />
-<meta property="og:description" content="programming notes" />
-<link rel="canonical" href="/" />
-<meta property="og:url" content="/" />
-<meta property="og:site_name" content="lab.guchanalkan.com" />
-<script type="application/ld+json">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-60769427-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-60769427-1');
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>lab.guchanalkan.com | programming notes</title>
+    <meta name="generator" content="https://github.com/zehreken/simple-blog-generator.git" />
+    <meta property="og:title" content="lab.guchanalkan.com" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="description" content="programming notes" />
+    <meta property="og:description" content="programming notes" />
+    <link rel="canonical" href="/" />
+    <meta property="og:url" content="/" />
+    <meta property="og:site_name" content="lab.guchanalkan.com" />
+    <script type="application/ld+json">
 {"@type":"WebSite","url":"/","name":"lab.guchanalkan.com","description":"programming notes","headline":"lab.guchanalkan.com","@context":"https://schema.org"}</script>
-<link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
-<div class="wrapper"> <!-- unnecessary -->
-<header><h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1></header>
-<hr> <!-- line -->
-<main>
-<h5>created on 2010-05-20</h5>
-<h1>Perceptron</h1>
-<p><strong>In</strong> the previous post, we have discussed some of the major elements of artificial neural networks. It is time to examine the structure of a simple neural network, <strong>perceptron</strong>. A perceptron is the simplest type of neural networks. It has an input layer, an output layer and no hidden layer. In practice, the usage of perceptrons is limited, but in theory perceptrons are important, their structure is easy to understand because of their simplicity. Below, there is an application I’ve created to understand the structure and process of neural networks more easily. By the way, you can download the source files. The perceptron has 1 input layer consists of 2 neurons and 1 output layer consists of 1 neuron. The pinky fields are input fields, that means you can set the values of them. An input value can be either 1 or 0. Even with this simplest neural network, perceptron, you can have a program that changes behaviour when needed. You can train the application as an <strong>AND gate</strong> or an <strong>OR gate</strong>. Here is a table shows the output values according to the input values for AND and OR gates.</p>
+    <div class="wrapper">
+        <!-- unnecessary -->
+        <header>
+            <h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1>
+        </header>
+        <hr> <!-- line -->
+        <main>
+            <h5>created on 2010-05-20</h5>
+            <h5>#artificial-intelligence</h5>
+            <h1>Perceptron</h1>
+            <p><strong>In</strong> the previous post, we have discussed some of the major elements of artificial neural networks. It is time to examine the structure of a simple neural network, <strong>perceptron</strong>. A perceptron is the simplest type of neural networks. It has an input layer, an output layer and no hidden layer. In practice, the usage of perceptrons is limited, but in theory perceptrons are important, their structure is easy to understand because of their simplicity. Below, there is an application I’ve created to understand the structure and process of neural networks more easily. By the way, you can download the source files. The perceptron has 1 input layer consists of 2 neurons and 1 output layer consists of 1 neuron. The pinky fields are input fields, that means you can set the values of them. An input value can be either 1 or 0. Even with this simplest neural network, perceptron, you can have a program that changes behaviour when needed. You can train the application as an <strong>AND gate</strong> or an <strong>OR gate</strong>. Here is a table shows the output values according to the input values for AND and OR gates.</p>
 <p><img src="/assets/2010/perceptron_OR_AND.jpg" alt="Alt text" /></p>
 <h6>Tables for OR and AND gates</h6>
 <p>It is time to explain the perceptron application. As you can see, there are values on the leftside of the application. <strong>input1</strong> and <strong>input2</strong> stand for the input values for neuron 1 and neuron 2. <strong>weight1.1</strong> is the weight value from the first input neuron to the output neuron and <strong>weight1.2</strong> is the weight value from the second input neuron to the output neuron. <strong>Sum</strong> is the product of activation function, in this application, activation function is a step function. And lastly, <strong>decision</strong> is true if desired value is equal to the output value, otherwise it is false.</p>
@@ -44,14 +50,16 @@
 <p>If you think that this article is wrong or missing, or maybe you have a question, please feel free to send me a message.</p>
 <p><a href="/assets/2010/perceptron_source.zip">download source files</a></p>
 
-</main>
-<hr> <!-- line -->
-<footer>
-  <p><a href="https://github.com/zehreken">github</a> | 
-  <a href="https://twitter.com/zehreken">twitter</a> | 
-  <a href="mailto:zehreken@gmail.com">mail</a> | 
-  <a href="/zettelkasten/">zettel</a></p>
-</footer>
-</div>
+        </main>
+        <hr> <!-- line -->
+        <footer>
+            <p><a href="https://github.com/zehreken">github</a> |
+                <a href="https://twitter.com/zehreken">twitter</a> |
+                <a href="mailto:zehreken@gmail.com">mail</a> |
+                <a href="/zettelkasten/">zettel</a>
+            </p>
+        </footer>
+    </div>
 </body>
+
 </html>

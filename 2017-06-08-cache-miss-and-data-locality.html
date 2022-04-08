@@ -1,40 +1,46 @@
 <!DOCTYPE html>
 <html lang='en_US'>
-<head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-60769427-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'UA-60769427-1');
-</script>
-<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>lab.guchanalkan.com | programming notes</title>
-<meta name="generator" content="https://github.com/zehreken/simple-blog-generator.git" />
-<meta property="og:title" content="lab.guchanalkan.com" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="programming notes" />
-<meta property="og:description" content="programming notes" />
-<link rel="canonical" href="/" />
-<meta property="og:url" content="/" />
-<meta property="og:site_name" content="lab.guchanalkan.com" />
-<script type="application/ld+json">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-60769427-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-60769427-1');
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>lab.guchanalkan.com | programming notes</title>
+    <meta name="generator" content="https://github.com/zehreken/simple-blog-generator.git" />
+    <meta property="og:title" content="lab.guchanalkan.com" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="description" content="programming notes" />
+    <meta property="og:description" content="programming notes" />
+    <link rel="canonical" href="/" />
+    <meta property="og:url" content="/" />
+    <meta property="og:site_name" content="lab.guchanalkan.com" />
+    <script type="application/ld+json">
 {"@type":"WebSite","url":"/","name":"lab.guchanalkan.com","description":"programming notes","headline":"lab.guchanalkan.com","@context":"https://schema.org"}</script>
-<link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
-<div class="wrapper"> <!-- unnecessary -->
-<header><h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1></header>
-<hr> <!-- line -->
-<main>
-<h5>created on 2017-06-08</h5>
-<h1>Cache Miss and Data Locality</h1>
-<p><strong>Programmers</strong> working in the game industry are proud people. And they (the good ones at least) have the right to be. It is a hard job. We care about performance, and we want our code to be fast - sometimes more than necessary. But we usually look for problems in the wrong places, we try to optimize our code by using faster algorithms but never check or care about where we put our data.</p>
+    <div class="wrapper">
+        <!-- unnecessary -->
+        <header>
+            <h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1>
+        </header>
+        <hr> <!-- line -->
+        <main>
+            <h5>created on 2017-06-08</h5>
+            <h5>#computer-science #data-oriented-programming</h5>
+            <h1>Cache Miss and Data Locality</h1>
+            <p><strong>Programmers</strong> working in the game industry are proud people. And they (the good ones at least) have the right to be. It is a hard job. We care about performance, and we want our code to be fast - sometimes more than necessary. But we usually look for problems in the wrong places, we try to optimize our code by using faster algorithms but never check or care about where we put our data.</p>
 <p>In recent years, the increase in CPU speed compared to the increase in memory speed is enormous. As good as it sounds, it is not actually a good thing. In the past, CPU speed and memory speed were similar and they worked in harmony. But today, because of the speed difference, CPU waits for the memory for data and wastes precious cycles doing nothing.</p>
 <p>This is called a <strong>cache miss</strong>. Whenever the CPU wants some piece of data and can't find it, it is a cache miss. And it looks to a higher level cache, if it can't find it there, that's another cache miss. It will keep looking into higher and higher level cahes and until it can find what it's looking for.</p>
 <p>The computer I am writing this post on is a Mid 2011 Mac Mini and according to the CPU specs it has one <strong>32KB L1 cache</strong> and one <strong>256KB L2 cache</strong> on each core, and one <strong>3MB L3 cache</strong> on chip. The smaller the size of the cache the faster the cache is.</p>
@@ -147,14 +153,16 @@ memory read -fx 0x101000000 0x101000000+128
 <p>You can find the source files in this <a href="/assets/2017/dod_tests-master.zip">file</a>.</p>
 <p>If you think that this blog post is wrong or missing, please send me a message.</p>
 
-</main>
-<hr> <!-- line -->
-<footer>
-  <p><a href="https://github.com/zehreken">github</a> | 
-  <a href="https://twitter.com/zehreken">twitter</a> | 
-  <a href="mailto:zehreken@gmail.com">mail</a> | 
-  <a href="/zettelkasten/">zettel</a></p>
-</footer>
-</div>
+        </main>
+        <hr> <!-- line -->
+        <footer>
+            <p><a href="https://github.com/zehreken">github</a> |
+                <a href="https://twitter.com/zehreken">twitter</a> |
+                <a href="mailto:zehreken@gmail.com">mail</a> |
+                <a href="/zettelkasten/">zettel</a>
+            </p>
+        </footer>
+    </div>
 </body>
+
 </html>
