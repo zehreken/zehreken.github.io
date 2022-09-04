@@ -37,10 +37,11 @@
         </header>
         <hr> <!-- line -->
         <main>
-            <h5>created on 2020-08-08, edited on 2020-09-26</h5>
+            <h5>created on 2020-08-08, edited on 2022-07-10</h5>
             <h5><p><a href=tags/computer-science.html>#computer-science</a> <a href=tags/rust.html>#rust</a> <a href=tags/performance.html>#performance</a> </p></h5>
             <h1>Profiling Rust on macOS</h1>
-            <p>It has been some time since I've started to use Rust for my hobby projects. As you know when the projects get more complex, performance may become an issue. Here, I'm writing down the available options for profiling Rust programs on macOS for future reference but I'm sure most of the crates and tools are also usable in other operating systems.</p>
+            <p>https://nnethercote.github.io/perf-book/profiling.html
+It has been some time since I've started to use Rust for my hobby projects. As you know when the projects get more complex, performance may become an issue. Here, I'm writing down the available options for profiling Rust programs on macOS for future reference but I'm sure most of the crates and tools are also usable in other operating systems.</p>
 <h3>Xcode</h3>
 <p>This is probably the only option you can find only on macOS. You can use Xcode to get a broad view of how your program behaves. You can see how much CPU time your program takes, how much memory it uses etc.</p>
 <ul>
@@ -51,6 +52,37 @@
 <li>Run your Rust program with cargo run --release because if you don't, your program will run significantly slower.</li>
 </ul>
 <p>Go to &quot;All Processes&quot; on the top left of the screen and find your program. Press record and you should see the CPU time your program takes.</p>
+<h3>puffin</h3>
+<p>I'm very happy using puffin for profiling <a href="https://github.com/zehreken/modul">modul</a>.
+Puffin is opensource is and code is available on <a href="https://github.com/EmbarkStudios/puffin">github</a>.
+It is very simple to add puffin to your project and there is also a egui plugin so that you can have
+a live flamegraph in your program.</p>
+<p>The simplest integration is like this. First you need to set scopes on at start up.</p>
+<pre class="prettyprint linenums">
+puffin::set_scopes_on(true);
+</pre>
+<p>I'm using miniquad and egui in my program so rendering the window is as simple as adding just a line.</p>
+<pre class="prettyprint linenums">
+self.egui_mq.run(ctx, |egui_ctx| {
+    draw_ui(&mut self.windows, egui_ctx, &mut self.modul);
+    puffin_egui::profiler_window(egui_ctx); <-- this line only
+});
+</pre>
+<p>And once per frame you need to call</p>
+<pre class="prettyprint linenums">
+fn update() {
+    ...
+    puffin::GlobalProfiler::lock().new_frame();
+}
+</pre>
+<p>You can then profile the scope or the function using puffin macros and also assign a name for easier analysis.</p>
+<pre class="prettyprint linenums">
+puffin::profile_function!("function");
+</pre>
+<p>or</p>
+<pre class="prettyprint linenums">
+puffin::profile_scope!("scope");
+</pre>
 <h3>pprof</h3>
 <p><strong>pprof</strong> is a very useful tool for profiling your program's CPU footprint.</p>
 <ul>
