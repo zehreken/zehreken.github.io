@@ -51,6 +51,11 @@ logarithms.</p>
 *signals, such as audio
 or electrical signals. In dBs.</p>
 <p><strong>Peak:</strong> Maximum value of an audio signal. In dBs.</p>
+<p><strong>Buffer underrun:</strong> In audio context, a buffer underrun occurs when there are no
+more samples to read in the audio buffer. This can happen when the processing thread
+consumes the samples faster than the audio input device can produce.</p>
+<p><strong>Buffer overrun:</strong> In audio context, similar to buffer underrun, buffer overrun occurs
+when the buffer is filled faster than the processing thread consumes.</p>
 
         </main>
         <hr> <!-- line -->
