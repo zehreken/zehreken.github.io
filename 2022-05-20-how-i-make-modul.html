@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang='en_US'>
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-60769427-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-60769427-1');
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>lab.guchanalkan.com | programming notes</title>
+    <meta name="generator" content="https://github.com/zehreken/simple-blog-generator.git" />
+    <meta property="og:title" content="lab.guchanalkan.com" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="description" content="programming notes" />
+    <meta property="og:description" content="guchan alkan" />
+    <link rel="canonical" href="/" />
+    <meta property="og:url" content="/" />
+    <meta property="og:site_name" content="lab.guchanalkan.com" />
+    <script type="application/ld+json">
+{"@type":"WebSite","url":"/","name":"lab.guchanalkan.com","description":"programming notes","headline":"lab.guchanalkan.com","@context":"https://schema.org"}</script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- unnecessary -->
+        <header>
+            <h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1>
+        </header>
+        <hr> <!-- line -->
+        <main>
+            <h5>created on 2022-05-07, edited on 2022-09-21</h5>
+            <h5><p><a href=tags/audio.html>#audio</a> </p></h5>
+            <h1>How I make modul</h1>
+            <p>https://tesselode.github.io/articles/audio-libraries-considered-challenging/</p>
+<p>I've been working on a audio/visual program called <strong>modul</strong> for the last 2 years. It is the only personal project that I have invested this amount of time. Fortunately it paid off. I have a lot of fun and learn new things when I work on <strong>modul</strong>. I wish I started to write about my work on <strong>modul</strong> much earlier but it is better late than sorry. </p>
+<h3>Common problems that lead to latency</h3>
+<p>It is probably about the buffer size. In modul, I didn't know how to set buffer sizes for the
+hardware. For months I had the default buffer size for my audio interface, 512 per channel.
+In this case it is easy to calculate latency, 512 / 44.1 kHz = 11.7 ms which is considered high
+for real-time audio and it was high. When I tried to keep a beat over the sampled audio, I
+always missed the beat no matter how hard I tried. Then I found out that I can set the buffer size
+in cpal and I set it to 128 and it fixed the latency issue. But stupidly enough I was using the
+same configuration for creating input and output streams and this effectively set output buffersize
+to 128 as well. This created a bunch of issues, first audio processing thread designed to process
+more samples than 128 every update and this caused buffer overruns and glitches. I set output
+buffersize to 2048 and there was significant improvement with latency.</p>
+<h3>Using Arc<Mutex> vs Channel vs RingBuf</h3>
+<p>&quot;even if the mutex is not locked by another thread: locking/unlocking a mutex in a realtime context
+can lead to the OS rescheduling your thread and stealing your timeslice.&quot; <strong>WeirdConstructor</strong></p>
+<p>&quot;get_sample_averages() is called multiple times in the GUI routine, and each call is a Mutex lock.
+the mutex lock might cause problems, even though the critical zone is relatively short as you are
+copying the TAPE_COUNT samples immediately&quot; <strong>WeirdConstructor</strong></p>
+<p><code>self.writing_tape.push(sample);</code> regarding this line &quot;it's safer to write recorded samples to a
+ring buffer and have a dedicated thread do the storage and allocation&quot; <strong>WeirdConstructor</strong></p>
+<p>Regarding the key_receiver &quot;that Receiver is an mpsc::Receiver, which is internally using Mutexes
+again. even though you call try_iter(), it will call unlock on that inner Mutex at some point,
+which can mean that the OS kernel takes away your timeslice from the audio processing thread again
+and gives it to the waiting GUI thread&quot; <strong>WeirdConstructor</strong></p>
+<p>While adding a perspective camera, I realised that given a = mat4 and b = vec4, a * b is not equal
+to b * a. :D It took me almost 2 days to debug the weird shapes and this shows how rusty I am with
+basic math. I need to get better and better and better.</p>
+<h3>Visualising Tape as Waveform</h3>
+<p>I basically tried averaging every n samples so that I could map the tape which is typically 1.5
+million samples points to 100 sample points. It didn't work, the graph was mostly flat. Then I
+bumped into this. https://stackoverflow.com/questions/26663494/algorithm-to-draw-waveform-from-audio
+It suggests negating the sample if it is less than 0.</p>
+<h3>Fixing the Metronome</h3>
+<p>After a while I wanted to add a metronome to the program because I needed to use an external metronome, my iPad, to start a song. I implemented one like below</p>
+<pre class="prettyprint linenums">
+pub fn update(&mut self, sample_count: u32) {
+    self.sample_sum += sample_count;
+
+    let remainder = self.sample_sum % self.tick_period as u32;
+    self.show_beat = remainder > 0 && remainder < 10_000;
+    self.beat_index = self.sample_sum / self.tick_period as u32;
+}
+</pre>
+<p>I was very happy that I now didn't need an external device to start a song. I used this for a while but I was having difficulty keeping time when I play the drums while listening to the metronome. For months I thought that it was because I was bad as a musician that I couldn't even keep a proper time. I practiced a lot with my synth and my drum. But all that practice didn't improve my time keeping and at that point I finally started to think that my metronome implementation could be buggy. I tried syncing modul's metronome with the microKorg and voila! There was a discrepancy. Either my metronome's time or microKorg's time was wrong. Fortunately I'm an experienced programmer and many many years ago I learnt to blame my code first than other systems which are tested thousands times more. I then changed the implementation to this</p>
+<pre class="prettyprint linenums">
+pub fn update(&mut self) {
+    let remainder = self.instant.elapsed().as_nanos() % self.beat_period;
+    self.show_beat = remainder > 0 && remainder < 50_000_000;
+    self.beat_index = (self.instant.elapsed().as_nanos() / self.beat_period) as u32;
+}
+</pre>
+<p>This implementation can keep the time good enough for my ears at least. Conclusion is bugs and glitches in audio systems are very difficult to catch and fix also. Or maybe I'm so used to working on visual things on computers that I don't know what to sense when it comes to sound. It was so much fun though.</p>
+<p>Next day update: I decided to get the opinions of the rust audio community on discord and they immediately told me that it is a bad idea to keep time using <code>std::time</code> since kernel time will always drift and the audio hardware and driver is working really hard to keep the right time. So I discarded my implementation that used std::time and decided to fix the one that counts the samples. Instead of updating metronome by calling <code>metronome.update(sample_count)</code>, I changed it to <code>metronome.update()</code> and called it every time I pushed a sample to the output buffer. It works fine as far as my ears are concerned.</p>
+<h1>Document the development process of module</h1>
+
+        </main>
+        <hr> <!-- line -->
+        <footer>
+            <p><a href="https://github.com/zehreken">github</a> |
+                <a href="https://twitter.com/zehreken">twitter</a> |
+                <a href="mailto:zehreken@gmail.com">mail</a> |
+                <a href="/zettelkasten/">zettel</a>
+            </p>
+        </footer>
+    </div>
+</body>
+
+</html>
