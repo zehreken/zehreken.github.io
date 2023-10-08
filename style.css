@@ -84,7 +84,6 @@ body header>h1 {
     font-size: 20px;
     background-color: var(--primary-color);
     font-weight: bold;
-    padding-left: 10px;
     padding-top: 30px;
     color: var(--accent-color);
     width: var(--width);
