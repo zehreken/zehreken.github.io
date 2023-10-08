@@ -1,5 +1,5 @@
 :root {
-    --main-color: rgb(255, 219, 88);
+    --main-color: rgb(28, 28, 28);
     --odd-line-color: #ffe78f;
     --even-line-color: #fff3c9;
 }
@@ -80,6 +80,7 @@ body header>h1 {
     font-family: "OpenSans-Bold", "Helvetica Neue", Helvetica, Arial;
     font-size: 20px;
     font-weight: bold;
+    color: var(--main-color);
 }
 
 body main>h1 {
@@ -90,6 +91,7 @@ body main>h1 {
     padding-left: 3px;
     padding-top: 0px;
     padding-bottom: 0px;
+    color: #d9d9d9;
 }
 
 body main>h2 {
@@ -98,6 +100,7 @@ body main>h2 {
     padding-left: 3px;
     padding-top: 0px;
     padding-bottom: 0px;
+    color: var(--main-color);
 }
 
 body main>h3 {
@@ -106,16 +109,17 @@ body main>h3 {
     padding-left: 3px;
     padding-top: 0px;
     padding-bottom: 0px;
+    color: var(--main-color);
 }
 
 body main>h4 {
     font-family: "OpenSans-Bold", "Helvetica Neue", Helvetica, Arial;
     font-size: 15px;
     background-color: var(--main-color);
-    /* color: ; */
     padding-left: 3px;
     padding-top: 0px;
     padding-bottom: 0px;
+    color: #d9d9d9;
 }
 
 body main>h5 {
@@ -187,7 +191,8 @@ body main>p a {
 body main>p a:hover {
     text-decoration: none;
     color: #000;
-    background-color: var(--main-color);
+    /* background-color: var(--main-color); */
+    background-color: #FF9D0B;
 }
 
 body main>p strong {
@@ -285,7 +290,8 @@ body footer>p a {
 body footer>p a:hover {
     text-decoration: none;
     color: #000;
-    background-color: var(--main-color);
+    /* background-color: var(--main-color); */
+    background-color: #FF9D0B;
 }
 
 body footer>p strong {
