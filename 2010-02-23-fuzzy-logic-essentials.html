@@ -37,13 +37,35 @@
         </header>
         <hr> <!-- line -->
         <main>
-            <h5>created on 2010-02-23, edited on 2020-09-26</h5>
+            <h5>created on 2010-02-23, edited on 2023-10-12</h5>
             <h5><p><a href=tags/artificial-intelligence.html>#artificial-intelligence</a> </p></h5>
             <h1>Fuzzy Logic Essentials</h1>
-            <p><strong>We</strong> said, in fuzzy logic, an element can <strong>partially</strong> belong to a set, a fuzzy set, unlike in traditional logic. Let’s see how. In the application below, there are ten black circles and a green circle. Let’s assume they are some kind of living creatures, maybe bacterias, and the green one eats the black ones to survive. The question is, how does it decide which black one to eat? The green bacteria or circle or thing, whatever you call, only minds the distance and size of the black bacterias, and it likes the ones that are close and midsized. So, we have two <strong>fuzzy variables</strong> here, first one is closeness and second one is midsized-ness, thereby we have two <strong>fuzzy sets</strong>, closeness and midsized-ness fuzzy sets. This is one of the main characteristics of fuzzy logic, we can express <strong>numerical values as linguistic values</strong>, e.g. very close, not so close...</p>
-<p><img src="/assets/2010/fuzzy_logic_essentials_chart.jpg" alt="fuzzy chart" /><br />
-<sup><strong>Membership degrees to the closeness fuzzy set for black bacterias</strong></sup></p>
-<p>The graph above shows the <strong>degrees of membership</strong> of the black ones to the closeness fuzzy set according to their distance to the green one. As you see, the closest one has the highest degree of membership and the farthest one has the lowest.</p>
+            <p><strong>In</strong> fuzzy logic, we introduce the concept that an element can possess a <strong>partial</strong> membership within a set, a concept distinct from the binary distinctions found in traditional logic. Let's delve into this concept further through a practical example. Consider a scenario with ten black circles and a single green circle. Let's imagine these entities as living creatures, perhaps resembling bacteria, with the green one relying on consuming the black ones for survival. Now, the pivotal question arises: how does the green organism determine which black bacteria to consume?</p>
+<p>The decision-making process of the green entity revolves around the evaluation of two key attributes: proximity and size in relation to the black bacteria. It exhibits a preference for those black entities that are both close in distance and possess a moderate size. Consequently, we introduce two fundamental <strong>fuzzy variables</strong> in this scenario: 'closeness' and 'midsized-ness.' These variables, in turn, give rise to two corresponding fuzzy sets: 'closeness' and 'midsized-ness.' One of the defining features of fuzzy logic is its ability to represent <strong>numerical values as linguistic terms</strong>, allowing us to describe qualities such as 'very close' or 'not so close' in a nuanced and flexible manner.</p>
+<p><sup><strong>Membership degrees to the closeness fuzzy set for black bacterias</strong></sup></p>
+<div>
+  <canvas id="fuzzySets"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('fuzzySets');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+    labels: [0, 25, 50, 75, 100, 125, 150, 175, 200, 225, 250],
+    datasets: [{
+        label: 'Degree of membership',
+        data: [1, 0.80, 0.64, 0.48, 0.36, 0.25, 0.16, 0.09, 0.04, 0.01, 0],
+        fill: false,
+        borderColor: '#1c1c1c',
+        tension: 0.1
+    }]
+    },
+  });
+</script>
+<!-- ![fuzzy chart](/assets/2010/fuzzy_logic_essentials_chart.jpg)   -->
+<p>The graph above shows the <strong>degree of membership</strong> of the black ones to the closeness fuzzy set according to their distance to the green one. As you see, the closest one has the highest degree of membership and the farthest one has the lowest.</p>
 <pre class="prettyprint linenums">
 private function calculateDistance():void
 {
@@ -67,11 +89,11 @@ private function calculateDistance():void
 }
 </pre>
 <p>To calculate the degrees of membership to the midsized-ness fuzzy set, the process is very similar to the one above. Alright, we have calculated the degrees of membership but how do we use them? In practice we can use these membership values to decide or to make something decide. For example if you are interested in something that is close to you then you should choose the one which has the greatest degree of membership to the closeness fuzzy set. Programming with fuzzy logic is like having <strong>unlimited number of if clauses but with high performance</strong>.</p>
-<p><canvas id="glcanvas" tabindex='1'></canvas></p>
+<p><sup><strong>Fuzzy logic essentials</strong></sup>
+<canvas id="glcanvas" tabindex='1'></canvas></p>
 <!-- Minified and statically hosted version of https://github.com/not-fl3/miniquad/blob/master/native/sapp-wasm/js/gl.js -->
 <script src="https://not-fl3.github.io/miniquad-samples/gl.js"></script>
-<script>load('/assets/2010/fuzzy_logic_essentials.wasm');</script> <!-- Your compiled wasm file -->
-<p><sup><strong>Fuzzy logic essentials</strong></sup></p>
+<script>load('/assets/2010/fuzzy_logic_essentials.wasm');</script><!-- Your compiled wasm file -->
 <p>As I mentioned before, there are two fuzzy variables in the application above, one is closeness and the other is midsized-ness. The green bacteria calculates the membership values for both the closeness and midsized-ness fuzzy sets and then decides which black bacteria to eat. Let’s say, for black bacteria #2, the closeness value is .55 (this means <strong>not so close</strong>), midsized-ness value is 1 (this means bacteria #2 is half the size of green bacteria, <strong>exactly midsized</strong>) and the total is 1.55, for black bacteria #6, the closeness value is .85 (this means <strong>very close</strong>), midsized-ness value is .8 (this means <strong>nearly midsized</strong>) and the total is 1.65. In this case #6 is more suitable than #2 to eat (1.65 &gt; 1.55). If you increase the weight of midsized-ness by one(this means midsized-ness is <strong>two times more important</strong> than closeness), the total value for #2 becomes .55 + 2 * 1 = 2.55 and the total value for #6 becomes .85 + 2 * .8 = 2.45. In this case #2 is more suitable than #6 (2.55 &gt; 2.45).</p>
 <h3>Instructions</h3>
 <p>You can start and stop the application using run/stop button. Use &lt; &gt; buttons to choose the fuzzy variable, and – + to change the weight of the chosen fuzzy variable. Remember that, if you set the weight of the fuzzy variable to 0, the fuzzy variable loses its importance.</p>
