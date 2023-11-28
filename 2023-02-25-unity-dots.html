@@ -38,28 +38,30 @@
         <hr> <!-- line -->
         <main>
             <h5>created on 2023-02-25</h5>
-            <h5><p><a href=tags/unity.html>#unity</a> </p></h5>
+            <h5>
+                <p><a href=tags/unity.html>#unity</a> </p>
+            </h5>
             <h1>Unity DOTS</h1>
             <p>This post is going to be a summary of the official Entities package document,
-kind of a cheat-sheet.</p>
-<p>The following operations are considered structural changes:</p>
-<ul>
-<li>Creating or destroying an entity</li>
-<li>Adding or removing components</li>
-<li>Setting a shared component value</li>
-</ul>
-<p>Physics</p>
-<ul>
-<li>
-<p>All physics objects that are in the scene but outside the subscene will be
-ignored since they don't get converted to entities.</p>
-</li>
-<li>
-<p>A <code>World</code> organises entities into isolated groups. A World owns both an
-EntityManager and a set of Sytems. In Dow client and server are different
-Worlds.</p>
-</li>
-</ul>
+                kind of a cheat-sheet.</p>
+            <p>The following operations are considered structural changes:</p>
+            <ul>
+                <li>Creating or destroying an entity</li>
+                <li>Adding or removing components</li>
+                <li>Setting a shared component value</li>
+            </ul>
+            <p>Physics</p>
+            <ul>
+                <li>
+                    <p>All physics objects that are in the scene but outside the subscene will be
+                        ignored since they don't get converted to entities.</p>
+                </li>
+                <li>
+                    <p>A <code>World</code> organises entities into isolated groups. A World owns both an
+                        EntityManager and a set of Sytems. In a multiplayer game, it makes sense that client
+                        and server are different Worlds.</p>
+                </li>
+            </ul>
 
         </main>
         <hr> <!-- line -->
