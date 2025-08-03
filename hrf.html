@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,40 +17,24 @@
             position: absolute;
             background: black;
             z-index: 0;
-            /* Prevent canvas from being treated as draggable image */
             -webkit-user-drag: none;
             -khtml-user-drag: none;
             -moz-user-drag: none;
             -o-user-drag: none;
             user-drag: none;
+            user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
-            user-select: none;
         }
     </style>
 </head>
+
 <body>
-    <canvas id="glcanvas" tabindex='1' draggable="false"></canvas>
+    <canvas id="glcanvas" tabindex='1'></canvas>
     <!-- Minified and statically hosted version of https://github.com/not-fl3/macroquad/blob/master/js/mq_js_bundle.js -->
     <script src="https://not-fl3.github.io/miniquad-samples/gl.js"></script>
-    <script>
-        // Prevent default drag behavior on canvas
-        const canvas = document.getElementById('glcanvas');
-        canvas.addEventListener('dragstart', function(e) {
-            e.preventDefault();
-            return false;
-        });
-        canvas.addEventListener('selectstart', function(e) {
-            e.preventDefault();
-            return false;
-        });
-        canvas.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
-        });
-        
-        load('/assets/hrf-trainer.wasm');
-    </script>
+    <script>load('/assets/hrf-trainer.wasm');</script> <!-- Your compiled WASM binary -->
 </body>
+
 </html>
