@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andiamo</title>
+    <title>Interactive Portfolio</title>
     <link rel="stylesheet" href="main.css">
 </head>
 
@@ -22,7 +22,17 @@
                 <canvas id="glcanvas"></canvas>
                 <!-- Minified and statically hosted version of https://github.com/not-fl3/miniquad/blob/master/native/sapp-wasm/js/gl.js -->
                 <script src="https://not-fl3.github.io/miniquad-samples/gl.js"></script>
-                <script>load('wasm-blog.wasm');</script>
+                <script>
+                    const apps = [
+                        'conway.wasm',
+                        'fuzzy.wasm',
+                    ];
+
+                    // Pick random app
+                    const randomApp = apps[Math.floor(Math.random() * apps.length)];
+
+                    load(randomApp);
+                </script>
             </div>
         </div>
     </div>
