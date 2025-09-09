@@ -1,7 +1,14 @@
+@font-face {
+    font-family: 'Jersey20';
+    src: url('../assets/Jersey20-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: Jersey20, Arial, sans-serif;
 }
 
 .container {
