@@ -11,9 +11,25 @@
 <body>
     <div class="container">
         <div class="left-side">
-            <div class="content">
-                <h1>Güçhan Alkan</h1>
-                <p>Programmer</p>
+            <div class="app-grid">
+                <button class="grid-item" style="flex-direction: column;">
+                    <span style="font-size: 24px;">Güçhan Alkan</span>
+                    <span style="font-size: 16px;">Programmer</span>
+                </button>
+                <button class="grid-item" data-app="conway.wasm">CONWAY: The game of life.
+                </button>
+                <button class="grid-item" data-app="fuzzy.wasm">FUZZY</button>
+                <button class="grid-item" data-app="boids.wasm">BOIDS</button>
+                <button class="grid-item" data-app="astar.wasm">ASTAR</button>
+                <button class="grid-item">#5</button>
+                <button class="grid-item">#6</button>
+                <button class="grid-item">#7</button>
+                <button class="grid-item">#8</button>
+                <button class="grid-item">#9</button>
+                <button class="grid-item">#10</button>
+                <button class="grid-item">#11</button>
+
+                <!-- repeat pattern for more rows -->
             </div>
         </div>
 
@@ -32,8 +48,17 @@
 
                     // Pick random app
                     const randomApp = apps[Math.floor(Math.random() * apps.length)];
-
                     load(randomApp);
+
+                    // Button handlers
+                    document.querySelectorAll('.grid-item[data-app]').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const appName = button.getAttribute('data-app');
+                            if (appName) {
+                                load(appName);
+                            }
+                        });
+                    });
                 </script>
             </div>
         </div>
