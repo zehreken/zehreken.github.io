@@ -51,7 +51,7 @@
                     load(randomApp);
 
                     // Button handlers
-                    document.querySelectorAll('.grid-item[data-app]').forEach(button => {
+                    document.querySelectorAll('.grid-item[data-app], .grid-item[url]').forEach(button => {
                         button.addEventListener('click', () => {
                             const appName = button.getAttribute('data-app');
                             if (appName) {
