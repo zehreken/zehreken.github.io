@@ -16,6 +16,7 @@
                     <span style="font-size: 24px;">Güçhan Alkan</span>
                     <span style="font-size: 16px;">Programmer</span>
                 </button>
+                <button class="grid-item" url="https://lab.guchanalkan.com/">LAB</button>
                 <button class="grid-item" data-app="conway.wasm">CONWAY: The game of life.
                 </button>
                 <button class="grid-item" data-app="fuzzy.wasm">FUZZY</button>
@@ -27,7 +28,6 @@
                 <button class="grid-item">#8</button>
                 <button class="grid-item">#9</button>
                 <button class="grid-item">#10</button>
-                <button class="grid-item">#11</button>
 
                 <!-- repeat pattern for more rows -->
             </div>
@@ -56,6 +56,10 @@
                             const appName = button.getAttribute('data-app');
                             if (appName) {
                                 load(appName);
+                            }
+                            const url = button.getAttribute('url');
+                            if (url) {
+                                window.open(url);
                             }
                         });
                     });
