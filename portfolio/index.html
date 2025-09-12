@@ -12,7 +12,7 @@
     <div class="container">
         <div class="left-side">
             <div class="app-grid">
-                <button class="grid-item" style="flex-direction: column;">
+                <button class="grid-item" id="name-tile" style="flex-direction: column;">
                     <span style="font-size: 24px;">Güçhan Alkan</span>
                     <span style="font-size: 16px;">Programmer</span>
                 </button>
@@ -69,6 +69,23 @@
             </div>
         </div>
     </div>
+
+    <!-- audio element -->
+    <audio id="beat" src="beat.mp3" loop></audio>
+
+    <script>
+        const tile = document.getElementById("name-tile");
+        const beat = document.getElementById("beat");
+
+        tile.addEventListener("mouseenter", () => {
+            beat.currentTime = 0;
+            beat.play();
+        });
+
+        tile.addEventListener("mouseleave", () => {
+            beat.pause();
+        });
+    </script>
 </body>
 
 </html>
