@@ -67,7 +67,7 @@ p {
 .app-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     width: 100%;
     height: calc(100% - 2px);
     border: 1px solid #ff0066;
@@ -94,7 +94,7 @@ p {
     /* remove right border on last column */
 }
 
-.grid-item:nth-child(n+9) {
+.grid-item:nth-child(n+13) {
     border-bottom: none;
     /* remove bottom border on last row */
 }
