@@ -40,7 +40,7 @@
             <h5>created on 2025-11-04</h5>
             <h5><p><a href=tags/artificial-intelligence.html>#artificial-intelligence</a> <a href=tags/machine-learning.html>#machine-learning</a> </p></h5>
             <h1>Fine-tuning SpeechT5 to Imitate Me</h1>
-            <p><strong>Machine learning</strong> has changed the world in the last couple of years. I was a consumer of these models but only a spectator when it came to understanding how they worked. In this post, I’ll share my experience trying to train the SpeechT5 text-to-speech model to imitate my own voice.</p>
+            <p><strong>Machine learning</strong> has changed the world in the last couple of years. I was a consumer of these models but only a spectator when it came to understanding how they worked. In this post, I’ll share my experience trying to train the SpeechT5 <strong>text-to-speech</strong> model to imitate my own voice.</p>
 <p>As I often do nowadays, I started by asking questions to ChatGPT, Grok, and Claude. They are great <strong>tools</strong> for learning. I also familiarized myself with <a href="https://huggingface.co/">Hugging Face</a>. If you haven’t used it before, it’s like GitHub but for machine learning models.</p>
 <p>I tried a few different models at first, namely Coqui, SpeechT5, and Dia. I chose <a href="https://huggingface.co/docs/transformers/en/model_doc/speecht5">SpeechT5</a> because the instructions were clearer and the dependencies fewer than the others. But you should check out <a href="https://yummy-fir-7a4.notion.site/dia">Dia's demo</a>, it is incredible.</p>
 <p>To make this work, I had to record myself first. I asked Claude to generate a table of filenames and transcriptions. I recorded my voice with Audacity, then wrote a <strong>Python</strong> script to process the recordings. It’s best to trim silence, make the audio mono, normalize it, and resample it to 16 kHz. Since I’m comfortable with signal processing, this part was easy, and Python’s audio libraries made it even smoother. It’s easy to see why Python is such a popular language.</p>
@@ -112,17 +112,19 @@ tensor([-0.0694, -0.0536, -0.0454, -0.0202,  0.0246,  0.0315,  0.0061,  0.0169,
          0.0010,  0.0009,  0.0008,  0.0006,  0.0005,  0.0004,  0.0003,  0.0001],
        device='cuda:0')
 </pre>
+<h6>Speaker embedding tensor</h6>
 <p>Finally came training the model. My first attempt was surprisingly quick since I ran it on the <strong>GPU</strong>, and after hours of preparation, I was eager to hear the result. Unfortunately, the model had collapsed and produced only horrible noise. I tried again with a much lower learning rate, watching the <strong>loss value</strong> gradually decrease and feeling hopeful. But the model collapsed again, generating the same noise. I later learned that it’s not possible to train a model like SpeechT5 properly with only ten minutes of audio.</p>
-<p>I said that the numbers in speaker embedding are meaningless to us but I actually lied. If you look closely to the numbers, the first 160 are varied in sign and amplitude but after that they hover around 0.018. This might mean that the training data was limited-exactly my case- or it is partially trained.</p>
+<p>I said that the numbers in speaker embedding are meaningless to humans, but that is not entirely true. If you look closely to the numbers, the first 160 are varied in sign and amplitude but after that they hover around 0.018. This might mean that the training data was limited (exactly my case) or it is partially trained.</p>
 <audio controls>
     <source src="/assets/2025/noise.wav" type="audio/wav">
     Your browser does not support the audio element.
 </audio>
-<p>After some research, I found out that instead of training the full model, I could <strong>fine-tune</strong> it using my speaker embedding. Since SpeechT5 already knows how to speak English, I could influence it to use my vocal characteristics. This approach worked better, the generated audio was still noisy and robotic compared to the model’s original voices, but it definitely resembled my voice and captured my speech rhythm.</p>
+<p>After some research, I found out that instead of training the full model, I could <strong>fine-tune</strong> it using my speaker embedding. Since SpeechT5 already knows how to speak English, I could influence it to use my vocal characteristics. This approach worked better. The generated audio was still noisy and robotic compared to the model’s original voices, but it definitely resembled my voice and captured my speech rhythm.”</p>
 <audio controls>
     <source src="/assets/2025/speech.wav" type="audio/wav">
     Your browser does not support the audio element.
 </audio>
+<p>There is still a lot to experiment with. First I want this model to properly clone my voice. And then I want to play with more expressive models like Dia.</p>
 <p>If you think that this article is wrong or missing, or maybe you have a question, please feel free to send me a message.</p>
 <p><a href="https://github.com/zehreken/finetune-speecht5">Go to source</a></p>
 
