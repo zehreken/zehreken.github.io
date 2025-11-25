@@ -32,15 +32,11 @@
                 <button class="grid-item">#12</button>
                 <button class="grid-item">#13</button>
                 <button class="grid-item">#14</button>
-
-                <!-- repeat pattern for more rows -->
             </div>
         </div>
-
         <div class="right-side">
             <div class="content">
                 <canvas id="glcanvas"></canvas>
-                <!-- Minified and statically hosted version of https://github.com/not-fl3/miniquad/blob/master/native/sapp-wasm/js/gl.js -->
                 <script src="https://not-fl3.github.io/miniquad-samples/gl.js"></script>
                 <script>
                     const apps = [
@@ -53,16 +49,45 @@
                         'world.wasm',
                     ];
 
-                    // Pick random app
-                    const randomApp = apps[Math.floor(Math.random() * apps.length)];
-                    load(randomApp);
+                    // Load app and update URL
+                    function loadApp(appName) {
+                        load(appName);
+                        // Update URL hash without reloading page
+                        window.location.hash = appName.replace('.wasm', '');
+                    }
+
+                    // Check URL hash on page load
+                    function loadFromHash() {
+                        const hash = window.location.hash.slice(1); // Remove '#'
+                        if (hash) {
+                            const appName = hash + '.wasm';
+                            if (apps.includes(appName)) {
+                                load(appName);
+                                return;
+                            }
+                        }
+                        // No valid hash, pick random app
+                        const randomApp = apps[Math.floor(Math.random() * apps.length)];
+                        loadApp(randomApp);
+                    }
+
+                    // Handle hash changes (back/forward buttons)
+                    window.addEventListener('hashchange', () => {
+                        const hash = window.location.hash.slice(1);
+                        if (hash) {
+                            const appName = hash + '.wasm';
+                            if (apps.includes(appName)) {
+                                load(appName);
+                            }
+                        }
+                    });
 
                     // Button handlers
                     document.querySelectorAll('.grid-item[data-app], .grid-item[url]').forEach(button => {
                         button.addEventListener('click', () => {
                             const appName = button.getAttribute('data-app');
                             if (appName) {
-                                load(appName);
+                                loadApp(appName);
                             }
                             const url = button.getAttribute('url');
                             if (url) {
@@ -70,23 +95,22 @@
                             }
                         });
                     });
+
+                    // Initialize
+                    loadFromHash();
                 </script>
             </div>
         </div>
     </div>
 
-    <!-- audio element -->
     <audio id="beat" src="beat.mp3" loop></audio>
-
     <script>
         const tile = document.getElementById("name-tile");
         const beat = document.getElementById("beat");
-
         tile.addEventListener("mouseenter", () => {
             beat.currentTime = 0;
             beat.play();
         });
-
         tile.addEventListener("mouseleave", () => {
             beat.pause();
         });
