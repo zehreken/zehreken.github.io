@@ -40,33 +40,39 @@
             <h5>created on 2026-02-08</h5>
             <h5><p><a href=tags/reinforcement-learning.html>#reinforcement-learning</a> <a href=tags/artificial-intelligence.html>#artificial-intelligence</a> </p></h5>
             <h1>Reinforcement Learning with Unreal Learning Agents</h1>
-            <p>I finished <a href="https://dev.epicgames.com/community/learning/courses/GAR/unreal-engine-learning-agents-5-5/bZnJ/unreal-engine-learning-agents-5-5">reinforcement learning tutorial</a> using Unreal's Learning Agents plugin some time ago. It was really cool seeing the cars learning how to drive on a track they have never seen before. But I didn't really understand much about the underlying mechanism, namely reinforcement learning.</p>
+            <p>I finished <a href="https://dev.epicgames.com/community/learning/courses/GAR/unreal-engine-learning-agents-5-5/bZnJ/unreal-engine-learning-agents-5-5">reinforcement learning tutorial</a> using Unreal's Learning Agents plugin some time ago. This post is for people who did or interested in doing the tutorial. It was really cool seeing the cars learning how to drive on a track they have never seen before. But I didn't really understand much about the underlying mechanism, namely reinforcement learning.</p>
 <video src="/assets/2026/cars_driving.mp4" controls width="1000">
   Your browser does not support the video tag.
 </video>
-<p>My interest for this just grew as I started reading Reinforcement Learning book from Richard S. Sutton and Andrew G. Barto and I decided to revisit the same tutorial to understand what is going on under the hood. While doing some reading I bumped into a debugging tool called TensorBoard, the standard for debugging artificial neural networks. Honestly it game me the same feeling I had when I first learned about proper debuggers almost 2 decades ago.</p>
-<p>The tutorial is okay but it never mentions TensorBoard unfortunately. If you are interested in doing the tutorial, you should also use TensorBoard and I'll explain how to enable it.</p>
-<p>To make it work with Unreal Editor, you need to enable it in <strong>Trainer Training Settings</strong>. 
-** Show the checkbox image</p>
-<p>You also need to install TensorBoard specifically for the Python environment that ships with Unreal Editor. I really like that Unreal comes with its onw Python Environment, unlike Unity. It is easier to start and I personally hate installing libraries without knowing what they are for.
-** share the install code, pip -m install tensorboard</p>
-<p>It was not that straight-forward for me though, after successfully installing I got this warning when I started the simulation
+<p>My interest for this just grew as I started reading Reinforcement Learning book from Richard S. Sutton and Andrew G. Barto and I decided to revisit the same tutorial to understand what is going on under the hood. The book is freely avaiable <a href="https://web.stanford.edu/class/psych209/Readings/SuttonBartoIPRLBook2ndEd.pdf">here</a>. While doing some reading I bumped into a debugging tool called TensorBoard, the standard for debugging artificial neural networks. Honestly it gave me the same feeling I had when I first learned about proper debuggers almost 2 decades ago.</p>
+<p>To make it work with Unreal Editor, you need to enable it in <strong>Trainer Training Settings</strong> in your BP_SportsCarManager blueprint. 
+<img src="/assets/2026/tensorboard_check.png" alt="Alt text" /></p>
+<h6>BP_SportsCarManager contains Trainer Training Settings variable</h6>
+<p>tensorboard_check.png</p>
+<p>You also need to install TensorBoard specifically for the Python environment that ships with Unreal Editor. I really like that Unreal comes with its own Python Environment, unlike Unity. It is easier to start and I personally hate installing libraries without knowing what they are for.</p>
+<pre class="prettyprint linenums">
+pip -m install tensorboard
+</pre>
+<p>Even though I successfully installed TensorBoard, I got the following warning when I started the simulation.
 LogLearning: Display: Subprocess: Warning: Failed to Load TensorBoard: No module named 'tensorboard'. Please add manually to site-packages.
-LogLearning: Display: Subprocess:      &quot;UseTensorBoard&quot;: false,</p>
-<p>Unreal logs are really crappy, it took me some time to figure this out. I needed to add this path
-......../site-lackages to the Additional Paths list under Edit&gt;Project Settings&gt;Plugins&gt;Python in Unreal Editor.</p>
-<p>You should see this log if everything works fine
-LogLearning: Display: SubProcess:       &quot;UseTensorBoard&quot;: true,</p>
-<p>And then finally to see the visualized data, I started the TensorBoard by starting a terminal in the installation folder. For me it is ......Win64/Scripts. You should have a tensorboard.exe file. If not go to the installation step.
-To start recording you just need to run tensorboard with the directory speicified.
+LogLearning: Display: Subprocess:         &quot;UseTensorBoard&quot;: false,</p>
+<p>Since Unreal logs are really crappy, it took me some time to figure this out. I needed to add this path
+C:/Program Files/Epic Games/UE_5.5/Engine/Binaries/ThirdParty/Python3/Win64/Lib/site-packages to the Additional Paths list under Edit&gt;Project Settings&gt;Plugins&gt;Python in Unreal Editor.</p>
+<p><img src="/assets/2026/tensorboard_warning.png" alt="Alt text" /></p>
+<h6>Python plugin settings</h6>
+<p>After adding the path to the list, I got this log which means that logging is active.
+LogLearning: Display: Subprocess:         &quot;UseTensorBoard&quot;: true,</p>
+<p>And then finally to see the visualized data, you need to run TensorBoard. Go to C:/Program Files/Epic Games/UE_5.5/Engine/Binaries/ThirdParty/Python3/Win64/Scripts and you should have tensorboard.exe there. If not go to the installation step.
+By running TensorBoard
 .\tensorboard.exe --logdir=&quot;[YourProjectPath]\Intermediate\LearningAgents\TensorBoard\runs&quot;</p>
 <p>If it starts successfully, you should see a log like this
 TensorBoard 2.20.0 at http://localhost:6006/ (Press CTRL+C to quit)
 The Address is where you can see the visualized data, just open your browser and paste the address</p>
-<p>You need to run you simulation for som time to record some data.</p>
-<p>** show a screenshot of tensorboard here</p>
+<p>You need to run your simulation for a while to see some data in TensorBoard.
+<img src="/assets/2026/tensorboard_dashboard.png" alt="Alt text" /></p>
+<h6>TensorBoard dashboard</h6>
 <p>The tensorboard visualization made immediate sense to me since I was reading about rewards and general theory behind it. I guess I got lucky here.</p>
-<p>Now we can see what is going in our car's brain thanks to TensorBoard and now it is time to play around with rewards. I'll write this in more detail in another post but basically rewards are how a reinforcement learning method works. Rewards can be either positive or negative which sounds more like punishment. :P</p>
+<p>Now we can see what is going in our car's brain, thanks to TensorBoard and now it is time to play around with rewards. I'll write this in more detail in another post but basically rewards are how a reinforcement learning method works. Rewards can be either positive or negative which sounds more like punishment. :P</p>
 <p>** Show Unreals reward nodes here and explain the  values</p>
 <p>** and how bad reward values affect tensorboard graphs</p>
 <p>Cases</p>
