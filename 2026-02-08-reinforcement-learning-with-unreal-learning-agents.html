@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang='en_US'>
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-60769427-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-60769427-1');
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>lab.guchanalkan.com | programming notes</title>
+    <meta name="generator" content="https://github.com/zehreken/simple-blog-generator.git" />
+    <meta property="og:title" content="lab.guchanalkan.com" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="description" content="programming notes" />
+    <meta property="og:description" content="guchan alkan" />
+    <link rel="canonical" href="/" />
+    <meta property="og:url" content="/" />
+    <meta property="og:site_name" content="lab.guchanalkan.com" />
+    <script type="application/ld+json">
+{"@type":"WebSite","url":"/","name":"lab.guchanalkan.com","description":"programming notes","headline":"lab.guchanalkan.com","@context":"https://schema.org"}</script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- unnecessary -->
+        <header>
+            <h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1>
+        </header>
+        <hr> <!-- line -->
+        <main>
+            <h5>created on 2026-02-08</h5>
+            <h5><p><a href=tags/reinforcement-learning.html>#reinforcement-learning</a> <a href=tags/artificial-intelligence.html>#artificial-intelligence</a> </p></h5>
+            <h1>Reinforcement Learning with Unreal Learning Agents</h1>
+            <p>I finished <a href="https:dev.epicgames.com/community/learning/courses/GAR/unreal-engine-learning-agents-5-5/bZnJ/unreal-engine-learning-agents-5-5">reinforcement learning tutorial</a> using Unreal's Learning Agents plugin some time ago. It was really cool seeing the cars learning how to drive on a track they have never seen before. But I didn't really understand much about the underlying mechanism, namely reinforcement learning.</p>
+<p>** Show a gif of cars driving here</p>
+<p>My interest for this just grew as I started reading Reinforcement Learning book from Richard S. Sutton and Andrew G. Barto and I decided to revisit the same tutorial to understand what is going on under the hood. While doing some reading I bumped into a debugging tool called TensorBoard, the standard for debugging artificial neural networks. Honestly it game me the same feeling I had when I first learned about proper debuggers almost 2 decades ago.</p>
+<p>The tutorial is okay but it never mentions TensorBoard unfortunately. If you are interested in doing the tutorial, you should also use TensorBoard and I'll explain how to enable it.</p>
+<p>To make it work with Unreal Editor, you need to enable it in <strong>Trainer Training Settings</strong>. 
+** Show the checkbox image</p>
+<p>You also need to install TensorBoard specifically for the Python environment that ships with Unreal Editor. I really like that Unreal comes with its onw Python Environment, unlike Unity. It is easier to start and I personally hate installing libraries without knowing what they are for.
+** share the install code, pip -m install tensorboard</p>
+<p>It was not that straight-forward for me though, after successfully installing I got this warning when I started the simulation
+LogLearning: Display: Subprocess: Warning: Failed to Load TensorBoard: No module named 'tensorboard'. Please add manually to site-packages.
+LogLearning: Display: Subprocess:      &quot;UseTensorBoard&quot;: false,</p>
+<p>Unreal logs are really crappy, it took me some time to figure this out. I needed to add this path
+......../site-lackages to the Additional Paths list under Edit&gt;Project Settings&gt;Plugins&gt;Python in Unreal Editor.</p>
+<p>You should see this log if everything works fine
+LogLearning: Display: SubProcess:       &quot;UseTensorBoard&quot;: true,</p>
+<p>And then finally to see the visualized data, I started the TensorBoard by starting a terminal in the installation folder. For me it is ......Win64/Scripts. You should have a tensorboard.exe file. If not go to the installation step.
+To start recording you just need to run tensorboard with the directory speicified.
+.\tensorboard.exe --logdir=&quot;[YourProjectPath]\Intermediate\LearningAgents\TensorBoard\runs&quot;</p>
+<p>If it starts successfully, you should see a log like this
+TensorBoard 2.20.0 at http://localhost:6006/ (Press CTRL+C to quit)
+The Address is where you can see the visualized data, just open your browser and paste the address</p>
+<p>You need to run you simulation for som time to record some data.</p>
+<p>** show a screenshot of tensorboard here</p>
+<p>The tensorboard visualization made immediate sense to me since I was reading about rewards and general theory behind it. I guess I got lucky here.</p>
+<p>Now we can see what is going in our car's brain thanks to TensorBoard and now it is time to play around with rewards. I'll write this in more detail in another post but basically rewards are how a reinforcement learning method works. Rewards can be either positive or negative which sounds more like punishment. :P</p>
+<p>** Show Unreals reward nodes here and explain the  values</p>
+<p>** and how bad reward values affect tensorboard graphs</p>
+<p>Cases</p>
+<ul>
+<li>Very low crash reward(-1000) how it makes the car very hesitant to move and go slow becuase not crashing is 1000x more important than moving</li>
+<li>Zero crash reward, how the car just darts and </li>
+</ul>
+
+        </main>
+        <hr> <!-- line -->
+        <footer>
+            <p><a href="https://github.com/zehreken">github</a> |
+                <a href="https://x.com/zehreken">x.com</a> |
+                <a href="https://www.instagram.com/fotografiagucci/">instagram</a> |
+                <a href="/zettelkasten/">zettel</a>
+            </p>
+        </footer>
+    </div>
+    <img src="https://librecounter.org/counter.svg" referrerPolicy="unsafe-url" width="0" />
+</body>
+
+</html>
