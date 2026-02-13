@@ -282,6 +282,18 @@ body main>ul.jump li:hover {
     color: white;
 }
 
+body main figure {
+    max-width: 100%;
+    margin: 10px 0;
+    line-height: normal;
+}
+
+body main figure img {
+    max-width: 100%;
+    width: 100%;
+    display: block;
+}
+
 body main>p img {
     max-width: 100%;
     width: 100%;
@@ -294,7 +306,7 @@ body main>p iframe {
     padding: 0px
 }
 
-body main>pre {
+body main pre {
     /* background-color: rgb(240, 240, 240); */
     font-family: "Inconsolata-Regular", "Helvetica Neue", Helvetica, Arial;
     color: rgb(44, 43, 43);
@@ -416,4 +428,12 @@ sup {
     font-size: x-small;
     vertical-align: super;
     background-color: var(--even-line-color);
+}
+
+figcaption {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 8px;
+    font-style: italic;
+    line-height: normal;
 }
