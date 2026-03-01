@@ -65,8 +65,11 @@ pip -m install tensorboard
 LogLearning: Display: Subprocess: Warning: Failed to Load TensorBoard: No module named 'tensorboard'. Please add manually to site-packages.
 LogLearning: Display: Subprocess:         "UseTensorBoard": false,
 </pre>
-<p>Since Unreal logs are really crappy, it took me some time to figure this out. I needed to add this path
-C:/Program Files/Epic Games/UE_5.5/Engine/Binaries/ThirdParty/Python3/Win64/Lib/site-packages to the Additional Paths list under Edit&gt;Project Settings&gt;Plugins&gt;Python in Unreal Editor.</p>
+<p>Since Unreal logs are really crappy, it took me some time to figure this out. I needed to add this path</p>
+<pre class="prettyprint linenums">
+C:/Program Files/Epic Games/UE_5.5/Engine/Binaries/ThirdParty/Python3/Win64/Lib/site-packages
+</pre>
+<p>to the Additional Paths list under Edit&gt;Project Settings&gt;Plugins&gt;Python in Unreal Editor.</p>
 <figure>
     <img src="/assets/2026/tensorboard_warning.png" alt="TensorBoard path">
     <figcaption>Python plugin settings</figcaption>
