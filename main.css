@@ -286,6 +286,7 @@ body main figure {
     max-width: 100%;
     margin: 10px 0;
     line-height: normal;
+    overflow: hidden;
 }
 
 body main figure img {
@@ -296,8 +297,10 @@ body main figure img {
 
 body main video {
     max-width: 100%;
+    -webkit-max-width: 100%;
     width: 100%;
     display: block;
+    margin: 0;
 }
 
 body main>p img {
