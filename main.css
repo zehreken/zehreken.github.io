@@ -322,6 +322,8 @@ body main pre {
     padding-top: 0;
     font-size: 13px;
     white-space: pre-wrap;
+    overflow-x: auto;
+    word-break: break-word;
 }
 
 body main>table,
