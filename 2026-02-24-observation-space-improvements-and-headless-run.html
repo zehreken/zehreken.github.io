@@ -46,10 +46,41 @@
             <h5><p><a href=tags/reinforcement-learning.html>#reinforcement-learning</a> <a href=tags/artificial-intelligence.html>#artificial-intelligence</a> </p></h5>
             <h1>Observation Space Improvements and Headless Run</h1>
             <p>I wanted to write more about my reinforcement learning experiments with Unreal Engine's Learning Agents plugin. And also wanted to complement my previous post with some more details. Please check <a href="/2026-02-08-reinforcement-learning-with-unreal-learning-agents">my previous post</a> if you have not read it yet or need a refresher.</p>
-<p>How the agent learned to drive in the first iteration was already impressive for me but if you watch the agents for some time you can see the janky, fidgety driving. The reason for that is the car agent only observes one point on the track ahead of it. <a href="https://dev.epicgames.com/community/learning/courses/GAR/unreal-engine-learning-agents-5-5/1w7V/unreal-engine-improving-observations-debugging-5-5">The tutorial</a> nicely addresses this by adding 6 more observation points, 5 meters apart, on the spline ahead of the car.</p>
-<p>// Also write about what the car is actually observing (other than the points on the track)</p>
+<p>How the agent learned to drive in the first iteration was already impressive for me but when I watched the agents for some time I could see the janky, fidgety driving. The reason for that is the car agent only observes one point on the track ahead of it. <a href="https://dev.epicgames.com/community/learning/courses/GAR/unreal-engine-learning-agents-5-5/1w7V/unreal-engine-improving-observations-debugging-5-5">The tutorial</a> nicely addresses this by adding 6 more observation points, 5 meters apart, on the spline ahead of the car.</p>
+<figure>
+    <video src="/assets/2026/improved_7_5.mp4" controls playsinline poster="/assets/2026/cars_driving_thumb.png">
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Agents driving faster after observation space improvements</figcaption>
+</figure>
+<p>If we go to BP_SportsCarInteractor and open SpecifyAgentObservation function, we will see that the agent only observes a single point on the spline and its velocity. In this case, the point on the spline and the velocity of the car is part of the agent's environment. I learned this from the RL book, that it may be sometimes confusing what is environment and what is not. For instance, hunger is part of an animal's environment and based on the animal's actions it increases or decreases.</p>
+<p>I really tried to come up with interesting ideas to improve observation space but I could only come up with adding more points on the spline. I then played around with the distance between the points and achieved interesting results. In the image below you can see training runs with several different observation spaces.</p>
+<figure>
+    <img src="/assets/2026/tensorboard_observation_space.png" alt="Different observation spaces">
+    <figcaption>Several different observarion space runs</figcaption>
+</figure>
+<ul>
+<li>Pink: 13 points 5 meters apart</li>
+<li>Blue: 7 points 5 meters apart</li>
+<li>Cyan: 13 points 2 meters apart</li>
+<li>Red: 7 points 2 meters apart</li>
+<li>Orange: 1 point only</li>
+</ul>
+<p>As you can also see from the graphs, I realized that the further the agent sees the better it drives, so to prove that I changed added another observation space, this time </p>
+<ul>
+<li>Green: 2 points 100 meters apart</li>
+</ul>
+<p>but it didn't turn out as I expected, the car mostly drove fine but kept crashing into the wall at certain corners and performed much worse than the observation space with only 1 point.</p>
+<figure>
+    <video src="/assets/2026/crazy_driving_2_100.mp4" controls playsinline poster="/assets/2026/cars_driving_thumb.png">
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Crazy driving skills with 2 points observed</figcaption>
+</figure>
+crazy_driving_2_100
 <p>// here add tensorboard comparison graphs for rewards and maybe a video of the improved vs original car driving around the track and also some images from the blueprints</p>
-<p>Before we dive into the improvements I made, I want to show you how to run in headless mode since training in the editor takes a lot of time and after a while it is not fun watching the cars learn to drive around the track.</p>
+<p>Use a header for headless run
+Before we dive into the improvements I made, I want to show you how to run in headless mode since training in the editor takes a lot of time and after a while it is not fun watching the cars learn to drive around the track.</p>
 <p>// Explain headless mode, it is very straightforward
 // And how to save and load snapshots
 Write about snapshots, how to save and load, it is very vague in the original post so loading requires more explaining
