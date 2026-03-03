@@ -44,7 +44,7 @@
         <main>
             <h5>created on 2026-02-24</h5>
             <h5><p><a href=tags/reinforcement-learning.html>#reinforcement-learning</a> <a href=tags/artificial-intelligence.html>#artificial-intelligence</a> </p></h5>
-            <h1>Observation Space Improvements and Headless Run</h1>
+            <h1>Improving Observation Space and Headless Mode</h1>
             <p>I wanted to write more about my reinforcement learning experiments with Unreal Engine's Learning Agents plugin. And also wanted to complement my previous post with some more details. Please check <a href="/2026-02-08-reinforcement-learning-with-unreal-learning-agents">my previous post</a> if you have not read it yet or need a refresher.</p>
 <p>Let's visit BP_SportsCarInteractor blueprint again and open SpecifyAgentObservation function. We will see that the agent only observes its velocity and only a single point on the spline. In this case, the point on the spline and the velocity of the car is part of the agent's environment. It is also mentioned in Sutton&amp;Barto's RL book, that it may be sometimes confusing what is environment and what is not. For instance, velocity is part of the car's environment because the agent cannot directly control its velocity but only influence it with throttling, braking and steering.</p>
 <p>The capabilities of the driving agent in the first iteration was already impressive for me but when I watched the agents for some time I could see the janky, fidgety driving. The reason for that is the car agent only observes one point on the track ahead of it. <a href="https://dev.epicgames.com/community/learning/courses/GAR/unreal-engine-learning-agents-5-5/1w7V/unreal-engine-improving-observations-debugging-5-5">The tutorial</a> nicely addresses this by adding 6 more observation points, 5 meters apart, on the spline ahead of the car. With this observation space, the agent drives smoother and faster as you can see in the video below.</p>
@@ -80,17 +80,16 @@
 <p>The environment setup, what is observed and what is not have a huge impact on the result of the agent's behaviour.</p>
 <h3>Headless Mode</h3>
 <p>It is really important to mention the headless mode since these agents take a very long time to train in Unreal editor. Running the training in headless mode took on average 1/4 of the time it took in the editor for me. Headless mode is explained in the tutorial and is pretty straight-forward but how to use snapshots is not clear.</p>
+<figure>
+    <img src="/assets/2026/headless_mode.png" alt="Headless mode versus editor">
+    <figcaption>Headless mode is almost 4 times faster</figcaption>
+</figure>
 <p>Enabling snapshots in trainer settings enables you to save snapshots of Encoder, Decoder, Policy and Critic networks every 1000 steps. This way you can compare different observation spaces or same space with incremental step count easily. I edited BP_SportsCarManager to load the snapshots.</p>
 <figure>
     <img src="/assets/2026/loading_snapshots.png" alt="Loading snapshots">
     <figcaption>Loading snapshots</figcaption>
 </figure>
-<p>// Show time comparison of training with and without headless mode, from tensorboard</p>
-<p>Topics to write about</p>
-<ul>
-<li>Driving performance comparison</li>
-</ul>
-<p>More ideas maybe for a third post
+<p>I'll try to extend this post with these ideas soon or maybe write part III.
 Adaptive Observation Spacing: Instead of fixed distances between spline observation points, dynamically adjust the spacing based on track curvature at the car's current position. On tight curves, points are close together for precision. On straights, points spread further apart for lookahead. The observation vector size stays the same, but information density adapts to what's useful.</p>
 <p>Line of Sight Raycast: Cast a ray from the car along the spline and measure how far it travels before the track curves out of sight. Use this distance to dynamically set the lookahead range of observation points. The agent's effective vision emerges naturally from track geometry, generalizes to any track shape, and requires no manual tuning.</p>
 
