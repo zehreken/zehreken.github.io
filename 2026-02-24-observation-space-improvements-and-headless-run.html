@@ -46,18 +46,18 @@
             <h5><p><a href=tags/reinforcement-learning.html>#reinforcement-learning</a> <a href=tags/artificial-intelligence.html>#artificial-intelligence</a> </p></h5>
             <h1>Observation Space Improvements and Headless Run</h1>
             <p>I wanted to write more about my reinforcement learning experiments with Unreal Engine's Learning Agents plugin. And also wanted to complement my previous post with some more details. Please check <a href="/2026-02-08-reinforcement-learning-with-unreal-learning-agents">my previous post</a> if you have not read it yet or need a refresher.</p>
-<p>How the agent learned to drive in the first iteration was already impressive for me but when I watched the agents for some time I could see the janky, fidgety driving. The reason for that is the car agent only observes one point on the track ahead of it. <a href="https://dev.epicgames.com/community/learning/courses/GAR/unreal-engine-learning-agents-5-5/1w7V/unreal-engine-improving-observations-debugging-5-5">The tutorial</a> nicely addresses this by adding 6 more observation points, 5 meters apart, on the spline ahead of the car.</p>
+<p>Let's visit BP_SportsCarInteractor blueprint again and open SpecifyAgentObservation function. We will see that the agent only observes its velocity and only a single point on the spline. In this case, the point on the spline and the velocity of the car is part of the agent's environment. It is also mentioned in Sutton&amp;Barto's RL book, that it may be sometimes confusing what is environment and what is not. For instance, velocity is part of the car's environment because the agent cannot directly control its velocity but only influence it with throttling, braking and steering.</p>
+<p>The capabilities of the driving agent in the first iteration was already impressive for me but when I watched the agents for some time I could see the janky, fidgety driving. The reason for that is the car agent only observes one point on the track ahead of it. <a href="https://dev.epicgames.com/community/learning/courses/GAR/unreal-engine-learning-agents-5-5/1w7V/unreal-engine-improving-observations-debugging-5-5">The tutorial</a> nicely addresses this by adding 6 more observation points, 5 meters apart, on the spline ahead of the car. With this observation space, the agent drives smoother and faster as you can see in the video below.</p>
 <figure>
     <video src="/assets/2026/improved_7_5.mp4" controls playsinline poster="/assets/2026/cars_driving_thumb.png">
         Your browser does not support the video tag.
     </video>
     <figcaption>Agents driving faster after observation space improvements</figcaption>
 </figure>
-<p>If we go to BP_SportsCarInteractor and open SpecifyAgentObservation function, we will see that the agent only observes a single point on the spline and its velocity. In this case, the point on the spline and the velocity of the car is part of the agent's environment. I learned this from the RL book, that it may be sometimes confusing what is environment and what is not. For instance, hunger is part of an animal's environment and based on the animal's actions it increases or decreases.</p>
-<p>I really tried to come up with interesting ideas to improve observation space. I thought about adding distance to the borders of the track but then I realized the track has the same width everywhere and this is not useful. Then I thought about adding the progress on track as an observation but that would mean that the agent would memorize the track and would not be able to generalize to other tracks. In the end I decided to play with the number of points on the spline and the distance between them. The results are pretty interesting. In the image below you can see training runs with several different observation spaces.</p>
+<p>I tried hard to come up with interesting ideas to improve observation space. I thought about adding distance to the borders of the track but then I realized the track has the same width everywhere and this is not useful. Then I thought about adding progress on track as an observation but that would mean that the agent would memorize the track and would not be able to generalize to other tracks. In the end I decided to play with the number of points on the spline and the distance between them. The results are pretty interesting. In the image below you can see training runs with several different observation spaces.</p>
 <figure>
     <img src="/assets/2026/tensorboard_observation_space.png" alt="Different observation spaces">
-    <figcaption>Several different observarion space runs</figcaption>
+    <figcaption>TensorBoard graphs showing different observation spaces</figcaption>
 </figure>
 <ul>
 <li>Pink: 13 points 5 meters apart</li>
@@ -66,7 +66,7 @@
 <li>Red: 7 points 2 meters apart</li>
 <li>Orange: 1 point only</li>
 </ul>
-<p>As you can also see from the graphs, I realized that the further the agent sees the better it drives, so to prove that I changed added another observation space, this time </p>
+<p>As you can see from the graphs, I realized that the further the agent sees the better it drives, so to prove that I added another observation space, this time;</p>
 <ul>
 <li>Green: 2 points 100 meters apart</li>
 </ul>
@@ -77,10 +77,15 @@
     </video>
     <figcaption>Crazy driving skills with 2 points observed</figcaption>
 </figure>
+<p>The environment setup, what is observed and what is not have a huge impact on the result of the agent's behaviour.</p>
 <h3>Headless Mode</h3>
 <p>It is really important to mention the headless mode since these agents take a very long time to train in Unreal editor. Running the training in headless mode took on average 1/4 of the time it took in the editor for me. Headless mode is explained in the tutorial and is pretty straight-forward but how to use snapshots is not clear.</p>
-<p>Enabling snapshots in trainer settings enables you to save snapshots of Encoder, Decoder, Policy and Critic networks every 1000 steps. This way you can compare different observation spaces or same space with incremental step count easily. I edited BP_SportsCarManager to load the snapshots.
-// Show time comparison of training with and without headless mode, from tensorboard</p>
+<p>Enabling snapshots in trainer settings enables you to save snapshots of Encoder, Decoder, Policy and Critic networks every 1000 steps. This way you can compare different observation spaces or same space with incremental step count easily. I edited BP_SportsCarManager to load the snapshots.</p>
+<figure>
+    <img src="/assets/2026/loading_snapshots.png" alt="Loading snapshots">
+    <figcaption>Loading snapshots</figcaption>
+</figure>
+<p>// Show time comparison of training with and without headless mode, from tensorboard</p>
 <p>Topics to write about</p>
 <ul>
 <li>Driving performance comparison</li>
