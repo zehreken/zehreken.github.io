@@ -50,7 +50,7 @@
 <p>I will try to explain the concept as simple as possible for true beginners like me. So let’s start.</p>
 <p>First of all, we should know about the area we are searching for the shortest path. The area can be a <strong>grid</strong> or a <strong>graph</strong>. Actually this makes no difference.</p>
 <figure>
-    <img src="/assets/2012/astar_illustration00.png" alt="An illustration of a grid and an illustration of a graph">
+    <img src="/assets/2012-05-24-astar-pathfinding-tutorial/astar_illustration00.png" alt="An illustration of a grid and an illustration of a graph">
     <figcaption>Here are an illustration of a grid and an illustration of a graph</figcaption>
 </figure>
 <p>A square in a grid or a circle in a graph is called a node. A node is the most basic element in a search algorithm. We should know well about the nodes. A node has 3 important properties.</p>
@@ -61,7 +61,7 @@
 <p>I will to try to explain the algorithm step by step because I think this is the easiest way to do.</p>
 <p><strong>1.</strong> Examine the search area. Define the start and finish nodes. Calculate each H cost (heuristic) from each node to the finish node. Note that, right now all of the G cost values for each node is “0”. You will get a grid like this.</p>
 <figure>
-    <img src="/assets/2012/astar_illustration01.png" alt="H costs are calculated according to the rule: no diagonal movement">
+    <img src="/assets/2012-05-24-astar-pathfinding-tutorial/astar_illustration01.png" alt="H costs are calculated according to the rule: no diagonal movement">
     <figcaption>H costs are calculated according to the rule: no diagonal movement</figcaption>
 </figure>
 <p><strong>2.</strong> Add the start node to the frontier list, right now start node is the only node in the frontier list, so we select the start node as the best node. (minimum F cost)</p>
@@ -76,9 +76,9 @@
 <li>“Find Path” button starts the simulation</li>
 <li>“Switch Type” button lets you choose between the step by step and instant simulation types</li>
 </ul>
-<p><object width="500" height="500" data="/assets/2012/a_star_pathfinding.swf"></object></p>
+<p><object width="500" height="500" data="/assets/2012-05-24-astar-pathfinding-tutorial/a_star_pathfinding.swf"></object></p>
 <p>If you think that this article is wrong or missing, or maybe you have a question, please feel free to send me a message.</p>
-<p><a href="/assets/2012/a_star_pathfinding_source.zip">download source files</a></p>
+<p><a href="/assets/2012-05-24-astar-pathfinding-tutorial/a_star_pathfinding_source.zip">download source files</a></p>
 
         </main>
         <hr> <!-- line -->

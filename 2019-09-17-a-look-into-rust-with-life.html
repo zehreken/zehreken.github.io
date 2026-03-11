@@ -50,7 +50,7 @@
 <p><canvas id="glcanvas"></canvas></p>
 <!-- Minified and statically hosted version of https://github.com/not-fl3/miniquad/blob/master/native/sapp-wasm/js/gl.js -->
 <script src="https://not-fl3.github.io/miniquad-samples/gl.js"></script>
-<script>load('/assets/2021/life.wasm');</script> <!-- Your compiled wasm file -->
+<script>load('/assets/2019-09-17-a-look-into-rust-with-life/life.wasm');</script> <!-- Your compiled wasm file -->
 <p>So what is Conway's game of life? I've already provided a link above but it is arguably the most popular cellular automaton. A system that can show complex behaviour with a few simple rules.</p>
 <p>I'm using <a href="https://github.com/not-fl3/macroquad"><strong>macroquad</strong></a>, a nice library written in Rust, to provide an easy way for game development. The author claims that macroquad is especially created to avoid some Rust specific concepts like lifetimes and ownership. Of course that sounds counter-intuitive since I want to learn Rust but the main reason I chose this library is that it is so easy to create wasm binaries.</p>
 <p>So for starters we should add macroquad to the Cargo.toml as a dependency.</p>
