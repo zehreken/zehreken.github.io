@@ -45,8 +45,9 @@
             <h5>2026-03-14</h5>
             <h5><p><a href=tags/reinforcement-learning.html>#reinforcement-learning</a> <a href=tags/artificial-intelligence.html>#artificial-intelligence</a> </p></h5>
             <h1>Teaching an AI to Play Kaboom</h1>
-            <p>I was looking for simple games to implement and train agents from the beginning to understand observation, reward, action spaces better.
-I started with discrete action space, namely go either left or right, it didn't work out well
+            <p>I was looking for a simple game to create in Unreal and train agents for it from the beginning to understand observation, reward and action spaces better. I found Kaboom! for Atari 2600 from the early '80s. I think it is simple enough for starters and also easy to create variety.
+In the original game the goal is preventing bombs hitting the ground. You start with 3 buckets aligned vertically and if you miss a bomb you lose a bucket and you die when you lose all your buckets. I simplified even this simple game. Just added an agent that goes from one side to the other and then added falling obstacles.
+I started with discrete action space, namely go either left or right, it didn't work out well. As I understand it is much better to have a continuous value to represent direction than having discrete values.
 I started with one obstacle, I think it was too sparse of a feedback(reward) for the agent
 I then increased the number of obstacles(bombs in kaboom terms) and observed only the closest one.
 It was tricky to observe the miss condition for the closest obstacle so I removed it altogether. But kept punishing the agent for every obstacle hitting the ground.
@@ -80,6 +81,12 @@ and on each update: 0.001, this small reward was basically for surviving</p>
     <figcaption>Agents playing Reverse Kaboom after 5 thousand training steps</figcaption>
 </figure>
 <p>Similarly the agent succesfully converged after around 3000 steps. This time the agent had a different quirky behaviour which I was expecting actually. It liked to camp in the corners. I think a human player would do the same in this case since the game does not really reward moving much and the obstacle density is quite low.</p>
+<p>While writing this and doing more experiments I realized that there was yet another bug in my implementation, the movement was frame dependent meaning it was running at different speeds in the editor and in headless mode. Even though it learned to play both Kaboom and Reverse Kaboom successfully, fixing the issue actually made the agent converge faster. I'm not sure why but I think what I thought was good for the agent in the editor was not good for it in headless mode, since the movement dynamics are completely different.</p>
+<figure>
+    <img src="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/kaboom_fixed.png" alt="Agent converge faster">
+    <figcaption>Agent converged faster after fixing frame dependency</figcaption>
+</figure>
+<p>You can find the source files in <a href="https://github.com/zehreken/mini-games-rl">this github link</a>.</p>
 
         </main>
         <hr> <!-- line -->
