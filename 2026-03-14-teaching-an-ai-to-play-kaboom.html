@@ -52,7 +52,7 @@ In the original game the goal is preventing bombs hitting the ground. You start 
 Then I added falling objects. It was very sparse at first and the agent had trouble learning. I increased the frequency and speed of the falling objects. And the agent observed only the closest object to it. Another important point is that dense rewards are much better then sparse ones. 
 Instead of punishing the agent for missing the cloesest object, I punished it for every object hitting the ground.
 The agent also observed its distance to the left and right borders.
-With all these observations and rewards, the agent was still not learning. I found a bug in the blueprint that the closest obstacle distance was reset before being read and always zero.
+With all these observations and rewards, the agent was still not learning. I found a bug in the blueprint that the closest object distance was reset before being read and always zero.
 The funny thing is, the whole time I was watching the agent: my brain wanted believe that there was some intention to the movements of the agent. It was completely random. I fixed the bug and then I could see that the agent started moving with intention, for real this time.
 I think this is why it is so very important to use TensorBoard so that you can see for real if your agent is converging and getting smarter in the environment. Don't trust your eyes.</p>
 <p>The learning speed and the skill of the agent was not great. The agent was observing too much and not allowed to act properly. When you observe too much, the network has to learn that certain inputs carry zero useful information, which wastes capacity and training time.
@@ -92,12 +92,20 @@ The reward space for Reverse Kaboom was like as follows:</p>
     </video>
     <figcaption>Agents playing Reverse Kaboom after 5k training steps</figcaption>
 </figure>
-<p>Similarly the agent for Reverse Kaboom succesfully converged after around 3000 steps. This time the agent had a different quirky behaviour which I was expecting actually. It liked to camp in the corners. I think a human player would do the same in this case since the game does not really reward moving much and the obstacle density is quite low.</p>
+<p>Similarly the agent for Reverse Kaboom succesfully converged after around 3000 steps. This time the agent had a different quirky behaviour which I was expecting actually. It liked to camp in the corners. I think a human player would do the same in this case since the game does not really reward moving much and the object density is quite low.</p>
 <p>While writing this and doing more experiments I realized that there was yet another bug in my implementation, the movement was frame dependent meaning it was running at different speeds in the editor and in headless mode. Even though it learned to play both Kaboom and Reverse Kaboom successfully, fixing the issue actually made the agent converge faster. I'm not sure why but I think what I thought was good for the agent in the editor was not good for it in headless mode, since the movement dynamics are completely different.</p>
 <figure>
     <img src="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/kaboom_fixed.png" alt="Agent converge faster">
     <figcaption>Agent converged faster after fixing frame dependency</figcaption>
 </figure>
+<p>In the image above, orange color represents the buggy agent and pink color represents the fixed one. You can see in all reward graphs that the agent learned the game faster. Fixing and seeing the improvements motivated me to make things a little bit juicier. I increased falling speed and spawn rate of the. Even though the agent only observesthe the closest obstacle, it still managed to survive in this hostile environment.</p>
+<figure>
+    <video src="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/reversekaboom_improved.mp4" controls playsinline poster="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/cars_driving_thumb.png">
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Agent successfully navigates the hostile environment</figcaption>
+</figure>
+<p>There is so much to explore in this little game and I'll definitely keep doing that. I have so many ideas but time is the only real constraint. Thank you for reading and let me know if you find stuff that is incorrect.</p>
 <p>You can find the source files in <a href="https://github.com/zehreken/mini-games-rl">this github link</a>.</p>
 
         </main>
