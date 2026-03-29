@@ -1,0 +1,22 @@
+[site]
+name = "lab.guchanalkan.com"
+description = "programming notes"
+url = "https://lab.guchanalkan.com/"
+
+[nav]
+links = [
+    { label = "about", href = "/about.html" },
+    { label = "projects", href = "/projects.html" },
+]
+
+[footer]
+links = [
+    { label = "github", href = "https://github.com/zehreken" },
+    { label = "x.com", href = "https://x.com/zehreken" },
+    { label = "instagram", href = "https://www.instagram.com/fotografiagucci/" },
+    { label = "zettel", href = "/zettelkasten/" },
+]
+
+[analytics]
+google_tag = "UA-60769427-1"
+librecounter = true
