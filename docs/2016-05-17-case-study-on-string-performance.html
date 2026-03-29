@@ -41,7 +41,7 @@
         <hr>
         <main>
             <h5>2016-05-17</h5>
-            <h5><p><a href=tags/computer-science.html>#computer-science</a> </p></h5>
+            <div class="tag-nav"><a href="tags/computer-science.html" class="tag-pill">#computer-science</a></div>
             <h1>Case Study on Using RegEx to Improve Game Performance</h1>
             <p><strong>Dealing</strong> with strings is always a hassle. Since they are immutable, procedures with strings are slow and memory heavy. For the last two months I have been working on a word game for mobile devices. As you know, we programmers are responsible for the performance of our games on mobile platforms because of limited resources on the devices.</p>
 <p>Finding a word in the dictionary in a quick and efficient way is really important in a word game, so we started researching data structures offered in the .NET library. After a bit of reading we noticed that the <strong>HashSet</strong> data structure offers <strong>O(1)</strong> look up performance, and, since all of the objects are different in our container, the HashSet was the ultimate choice for us. We were really happy with it, up until we decided to add a booster feature to the game. The idea was giving the player wildcard letters to use while creating a word. At first we didn’t care about the addition of this new feature since our word searching performance was perfect.</p>

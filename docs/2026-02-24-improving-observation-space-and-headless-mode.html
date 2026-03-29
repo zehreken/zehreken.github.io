@@ -41,7 +41,7 @@
         <hr>
         <main>
             <h5>2026-02-24</h5>
-            <h5><p><a href=tags/reinforcement-learning.html>#reinforcement-learning</a> <a href=tags/artificial-intelligence.html>#artificial-intelligence</a> </p></h5>
+            <div class="tag-nav"><a href="tags/reinforcement-learning.html" class="tag-pill">#reinforcement-learning</a><a href="tags/artificial-intelligence.html" class="tag-pill">#artificial-intelligence</a></div>
             <h1>Improving Observation Space and Headless Mode</h1>
             <p>I wanted to write more about my reinforcement learning experiments with Unreal Engine's Learning Agents plugin. And also wanted to complement my previous post with some more details. Please check <a href="/2026-02-08-reinforcement-learning-with-unreal-learning-agents">my previous post</a> if you have not read it yet or need a refresher.</p>
 <p>Let's visit BP_SportsCarInteractor blueprint again and open SpecifyAgentObservation function. We will see that the agent only observes its velocity and only a single point on the spline. In this case, the point on the spline and the velocity of the car is part of the agent's environment. It is also mentioned in Sutton&amp;Barto's RL book, that it may be sometimes confusing what is environment and what is not. For instance, velocity is part of the car's environment because the agent cannot directly control its velocity but only influence it with throttling, braking and steering.</p>
