@@ -11,7 +11,7 @@ Let's visit BP_SportsCarInteractor blueprint again and open SpecifyAgentObservat
 The capabilities of the driving agent in the first iteration was already impressive for me but when I watched the agents for some time I could see the janky, fidgety driving. The reason for that is the car agent only observes one point on the track ahead of it. [The tutorial](https://dev.epicgames.com/community/learning/courses/GAR/unreal-engine-learning-agents-5-5/1w7V/unreal-engine-improving-observations-debugging-5-5) nicely addresses this by adding 6 more observation points, 5 meters apart, on the spline ahead of the car. With this observation space, the agent drives smoother and faster as you can see in the video below.
 
 <figure>
-    <video src="/assets/2026-02-24-improving-observation-space-and-headless-mode/improved_7_5.mp4" controls playsinline poster="/assets/2026-02-08-reinforcement-learning-with-unreal-learning-agents/cars_driving_thumb.png">
+    <video src="/assets/2026-02-24-improving-observation-space-and-headless-mode/improved_7_5.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Agents driving faster after observation space improvements</figcaption>
@@ -36,7 +36,7 @@ As you can see from the graphs, I realized that the further the agent sees, the 
 but it didn't turn out as I expected, the car mostly drove fine but kept crashing into the wall at certain corners and performed much worse than the observation space with only 1 point.
 
 <figure>
-    <video src="/assets/2026-02-24-improving-observation-space-and-headless-mode/crazy_driving_2_100.mp4" controls playsinline poster="/assets/2026-02-08-reinforcement-learning-with-unreal-learning-agents/cars_driving_thumb.png">
+    <video src="/assets/2026-02-24-improving-observation-space-and-headless-mode/crazy_driving_2_100.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Crazy driving skills with 2 points observed</figcaption>

@@ -36,7 +36,7 @@ The final reward space was shaped like this:
 With these parameters the agent converged successfully and after around 3000 steps it was quite confident.
 
 <figure>
-    <video src="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/kaboom_10k.mp4" controls playsinline poster="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/cars_driving_thumb.png">
+    <video src="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/kaboom_10k.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Agent playing Kaboom after 10 thousand training steps</figcaption>
@@ -52,7 +52,7 @@ The reward space for Reverse Kaboom was like as follows:
 * And on every update gain 0.001 reward, a small reward for surviving an update
 
 <figure>
-    <video src="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/reversekaboom_5k.mp4" controls playsinline poster="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/cars_driving_thumb.png">
+    <video src="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/reversekaboom_5k.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Agents playing Reverse Kaboom after 5k training steps</figcaption>
@@ -70,7 +70,7 @@ While writing this and doing more experiments I realized that there was yet anot
 In the image above, orange color represents the buggy agent and pink color represents the fixed one. You can see in all reward graphs that the agent learned the game faster. Fixing and seeing the improvements motivated me to make things a little bit juicier. I increased falling speed and spawn rate of the. Even though the agent only observesthe the closest obstacle, it still managed to survive in this hostile environment.
 
 <figure>
-    <video src="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/reversekaboom_improved.mp4" controls playsinline poster="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/cars_driving_thumb.png">
+    <video src="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/reversekaboom_improved.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Agent successfully navigates the hostile environment</figcaption>
