@@ -66,7 +66,13 @@ All of that worked to a degree but there was something that bothered me a lot.
 First of all the agent's movement was jerky. Even though it was smart and sometimes made incredible stunts, other times it just ran into the obstacles or just missed the juicy collectible next to it. 
 I wanted to make something that is polished and stable enough to go in a game.
 As you can see, the agent from the last post cannot go in a game, it just does not look good.
-[Attach the last video from the previous post]
+
+<figure>
+    <video src="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/reversekaboom_improved.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Nervous agent</figcaption>
+</figure>
 
 I've spent a lot of time on research and reading. As I kept working on improving the agent I realized that
 I needed to improve my workflow otherwise I would lose so much time during trainig. As the agent gets more
@@ -80,6 +86,11 @@ These improvements gave me a good starting point. I could now start training, do
 Training an agent to accomplish a certain task and training it to be elegant and graceful are totally different things.
 In my simple RL experiments, I was able to train an agent that can avoid obstalce in just 1000 steps.
 But when I wanted to make it smooth things went souht really fast.
+
+<figure>
+    <img src="/assets/2026-04-02-making-an-rl-agent-look-good/first_three_runs.png" alt="Different observation spaces">
+    <figcaption>TensorBoard graphs showing different observation spaces</figcaption>
+</figure>
 
 """
 
