@@ -57,7 +57,7 @@ I also made sure that the random generators worked the same every run because I 
 
 These improvements gave me a good starting point. I could now start training, do the dishes, come back and check the results and if anything was not going right, I could return to a good point in the training.
 
-#### Some title
+#### The Sentinel
 Training an agent to accomplish a certain task and training it to be elegant and graceful are totally different things.
 In my simple RL experiments, I was able to train an agent that can avoid obstalce in just 1000 steps.
 But when I wanted to make it smooth things went souht really fast.
@@ -91,6 +91,9 @@ This was a good run but there was more to improve. I was not really sure about t
     <figcaption>Pink curve does not have the miss reward, trained on top of orange</figcaption>
 </figure>
 
+You can see in the episode length graph that the new agent just had perfect episodes, avoiding obstacles without any problem.
+
+### Curriculum Learning
 While cycling to the rowing club and simultanously thinking about RL, I realized I might improve agent behaviour by introducing difficulty gradually. Not to brag but I basically rediscovered a concept called Curriculum learning, which is an established method in RL.
 Honestly there is nothing to brag since this is only natural progression.
 

@@ -83,7 +83,7 @@ I was already saving snapshots, so the natural next step was just being able to 
 continue training from there. And then I made the simulation run in parallel. In my setup now I can run 64 agents in parallel. Only this cut the training time in half. This does not only make training faster but it also provides the network data from 64 different agents simultanously, making the experience diverse enough that degenerate single strategeies are harder to lock in.
 I also made sure that the random generators worked the same every run because I noticed there were significant difference when the same network run multiples times.</p>
 <p>These improvements gave me a good starting point. I could now start training, do the dishes, come back and check the results and if anything was not going right, I could return to a good point in the training.</p>
-<h4>Some title</h4>
+<h4>The Sentinel</h4>
 <p>Training an agent to accomplish a certain task and training it to be elegant and graceful are totally different things.
 In my simple RL experiments, I was able to train an agent that can avoid obstalce in just 1000 steps.
 But when I wanted to make it smooth things went souht really fast.
@@ -112,6 +112,8 @@ In the image below you can see a total of 60k training steps.</p>
     <img src="/assets/2026-04-02-making-an-rl-agent-look-good/remove_miss_reward.png" alt="Different observation spaces">
     <figcaption>Pink curve does not have the miss reward, trained on top of orange</figcaption>
 </figure>
+<p>You can see in the episode length graph that the new agent just had perfect episodes, avoiding obstacles without any problem.</p>
+<h3>Curriculum Learning</h3>
 <p>While cycling to the rowing club and simultanously thinking about RL, I realized I might improve agent behaviour by introducing difficulty gradually. Not to brag but I basically rediscovered a concept called Curriculum learning, which is an established method in RL.
 Honestly there is nothing to brag since this is only natural progression.</p>
 <ul>
