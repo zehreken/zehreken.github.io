@@ -79,13 +79,17 @@ In the image below you can see a total of 60k training steps.
     <img src="/assets/2026-04-02-making-an-rl-agent-look-good/first_three_runs.png" alt="Different observation spaces">
     <figcaption>TensorBoard graphs showing three consecutive runs of the same network</figcaption>
 </figure>
+
 * Orange: From 0 to 20k, the agent slowly learned to avoid obstacles
 * Blue: From 20k to 41k, the agent was still improved but not much, you can see that episode lenght is at 500
 * Red: From 41k to 60k, I think this was not necessary since the agent stayed the same
 
 This was a good run but there was more to improve. I was not really sure about the miss reward, the 1.0 reward I gave every time an obstacle touched the ground, meaning the agent successfully avoided it. I removed it and the agent did not care. Because the -10.0 reward for getting hit is more than enough to avoid obstacles. Miss reward was just noise for the network.
 
-- here add the graph with miss reward removed
+<figure>
+    <img src="/assets/2026-04-02-making-an-rl-agent-look-good/remove_miss_reward.png" alt="Different observation spaces">
+    <figcaption>Pink curve does not have the miss reward, trained on top of orange</figcaption>
+</figure>
 
 While cycling to the rowing club and simultanously thinking about RL, I realized I might improve agent behaviour by introducing difficulty gradually. Not to brag but I basically rediscovered a concept called Curriculum learning, which is an established method in RL.
 Honestly there is nothing to brag since this is only natural progression.
