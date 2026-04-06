@@ -90,7 +90,7 @@ In the image below you can see a total of 60k training steps.</p>
     <img src="/assets/2026-04-02-making-an-rl-agent-look-good/remove_miss_reward.png" alt="Different observation spaces">
     <figcaption>Pink curve does not have the miss reward, trained on top of orange</figcaption>
 </figure>
-<p>You can see in the episode length graph that the new agent just had perfect episodes, avoiding obstacles without any problem.</p>
+<p>Here I removed miss reward, and continued from 60k steps, the agent was completely fine. Even though average return fell down, episode length was a solid 500. inference was the same, this tells that miss reward was just noise for the agent</p>
 <h3>Curriculum Learning</h3>
 <p>While cycling to the rowing club and simultanously thinking about RL, I realized I might improve agent behaviour by introducing difficulty gradually. Not to brag but I basically rediscovered a concept called Curriculum learning, which is an established method in RL.
 Honestly there is nothing to brag since this is only natural progression.</p>
@@ -102,18 +102,18 @@ Honestly there is nothing to brag since this is only natural progression.</p>
 <p>==============================
 these are for later</p>
 <ul>
-<li>Cyan: Decreased termination rule from 3 to 2, agent struggled a lot but inference was not that bad</li>
-<li>Magenta: Here I removed miss reward, and continued from 60k steps, the agent was completely fine. Even though average return fell down, episode length was a solid 500. inference was the same, this tells that miss reward was just noise for the agent</li>
-<li>Green: I changed -0.01 reward every tick to 0.02 reward every tick, this is also after 60k steps, the agent collapsed</li>
-<li>Gray: same as green from 0, it didn't converge at all</li>
 <li>Orange 2: increased obstacle frequence(2x) continued from pink
 =============================</li>
 </ul>
 <figure>
+    <img src="/assets/2026-04-02-making-an-rl-agent-look-good/increase_obstacle_frequency.png" alt="Different observation spaces">
+    <figcaption>Gray curve shows the graph for doubled(2x) spawn frequency</figcaption>
+</figure>
+<figure>
     <video src="/assets/2026-04-02-making-an-rl-agent-look-good/improved_agent.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
-    <figcaption>What do you think, is the agent better?</figcaption>
+    <figcaption>What do you think? Is the agent better?</figcaption>
 </figure>
 
         </main>

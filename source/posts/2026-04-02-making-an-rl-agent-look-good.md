@@ -60,7 +60,7 @@ This was a good run but there was more to improve. I was not really sure about t
     <figcaption>Pink curve does not have the miss reward, trained on top of orange</figcaption>
 </figure>
 
-You can see in the episode length graph that the new agent just had perfect episodes, avoiding obstacles without any problem.
+Here I removed miss reward, and continued from 60k steps, the agent was completely fine. Even though average return fell down, episode length was a solid 500. inference was the same, this tells that miss reward was just noise for the agent
 
 ### Curriculum Learning
 While cycling to the rowing club and simultanously thinking about RL, I realized I might improve agent behaviour by introducing difficulty gradually. Not to brag but I basically rediscovered a concept called Curriculum learning, which is an established method in RL.
@@ -75,18 +75,21 @@ Curriculum learning is basically having a difficulty curve for the training envi
 
 ==============================
 these are for later
-* Cyan: Decreased termination rule from 3 to 2, agent struggled a lot but inference was not that bad
-* Magenta: Here I removed miss reward, and continued from 60k steps, the agent was completely fine. Even though average return fell down, episode length was a solid 500. inference was the same, this tells that miss reward was just noise for the agent
-* Green: I changed -0.01 reward every tick to 0.02 reward every tick, this is also after 60k steps, the agent collapsed
-* Gray: same as green from 0, it didn't converge at all
+
 * Orange 2: increased obstacle frequence(2x) continued from pink
 =============================
+
+<figure>
+    <img src="/assets/2026-04-02-making-an-rl-agent-look-good/increase_obstacle_frequency.png" alt="Different observation spaces">
+    <figcaption>Gray curve shows the graph for doubled(2x) spawn frequency</figcaption>
+</figure>
+
 
 <figure>
     <video src="/assets/2026-04-02-making-an-rl-agent-look-good/improved_agent.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
-    <figcaption>What do you think, is the agent better?</figcaption>
+    <figcaption>What do you think? Is the agent better?</figcaption>
 </figure>
 
 """
