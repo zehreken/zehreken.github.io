@@ -86,9 +86,9 @@ normalized = absolute_distance / max_distance  // 1.0 when spawned, 0.0 at groun
 // Step 2: invert so the value increases as the obstacle approaches
 normalized = 1 - normalized                    // 0.0 when spawned, 1.0 at ground
 </pre>
-<p>But this meant if there was no obstacle both horizontal and vertical observations for that slot were 0. From
-the agents perspective this meant that there was always an obstacle hanging at top center of the map. To fix this you need to assign a value that is typically not in the normalized range. That is the sentinel value.
-Sentinel value is the similar to null for observation value. So instead of the calculated 0 value, I set it to 2 for slots that were currently empty. 2 is arbitrary here, the important thing is having a value outside normalized range.</p>
+<p>But this meant if there was no obstacle, both horizontal and vertical observations for that slot were 0. From
+the agent's perspective this meant that there was always an obstacle hanging at top center of the map. To fix this you need to assign a value that is typically not in the normalized range. That is the sentinel value.
+Sentinel value is the similar to null for observation value. So instead of the calculated 0 value, I set it to 2 for slots that were currently empty. 2 is arbitrary here, the important thing is having a value outside normalized range. I think this was also the solution to the agent always camping in the corners. I assume that previous values were pushing the agent to the sides.</p>
 <p>Then with all improvements I started training again. In the image below you can see a total of 60k training steps.</p>
 <figure>
     <img src="/assets/2026-04-02-making-an-rl-agent-look-good/first_three_runs.png" alt="Different observation spaces">
@@ -113,10 +113,12 @@ Honestly there is nothing to brag since this is only natural progression.</p>
     <img src="/assets/2026-04-02-making-an-rl-agent-look-good/decreased_termination_limit.png" alt="Different observation spaces">
     <figcaption>Decreased termination rule from 3 to 2, episode length dropped but inference was not that bad</figcaption>
 </figure>
+<p>Above you can see the TensorBoard graphs showing when termination is at 3 hits and 2 hits. Cyan curve shows episods lenght drops a little as expected and rewards as well but at around 15k steps the agents starts to recover. As curriculum learning suggests cyan curve is trained on top of the red line.</p>
 <figure>
     <img src="/assets/2026-04-02-making-an-rl-agent-look-good/increase_obstacle_frequency.png" alt="Different observation spaces">
     <figcaption>Gray curve shows the graph for doubled(2x) spawn frequency</figcaption>
 </figure>
+<p>In the image above, TensorBoard graphs show comparison between different obstacle spawn frequencies. Pink curve represents spawn frequency=1 sec and gray curve represents spawn frequency=0.5 sec. You can see that episode length drops sharply below 420 but then recovers and stabilizes at 500. If miss reward was not removed, reward graphs would go up as well.</p>
 <figure>
     <video src="/assets/2026-04-02-making-an-rl-agent-look-good/improved_agent.mp4" controls playsinline>
         Your browser does not support the video tag.
