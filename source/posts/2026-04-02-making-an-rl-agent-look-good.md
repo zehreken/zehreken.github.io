@@ -35,10 +35,10 @@ These improvements gave me a good starting point. I could now start training, do
 #### The Sentinel
 Training an agent to accomplish a certain task and training it to be elegant and graceful are totally different things.
 In my simple RL experiments, I was able to train an agent that can avoid obstacles in just 1000 steps.
-But when I wanted to make it smooth things went souht really fast.
+But when I wanted to make it smooth things went south really fast.
 I first started with improving the observation space. I increased observed obstacle count from 1 to 3 and later to 6.
 To observe multiple obstacles I sorted them by the their euclidian distances to the agent and provided 
-horizontan and vertical distances separately.
+horizontal and vertical distances separately.
 Having more observations definitely helps but it also increases training time. Fortunately I was saved by being
 able to run agents in parallel.
 I also added a termination rule which didn't exist before. The new rule was if the agent got hit 3 times, it was out.
@@ -80,7 +80,7 @@ Here I removed miss reward, and continued from 60k steps, the agent was complete
 While cycling to the rowing club and simultanously thinking about RL, I realized I might improve agent behaviour by introducing difficulty gradually. Not to brag but I basically rediscovered a concept called Curriculum learning, which is an established method in RL.
 Honestly there is nothing to brag since this is only natural progression.
 
-Curriculum learning is basically having a difficulty curve for the training environment. Similar to how a human player would be overwhelmed if it starts playing a game from the final level, an RL agent is also similar. Curriculum learning fixes this problem by slowly increasing difficulty. This can be like making an existing task harder, for instance in my case increasing the frequency of obstacle or it can be adding a new task like collecting coins while avoiding obstacles. For example I lowered the termination rule limit gradually and this is also an example for curriculum learning.
+Curriculum learning is basically having a difficulty curve for the training environment. Similar to how a human player would be overwhelmed if they started playing a game from the final level, an RL agent is no different. Curriculum learning fixes this problem by slowly increasing difficulty. This can be like making an existing task harder, for instance in my case increasing the frequency of obstacle or it can be adding a new task like collecting coins while avoiding obstacles. For example I lowered the termination rule limit gradually and this is also an example for curriculum learning.
 
 <figure>
     <img src="/assets/2026-04-02-making-an-rl-agent-look-good/decreased_termination_limit.png" alt="Different observation spaces">
