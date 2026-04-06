@@ -46,10 +46,11 @@ But the real breakthrough came after I fixed the sentinel values. Neural network
 values. In my simulation the agent is always at z=0.0 and obstacles spawn at z=600.0. Instead of passing the distance in absolute UE units, I normalize them.
 
 <pre class="prettyprint linenums">
-normalized vertical distance = absolute vertical distance / absolute max distance
-since distance decreases as the obstacle falls, a trick is reverting it with 
-normalized = (1 - normalized)
-this way when the obstacle spawns the distance is 0 and when it is about the touch the ground it is 1.
+// Step 1: normalize to [0, 1]
+normalized = absolute_distance / max_distance  // 1.0 when spawned, 0.0 at ground
+
+// Step 2: invert so the value increases as the obstacle approaches
+normalized = 1 - normalized                    // 0.0 when spawned, 1.0 at ground
 </pre>
 
 But this meant if there was no obstacle both horizontal and vertical observations for that slot were 0. From
