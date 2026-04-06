@@ -19,14 +19,14 @@ You can see agent from the previous post and it certainly cannot go in a game.
 </figure>
 
 I've spent a lot of time on research and reading. As I kept training agents I realized that
-I needed to improve my workflow otherwise I would lose so much time during trainig. When the agent gets more
+I needed to improve my workflow otherwise I would lose so much time during training. When the agent gets more
 complex, the time for training also grows. And there were many times the headless run was corrupted and failed.
 I was already saving snapshots, so the natural next step was just being able to load the snapshots and
 continue training from there.
 And then I changed the environment, contained it in a blue print to be able to run many of them in parallel. 
 In my setup now I can run 64 agents in parallel. Only this cut the training time in half and it does not
 only make training faster but it also provides the network data from 64 different agents simultaneously,
-making the experience diverse enough that degenerate single strategeies are harder to lock in.
+making the experience diverse enough that degenerate single strategies are harder to lock in.
 I also seeded the random generators in the code so that I get the same random numbers every time. I noticed
 that there was significant difference when the same network run multiple times.
 
@@ -55,7 +55,7 @@ normalized = 1 - normalized                    // 0.0 when spawned, 1.0 at groun
 
 But this meant if there was no obstacle, both horizontal and vertical observations for that slot were 0. From
 the agent's perspective this meant that there was always an obstacle hanging at top center of the map. To fix this you need to assign a value that is typically not in the normalized range. That is the sentinel value.
-Sentinel value is the similar to null for observation value. So instead of the calculated 0 value, I set it to 2 for slots that were currently empty. 2 is arbitrary here, the important thing is having a value outside normalized range. I think this was also the solution to the agent always camping in the corners. I assume that previous values were pushing the agent to the sides.
+Sentinel value is similar to null for observation value. So instead of the calculated 0 value, I set it to 2 for slots that were currently empty. 2 is arbitrary here, the important thing is having a value outside normalized range. I think this was also the solution to the agent always camping in the corners. I assume that previous values were pushing the agent to the sides.
 
 Then with all improvements I started training again. In the image below you can see a total of 60k training steps.
 
@@ -78,7 +78,7 @@ This was a good run but there was more to improve. I was not really sure about t
 Here I removed miss reward, and continued from 60k steps, the agent was completely fine. Even though average return fell down, episode length was a solid 500. inference was the same, this tells that miss reward was just noise for the agent
 
 ### Curriculum Learning
-While cycling to the rowing club and simultanously thinking about RL, I realized I might improve agent behaviour by introducing difficulty gradually. Not to brag but I basically rediscovered a concept called Curriculum learning, which is an established method in RL.
+While cycling to the rowing club and simultaneously thinking about RL, I realized I might improve agent behaviour by introducing difficulty gradually. Not to brag but I basically rediscovered a concept called Curriculum learning, which is an established method in RL.
 Honestly there is nothing to brag since this is only natural progression.
 
 Curriculum learning is basically having a difficulty curve for the training environment. Similar to how a human player would be overwhelmed if they started playing a game from the final level, an RL agent is no different. Curriculum learning fixes this problem by slowly increasing difficulty. This can be like making an existing task harder, for instance in my case increasing the frequency of obstacle or it can be adding a new task like collecting coins while avoiding obstacles. For example I lowered the termination rule limit gradually and this is also an example for curriculum learning.
@@ -88,7 +88,7 @@ Curriculum learning is basically having a difficulty curve for the training envi
     <figcaption>Decreased termination rule from 3 to 2, episode length dropped but inference was not that bad</figcaption>
 </figure>
 
-Above you can see the TensorBoard graphs showing when termination is at 3 hits and 2 hits. Cyan curve shows episods lenght drops a little as expected and rewards as well but at around 15k steps the agents starts to recover. As curriculum learning suggests cyan curve is trained on top of the red line.
+Above you can see the TensorBoard graphs showing when termination is at 3 hits and 2 hits. Cyan curve shows episode length drops a little as expected and rewards as well but at around 15k steps the agents starts to recover. As curriculum learning suggests cyan curve is trained on top of the red line.
 
 <figure>
     <img src="/assets/2026-04-02-making-an-rl-agent-look-good/increase_obstacle_frequency.png" alt="Different observation spaces">
@@ -103,4 +103,7 @@ In the image above, TensorBoard graphs show comparison between different obstacl
     </video>
     <figcaption>What do you think? Is the agent better?</figcaption>
 </figure>
+
+In the video above, you can see how 64 agents are running in parallel. It is quite fun and feels like
+watching CCTV. The agent is much better in my opinion, does not move frantically and also not get stuck in the corners. It still makes jerky moves but as I understand this may be inherent to how PPO samples discrete actions — rather than committing to the best action, it samples from the policy distribution, which introduces some natural variability. I think it was physically based the effect would be less visible and I might address in the next experiment.
 """
