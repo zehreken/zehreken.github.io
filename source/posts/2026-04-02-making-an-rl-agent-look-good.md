@@ -4,37 +4,6 @@ created = "2026-04-02"
 updated = "2026-04-02"
 tags = "#reinforcement-learning #artificial-intelligence"
 markdown = """
-Observation Space
-
-Sentinel values for empty obstacle slots must normalize to an unambiguous value — 2.0f is cleaner than 1.0f which is indistinguishable from a real near obstacle. This single fix produced the most dramatic training improvement of the day
-Separate dx/dy is correct for box colliders — Euclidean distance would give the network a false radially symmetric threat model
-Obstacle slots should be fixed at the maximum you'll ever need from the start, using sentinels for empty slots — changing architecture mid-curriculum breaks warm starts
-Sort obstacles by Euclidean distance not vertical distance — vertical sort misroutes attention when horizontal threats are more imminent
-
-Reward Shaping
-
-Episode termination on hit is already a very strong signal — a large hit penalty on top of it may be redundant and can cause overly passive behavior
-Pure negative rewards can produce degenerate policies where dying quickly is optimal — a small survival reward per tick counteracts this
-Simpler reward functions are generally easier for PPO to optimize cleanly
-Rewarding obstacle hitting the ground creates a confusing association between "obstacle very close on Z" and positive reward
-
-Curriculum Learning
-
-Gate phase transitions on actual performance — avg episode length approaching the cap — rather than fixed step thresholds
-Increase difficulty incrementally (25-30% per phase) rather than large jumps like doubling
-Keep architecture fixed across phases and only change environment parameters — this preserves warm start capability
-Matched observation slots to obstacle density is critical — asking the agent to dodge invisible threats is not a learnable problem
-
-Training Dynamics
-
-Smoothed TensorBoard curves hide important variance — always zoom into raw curves to see true stability
-Sharp drops followed by recovery indicate learning rate is too aggressive for the current training stage — the policy is bouncing around the optimum rather than settling
-Plateaus followed by resumed climbing are normal PPO behavior — the policy consolidates before finding the next gradient
-Hitting the episode length cap repeatedly is a clean signal the agent has mastered current difficulty
-True reproducibility in parallel RL training is extremely hard — seeds give approximate reproducibility but thread scheduling and float accumulation cause divergence
-
-POST STARTS HERE
-
 Since the last post, I've played around with the Kaboom example, a lot! I increased obstacle spawn frequency, made obstacles faster and even added collectibles.
 All of that worked to a degree but there was something that bothered me a lot.
 First of all the agent's movement was jerky. Even though it was smart and sometimes made incredible stunts, other times it just ran into the obstacles or just missed the juicy collectible next to it. 
@@ -110,7 +79,7 @@ these are for later
     <video src="/assets/2026-04-02-making-an-rl-agent-look-good/improved_agent.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
-    <figcaption>Nervous agent</figcaption>
+    <figcaption>What do you think, is the agent better?</figcaption>
 </figure>
 
 """
