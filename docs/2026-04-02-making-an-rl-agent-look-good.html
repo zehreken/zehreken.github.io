@@ -94,16 +94,20 @@ In the image below you can see a total of 60k training steps.</p>
 <h3>Curriculum Learning</h3>
 <p>While cycling to the rowing club and simultanously thinking about RL, I realized I might improve agent behaviour by introducing difficulty gradually. Not to brag but I basically rediscovered a concept called Curriculum learning, which is an established method in RL.
 Honestly there is nothing to brag since this is only natural progression.</p>
-<ul>
-<li>you can add a proper definition of curriculum learning</li>
-</ul>
-<p>these are for later</p>
+<p>Curriculum learning is basically having a difficulty curve for the training environment. Similar to how a human player would be overwhelmed if it starts playing a game from the final level, an RL agent is also similar. Curriculum learning fixes this problem by slowly increasing difficulty. This can be like making an existing task harder, for instance in my case increasing the frequency of obstacle or it can be adding a new task like collecting coins while avoiding obstacles. For example I lowered the termination rule limit gradually and this is also an example for curriculum learning.</p>
+<figure>
+    <img src="/assets/2026-04-02-making-an-rl-agent-look-good/decreased_termination_limit.png" alt="Different observation spaces">
+    <figcaption>Decreased termination rule from 3 to 2, episode length dropped but inference was not that bad</figcaption>
+</figure>
+<p>==============================
+these are for later</p>
 <ul>
 <li>Cyan: Decreased termination rule from 3 to 2, agent struggled a lot but inference was not that bad</li>
 <li>Magenta: Here I removed miss reward, and continued from 60k steps, the agent was completely fine. Even though average return fell down, episode length was a solid 500. inference was the same, this tells that miss reward was just noise for the agent</li>
 <li>Green: I changed -0.01 reward every tick to 0.02 reward every tick, this is also after 60k steps, the agent collapsed</li>
 <li>Gray: same as green from 0, it didn't converge at all</li>
-<li>Orange 2: increased obstacle frequence(2x) continued from pink</li>
+<li>Orange 2: increased obstacle frequence(2x) continued from pink
+=============================</li>
 </ul>
 <figure>
     <video src="/assets/2026-04-02-making-an-rl-agent-look-good/improved_agent.mp4" controls playsinline>
