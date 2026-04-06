@@ -106,6 +106,13 @@ these are for later
 * Gray: same as green from 0, it didn't converge at all
 * Orange 2: increased obstacle frequence(2x) continued from pink
 
+<figure>
+    <video src="/assets/2026-04-02-making-an-rl-agent-look-good/improved_agent.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Nervous agent</figcaption>
+</figure>
+
 """
 
 
