@@ -1,48 +1,62 @@
 layout = "post"
-title = "Making an RL Agent Look Good [DRAFT]"
+title = "Making an RL Agent Look Good"
 created = "2026-04-02"
 updated = "2026-04-02"
 tags = "#reinforcement-learning #artificial-intelligence"
 markdown = """
-Since the last post, I've played around with the Kaboom example, a lot! I increased obstacle spawn frequency, made obstacles faster and even added collectibles.
+Since the last post, I've been playing around with the Kaboom example, a lot!
+I increased obstacle spawn frequency, made obstacles faster and even added collectibles.
 All of that worked to a degree but there was something that bothered me a lot.
-First of all the agent's movement was jerky. Even though it was smart and sometimes made incredible stunts, other times it just ran into the obstacles or just missed the juicy collectible next to it. 
+First of all the agent's movement was jerky. Even though it was smart and made incredible stunts at times, other times it just ran into the obstacles or just missed the juicy collectible next to it. Seeing those happen during inference is really painful.
 I wanted to make something that is polished and stable enough to go in a game.
-As you can see, the agent from the last post cannot go in a game, it just does not look good.
+You can see agent from the previous post and it certainly cannot go in a game.
 
 <figure>
     <video src="/assets/2026-03-14-teaching-an-ai-to-play-kaboom/reversekaboom_improved.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
-    <figcaption>Nervous agent</figcaption>
+    <figcaption>Nervous, jerky agent</figcaption>
 </figure>
 
-I've spent a lot of time on research and reading. As I kept working on improving the agent I realized that
-I needed to improve my workflow otherwise I would lose so much time during trainig. As the agent gets more
+I've spent a lot of time on research and reading. As I kept training agents I realized that
+I needed to improve my workflow otherwise I would lose so much time during trainig. When the agent gets more
 complex, the time for training also grows. And there were many times the headless run was corrupted and failed.
 I was already saving snapshots, so the natural next step was just being able to load the snapshots and
-continue training from there. And then I made the simulation run in parallel. In my setup now I can run 64 agents in parallel. Only this cut the training time in half. This does not only make training faster but it also provides the network data from 64 different agents simultanously, making the experience diverse enough that degenerate single strategeies are harder to lock in.
-I also made sure that the random generators worked the same every run because I noticed there were significant difference when the same network run multiples times.
+continue training from there.
+And then I changed the environment, contained it in a blue print to be able to run many of them in parallel. 
+In my setup now I can run 64 agents in parallel. Only this cut the training time in half and it does not
+only make training faster but it also provides the network data from 64 different agents simultaneously,
+making the experience diverse enough that degenerate single strategeies are harder to lock in.
+I also seeded the random generators in the code so that I get the same random numbers every time. I noticed
+that there was significant difference when the same network run multiple times.
 
-These improvements gave me a good starting point. I could now start training, do the dishes, come back and check the results and if anything was not going right, I could return to a good point in the training.
+These improvements gave me a good starting point. I could now start training, do the dishes, come back and check the results and if anything failed, I could return to a previous snapshot which I saved every 1000 steps and continue from there.
 
 #### The Sentinel
 Training an agent to accomplish a certain task and training it to be elegant and graceful are totally different things.
-In my simple RL experiments, I was able to train an agent that can avoid obstalce in just 1000 steps.
+In my simple RL experiments, I was able to train an agent that can avoid obstacles in just 1000 steps.
 But when I wanted to make it smooth things went souht really fast.
 I first started with improving the observation space. I increased observed obstacle count from 1 to 3 and later to 6.
-To observe multiple obstacles I sorted them by the their euclidian distances to the agent.
-Having more observations definitely helps but it also increases training time.
-I also added a termination rule which didn't exist before. If the agent got hit 3 times, it was out.
-But the real breakthrough came after I fixed the sentinel values. Neural networks work best with normalized values, instead of working with absolute distances. In my simulation the agent is always at z=0.0 and obstacles spawn at z=600.0. Instead of passing the distance in absolute UE units, I normalize them. 
+To observe multiple obstacles I sorted them by the their euclidian distances to the agent and provided 
+horizontan and vertical distances separately.
+Having more observations definitely helps but it also increases training time. Fortunately I was saved by being
+able to run agents in parallel.
+I also added a termination rule which didn't exist before. The new rule was if the agent got hit 3 times, it was out.
+But the real breakthrough came after I fixed the sentinel values. Neural networks work best with normalized
+values. In my simulation the agent is always at z=0.0 and obstacles spawn at z=600.0. Instead of passing the distance in absolute UE units, I normalize them.
 
+<pre class="prettyprint linenums">
 normalized vertical distance = absolute vertical distance / absolute max distance
 since distance decreases as the obstacle falls, a trick is reverting it with 
 normalized = (1 - normalized)
 this way when the obstacle spawns the distance is 0 and when it is about the touch the ground it is 1.
+</pre>
 
-But this meant if there is no obstacle it is also 0, this is the sentinel value. Sentinel value is the similar to null for observation value. when ther is no obstacle basically. So instead of 0, I just passed 2. 2 is arbitrary here, the important thing is having a value outside normalized range.
-In the image below you can see a total of 60k training steps.
+But this meant if there was no obstacle both horizontal and vertical observations for that slot were 0. From
+the agents perspective this meant that there was always an obstacle hanging at top center of the map. To fix this you need to assign a value that is typically not in the normalized range. That is the sentinel value.
+Sentinel value is the similar to null for observation value. So instead of the calculated 0 value, I set it to 2 for slots that were currently empty. 2 is arbitrary here, the important thing is having a value outside normalized range.
+
+Then with all improvements I started training again. In the image below you can see a total of 60k training steps.
 
 <figure>
     <img src="/assets/2026-04-02-making-an-rl-agent-look-good/first_three_runs.png" alt="Different observation spaces">
@@ -72,12 +86,6 @@ Curriculum learning is basically having a difficulty curve for the training envi
     <img src="/assets/2026-04-02-making-an-rl-agent-look-good/decreased_termination_limit.png" alt="Different observation spaces">
     <figcaption>Decreased termination rule from 3 to 2, episode length dropped but inference was not that bad</figcaption>
 </figure>
-
-==============================
-these are for later
-
-* Orange 2: increased obstacle frequence(2x) continued from pink
-=============================
 
 <figure>
     <img src="/assets/2026-04-02-making-an-rl-agent-look-good/increase_obstacle_frequency.png" alt="Different observation spaces">
