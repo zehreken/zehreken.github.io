@@ -61,7 +61,7 @@ complex, the time for training also grows. And there were many times the headles
 I was already saving snapshots, so the natural next step was just being able to load the snapshots and
 continue training from there.
 And then I changed the environment, contained it in a blue print to be able to run many of them in parallel. 
-In my setup now I can run 64 agents in parallel. Only this cut the training time in half and it does not
+In my setup now I can run 64 agents in parallel. This alone cut the training time in half and it does not
 only make training faster but it also provides the network data from 64 different agents simultaneously,
 making the experience diverse enough that degenerate single strategies are harder to lock in.
 I also seeded the random generators in the code so that I get the same random numbers every time. I noticed
@@ -72,7 +72,7 @@ that there was significant difference when the same network run multiple times.<
 In my simple RL experiments, I was able to train an agent that can avoid obstacles in just 1000 steps.
 But when I wanted to make it smooth things went south really fast.
 I first started with improving the observation space. I increased observed obstacle count from 1 to 3 and later to 6.
-To observe multiple obstacles I sorted them by the their euclidian distances to the agent and provided 
+To observe multiple obstacles I sorted them by the their Euclidian distances to the agent and provided 
 horizontal and vertical distances separately.
 Having more observations definitely helps but it also increases training time. Fortunately I was saved by being
 able to run agents in parallel.
