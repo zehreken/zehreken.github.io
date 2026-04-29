@@ -14,8 +14,6 @@ I wanted the agent to learn to control left and right tracks independently and l
 
 // This is actually a good start, I now realize that steering without a steering action is very interesting.
 
-// you can add the video that you control the tank manually
-
 I put together a box and 6 cylinders and added controls for moving the tank with physics.
 
 <figure>
@@ -78,9 +76,53 @@ To fix this sneaky behaviour, I introduced a reward for actually reaching the ta
     <figcaption>Agent breaking the law of physics</figcaption>
 </figure>
 
+After debugging some time I realized that the network does not necessarily output normalized values only. That was a big finding for the future experimnents as well. I just clamped the network throttle outputs and I was happy with navigation.
 
-After nailing projectile shooting, you can compare its performance against heuristic projectile shooting.
+### Learning Ballistics
+The vision I had for this one was a vehicle that can navigate and shoot at the same time. I had two options for shooting, hitscan or projectile. I knew that hitscan would be very easy to achieve, since it is very similar to the navigation alignment problem. So I decided to with projectile.
+I added a turret in the back of the tank which gave me huge pains(later in the post). This was also a great introduction to how physics works in Unreal Engine. Coming from Unity, I found that Unreal is not as simple. I especially disliked that labels in the editor and the enum in C++ do not match.
 
+<figure>
+    <video src="/assets/2026-04-14-stepping-into-physics/caviar_laying_armored_vehicle.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Behold! The caviar laying armored vehicle, CLAV</figcaption>
+</figure>
+
+I decided to start simple. I just let the agent output a random vector for the direction of the projectile, the force factor was a predefined value on the game side. And I defined a reward based on how close the projectile landed to the target. It didn't work at all. As I found out later in the RL book, this kind of reward structure is almost impossible to learn for PPO network. The projectile was in the air for several seconds and when it landed, the reward was already too disconnected to the action. So it was just random noise for the agent.
+
+To fix this I simply calculated where the projectile might land given the velocity, mass and gravity and rewarded the agent immediately at the time of the action. This turned out great. Since my calculation was simple didn't take into account uneven terrain and height difference I needed to level the terrain but it was a necessary downgrade.
+
+<figure>
+    <video src="/assets/2026-04-14-stepping-into-physics/nice_aim.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Nice aim!</figcaption>
+</figure>
+
+It felt unintuitive to calculate the actual trajectory just to teach it to the agent but otherwise there is no way for the network to pick that up on its own.
+
+### Combining Driving and Shooting
+
+With these two features successfully converged individually I then wanted to combine them in a single agent. After a bit refactoring the new agent was ready for training for both features at the same time. As I was expected it didn't converge successfully with these two features enabled from the beginning. After 24k steps of training, which is much longer than my usual training amount, the agent learned to drive a little bit but shooting was completely random. On the contrary, both features converged successfully after 2k steps when trained individually.
+
+I already had the curriculum manager from the previous experiment. I cleaned it up and make it more generic and really created the simplest curriculum possible.
+* First lesson: learn to drive
+* Second lesson: learn to shoot
+
+I was hopefull but this didn't work. The agent learned to drive very quickly but didn't add shooting on top of that.
+
+I then change the order in the curriculum because I knew that the driving observations and rewards are much more solid than the ones for shooting.
+With the new curriculum, the agent successfully learned to shoot first and then learned to drive after around 8k training steps.
+
+<figure>
+    <video src="/assets/2026-04-14-stepping-into-physics/stop_align_shoot.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Stop, align, fire, accelerate</figcaption>
+</figure>
+
+But as usual it developed a weird behaviour. Reinforcement learning never ceases to surprise me. When it is time to shoot the agent slows down and aligns, takes a shot and accelerates to the next waypoint. I don't understand why this happens because the projectile does not have an initial velocity but I think it is because the shooting trainig was without movement.
 
 Adding multiple interactors, which enables toggling features much easily. Later: You can only have one interactor per (Policy, decoder, encoder, cricit) group.
 
