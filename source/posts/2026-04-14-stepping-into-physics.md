@@ -11,7 +11,7 @@ this time and also something I can have more fun with in Unreal Engine.
 Since I already trained cars in the original Learning Agents plugin, this time
 I designed a vehicle that moves like a tank.
 I wanted the agent to learn to control left and right tracks independently and learn how to steer without an actual steer action.
-
+I believe this is good step towards training agents that better understand the physical world.
 // This is actually a good start, I now realize that steering without a steering action is very interesting.
 
 I put together a box and 6 cylinders and added controls for moving the tank with physics.
@@ -61,13 +61,31 @@ it found an interesting exploit. Because the target moved to a random location w
     <figcaption>Sneaky bastard at 23000 steps</figcaption>
 </figure>
 
-Interesting findings
-* It was relatively easy to teach the agent to follow a target, just by rewarding it for moving closer to the target and facing the target
-float DistanceDelta = pd - d;
-// AlignX is between [-1, 1]
-OutReward = DistanceDelta + AlignX;
-
 To fix this sneaky behaviour, I introduced a reward for actually reaching the target. And it kind of broke my environment. I was assuming that the network could only output normalized values, meaning values in [-1, 1] range but when I trained the agent with the new reward space(or shape?), the agent became incredibly fast that broke the physics configuration.
+
+Here is the final reward for navigation
+<pre class="prettyprint linenums">
+FVector TargetLocation = Player->Target->GetActorLocation();
+FVector ToTargetPrev = TargetLocation - Player->GetActorPreviousLocation();
+FVector ToTarget = TargetLocation - Player->GetActorLocation();
+
+float DistancePrev = ToTargetPrev.Length();
+float Distance = ToTarget.Length();
+
+FVector WorldOffset = TargetLocation - Player->GetActorLocation();
+// This is what makes the observation egocentric(from the player's perspective)
+FVector LocalOffset = Player->GetActorTransform().InverseTransformVector(WorldOffset);
+FVector LocalDir = LocalOffset.GetSafeNormal();
+float AlignX = LocalDir.X; // 1 if facing directly, -1 if facing the opposite way
+float DistanceDelta = DistancePrev - Distance;
+Reward += DistanceDelta; // Add distance reward
+Reward += AlignX; // Add alignment reward
+if (Player->bHasArrived)
+{
+    Reward += 10.0f;
+    Player->bHasArrived = false;
+}
+</pre>
 
 <figure>
     <video src="/assets/2026-04-14-stepping-into-physics/broken_physics.mp4" controls playsinline>
@@ -76,11 +94,11 @@ To fix this sneaky behaviour, I introduced a reward for actually reaching the ta
     <figcaption>Agent breaking the law of physics</figcaption>
 </figure>
 
-After debugging some time I realized that the network does not necessarily output normalized values only. That was a big finding for the future experimnents as well. I just clamped the network throttle outputs and I was happy with navigation.
+After debugging some time I realized that the network does not necessarily output normalized values only. The output throttle values were close to 5. That was a big finding for the future experimnents as well. I just clamped the network throttle outputs and I was happy with navigation.
 
 ### Learning Ballistics
-The vision I had for this one was a vehicle that can navigate and shoot at the same time. I had two options for shooting, hitscan or projectile. I knew that hitscan would be very easy to achieve, since it is very similar to the navigation alignment problem. So I decided to with projectile.
-I added a turret in the back of the tank which gave me huge pains(later in the post). This was also a great introduction to how physics works in Unreal Engine. Coming from Unity, I found that Unreal is not as simple. I especially disliked that labels in the editor and the enum in C++ do not match.
+The vision I had for this agent was a vehicle that can navigate and shoot at the same time. I had two options for shooting, hitscan or projectile. I knew that hitscan would be very easy to learn, since it is very similar to the navigation alignment problem. So I decided to go with projectile.
+I added a turret in the back of the tank which proved to be huge pain in the ass, as I'll discuss later in this post. This was also a great introduction to how physics works in Unreal Engine. Coming from Unity, I found that Unreal is not as simple. I especially disliked that labels in the editor and the enum in C++ do not match.
 
 <figure>
     <video src="/assets/2026-04-14-stepping-into-physics/caviar_laying_armored_vehicle.mp4" controls playsinline>
@@ -89,9 +107,22 @@ I added a turret in the back of the tank which gave me huge pains(later in the p
     <figcaption>Behold! The caviar laying armored vehicle, CLAV</figcaption>
 </figure>
 
-I decided to start simple. I just let the agent output a random vector for the direction of the projectile, the force factor was a predefined value on the game side. And I defined a reward based on how close the projectile landed to the target. It didn't work at all. As I found out later in the RL book, this kind of reward structure is almost impossible to learn for PPO network. The projectile was in the air for several seconds and when it landed, the reward was already too disconnected to the action. So it was just random noise for the agent.
+I decided to start simple. I just let the agent output a random vector for the direction of the projectile, the force factor was a predefined value on the game side. And I defined a reward based on how close the projectile landed to the target. It didn't work at all. As I found out later in the RL book, this kind of reward structure is almost impossible to learn for a PPO network. The projectile was in the air for several seconds and when it landed, the reward was already too disconnected to the action. So it was just random noise for the agent.
 
-To fix this I simply calculated where the projectile might land given the velocity, mass and gravity and rewarded the agent immediately at the time of the action. This turned out great. Since my calculation was simple didn't take into account uneven terrain and height difference I needed to level the terrain but it was a necessary downgrade.
+To fix this I simply calculated where the projectile might land given the velocity, mass and gravity and rewarded the agent immediately at the time of the action. This turned out great. Since my calculation was simple and didn't take into account uneven terrain and height difference, I needed to level the terrain and also decided to train for shooting without movement. Somewhat a downgrade but it was necessary.
+
+As I mentioned, I added the turret at the back of tank with a small offset from the center and started training from there. It was a debugging hell. Tensorboard always showed great convergence but whenever I tried inference it was completely off. Instead of using the slightly offset turret position, the agent was using its own location for calculating trajectory. It found a good approximation which never hit the target but good enough to collect near miss rewards, that's why TensorBoard was looking good. I then calculated everything relative the turret positions. Things improved but it was still not great. I then realized that the plugin already did the conversion internally.
+I was doing double conversion when writing and reading the direction observation.
+
+<pre class="prettyprint linenums">
+ObservationMap.Add("ShellTargetDirection",
+ULearningAgentsObservations::MakeDirectionObservation(
+    InObservationObject, bShootingEnabled ? WorldDelta : FVector::ForwardVector,
+    Player->GetActorTransform())); // Function accepts relative transform
+</pre>
+
+After fixing this, shooting has improved a lot but there was still some bias to some orientations. I then realized that
+I always spawned the tank with the same position and rotation at every episode. I just randomized those and viola, it was good enough for next step.
 
 <figure>
     <video src="/assets/2026-04-14-stepping-into-physics/nice_aim.mp4" controls playsinline>
@@ -100,7 +131,7 @@ To fix this I simply calculated where the projectile might land given the veloci
     <figcaption>Nice aim!</figcaption>
 </figure>
 
-It felt unintuitive to calculate the actual trajectory just to teach it to the agent but otherwise there is no way for the network to pick that up on its own.
+As a final note on shooting, it felt unintuitive to calculate the actual trajectory just to teach it to the agent but otherwise there is no way for the network to pick that up on its own. The problem is again the distance between rewards and actions. It is like when training a dog, you reward it with a treat for rolling but the next day. The dog is confused and does not remember what the treat is about.
 
 ### Combining Driving and Shooting
 
@@ -126,6 +157,7 @@ But as usual it developed a weird behaviour. Reinforcement learning never ceases
 
 Adding multiple interactors, which enables toggling features much easily. Later: You can only have one interactor per (Policy, decoder, encoder, cricit) group.
 
+// ====================
 summary from claude chat 1
 Egocentric Observations
 Using InverseTransformVector to convert world-space offset into actor-local space, giving the agent rotation-invariant observations. AlignX and AlignY are the normalized direction components to the target from the agent's perspective.
