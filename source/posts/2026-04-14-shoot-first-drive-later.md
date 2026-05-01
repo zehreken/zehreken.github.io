@@ -96,7 +96,7 @@ if (Player->bHasArrived)
 After debugging some time I realized that the network does not necessarily output normalized values only. The output throttle values were close to 5. That was a big finding for the future experiments as well. I just clamped the network throttle outputs and I was happy with navigation. The vision I had for this agent was a vehicle that can navigate and shoot at the same time. So I moved on to the next lesson.
 
 ### Learning Ballistics
-I had two options for shooting, hitscan or projectile. I knew that hitscan would be very easy to learn the agent, since it is very similar to the navigation alignment problem. So I decided to go with projectile to make things more interesting.
+I had two options for shooting, hitscan or projectile. I knew that hitscan would be very easy to teach the agent, since it is very similar to the navigation alignment problem. So I decided to go with projectile to make things more interesting.
 I added a turret in the back of the tank which proved to be huge pain in the ass, as I'll discuss later in this post. This was also a great introduction to how physics works in Unreal Engine. Coming from Unity, I found that Unreal is not as simple. I especially disliked that labels in the editor and the enum in C++ do not match.
 
 <figure>
@@ -138,16 +138,16 @@ I had a tank that could drive or shoot and it was time to combine these.
 ### Combining Driving and Shooting
 
 With these two features successfully converged individually, I then wanted to combine them in a single agent
-First I thought, maybe I could of multiple interactors but then found that LearninAgents plugin didn't support that.
+First I thought, maybe I could make use of multiple interactors but then found that Learnin Agents plugin didn't support that.
 Then I thought maybe I can have multiple networks, one for driving and one for shooting. That sounded like a good idea
 but it required too much change and I ditched the idea.
-As I was expected it didn't converge successfully with these two features enabled from the beginning. After 24k steps of training, which is much longer than my usual training amount, the agent learned to drive a little bit but shooting was completely random. On the contrary, both features converged successfully after 2k steps when trained individually.
+As I expected it didn't converge successfully with these two features enabled from the beginning. After 24k steps of training, which is much longer than my usual training amount, the agent learned to drive a little bit but shooting was completely random. On the contrary, both features converged successfully after 2k steps when trained individually.
 
-I already had the curriculum manager from the previous experiment. I cleaned it up and make it more generic and created the simplest curriculum possible.
+I already had the curriculum manager from the previous experiment. I cleaned it up and made it more generic and created the simplest curriculum possible.
 * First lesson: learn to drive
 * Second lesson: learn to shoot
 
-I was hopefull but this didn't work. The agent learned to drive very quickly but couldn't add shooting on top of that.
+I was hopeful but this didn't work. The agent learned to drive very quickly but couldn't add shooting on top of that.
 
 I then changed the order in the curriculum because I knew that the driving observations and rewards were much more solid than the ones for shooting. And shooting was trained without any movement.
 With the new curriculum, the agent successfully learned to shoot first and then learned to drive after around 8k training steps.
@@ -159,5 +159,8 @@ With the new curriculum, the agent successfully learned to shoot first and then 
     <figcaption>Stop, align, fire, accelerate</figcaption>
 </figure>
 
-But again developed a quirky behaviour. Reinforcement learning never ceases to surprise me. When it is time to shoot the agent slows down and aligns, takes a shot and accelerates to the next waypoint. I'm not sure why this happens because the projectile does not have an initial velocity but it might because the shooting trainig was without movement until driving is enabled by the curriculum.
+But again developed a quirky behaviour. Reinforcement learning never ceases to surprise me. When it is time to shoot the agent slows down and aligns, takes a shot and accelerates to the next waypoint. I'm not sure why this happens because the projectile does not have an initial velocity but it might because the shooting training was without movement until driving is enabled by the curriculum.
+
+I was planning to add obstacle avoidance as well but I'll stop here since I'm happy how this experiement turned out. I want to work on
+more on physics based locomotion.
 """
