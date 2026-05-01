@@ -1,5 +1,5 @@
 layout = "post"
-title = "Shoot First, Drive Later [DRAFT]"
+title = "Shoot First, Drive Later"
 created = "2026-04-14"
 updated = "2026-04-14"
 tags = "#reinforcement-learning #artificial-intelligence"
