@@ -60,7 +60,7 @@ it found an interesting exploit. Because the target moved to a random location w
     <figcaption>Sneaky bastard at 23000 steps</figcaption>
 </figure>
 
-To fix this sneaky behaviour, I introduced a reward for actually reaching the target. And it kind of broke my environment. I was assuming that the plugin could only output normalized values, but when I trained the agent with the new reward space(or shape?), the agent became incredibly fast that broke the physics configuration.
+To fix this sneaky behaviour, I introduced a reward for actually reaching the target. And it kind of broke my environment. I was assuming that the plugin could only output normalized values, but when I trained the agent with the new reward shape, the agent became incredibly fast that broke the physics configuration.
 
 Here is the final reward for navigation
 <pre class="prettyprint linenums">
@@ -138,7 +138,7 @@ I had a tank that could drive or shoot and it was time to combine these.
 ### Combining Driving and Shooting
 
 With these two features successfully converged individually, I then wanted to combine them in a single agent
-First I thought, maybe I could make use of multiple interactors but then found that Learnin Agents plugin didn't support that.
+First I thought, maybe I could make use of multiple interactors but then found that Learning Agents plugin didn't support that.
 Then I thought maybe I can have multiple networks, one for driving and one for shooting. That sounded like a good idea
 but it required too much change and I ditched the idea.
 As I expected it didn't converge successfully with these two features enabled from the beginning. After 24k steps of training, which is much longer than my usual training amount, the agent learned to drive a little bit but shooting was completely random. On the contrary, both features converged successfully after 2k steps when trained individually.
@@ -161,6 +161,6 @@ With the new curriculum, the agent successfully learned to shoot first and then 
 
 But again developed a quirky behaviour. Reinforcement learning never ceases to surprise me. When it is time to shoot the agent slows down and aligns, takes a shot and accelerates to the next waypoint. I'm not sure why this happens because the projectile does not have an initial velocity but it might because the shooting training was without movement until driving is enabled by the curriculum.
 
-I was planning to add obstacle avoidance as well but I'll stop here since I'm happy how this experiement turned out. I want to work on
+I was planning to add obstacle avoidance as well but I'll stop here since I'm happy how this experiment turned out. I want to work on
 more on physics based locomotion.
 """
