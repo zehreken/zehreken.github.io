@@ -43,16 +43,15 @@ of movement is already baked in the network that it is really hard to change lat
 
 I then decided to reward the tank's alignment with the target. Meaning that fully facing the target yields the maximum reward and facing the opposite direction yields the minimum reward, the range being [-1, 1]. This worked nicely, almost.
 
-The agent learned to navigate quickly to the target just after 1000 steps but as I trained it more to make the movement smoother,
-it found an interesting exploit. Because the target moved to a random location when overlapped with the agent, the agent was punished heavily until it faced the target at its new location again. So as soon as inference started the agent was facing the target and moving really slowly towards it, without reaching the target and causing it to relocate, so that it can complete an episode with the highest reward possible.
-
-// You might want to speed up or combine the videos
 <figure>
     <video src="/assets/2026-04-14-shoot-first-drive-later/1000.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Nice agent at 1000 steps</figcaption>
 </figure>
+
+The agent learned to navigate quickly to the target just after 1000 steps but as I trained it more to make the movement smoother,
+it found an interesting exploit. Because the target moved to a random location when overlapped with the agent, the agent was punished heavily until it faced the target at its new location again. So as soon as inference started the agent was facing the target and moving really slowly towards it, without reaching the target and causing it to relocate, so that it can complete an episode with the highest reward possible.
 
 <figure>
     <video src="/assets/2026-04-14-shoot-first-drive-later/23k.mp4" controls playsinline>
@@ -161,6 +160,4 @@ With the new curriculum, the agent successfully learned to shoot first and then 
 </figure>
 
 But again developed a quirky behaviour. Reinforcement learning never ceases to surprise me. When it is time to shoot the agent slows down and aligns, takes a shot and accelerates to the next waypoint. I'm not sure why this happens because the projectile does not have an initial velocity but it might because the shooting trainig was without movement until driving is enabled by the curriculum.
-
-IDEA: I had this idea of implementing a small neural net in rust, like 5 nodes, 1 hidden layer. To simulate a small part of this learning experiement but I forgot. Maybe it was a network that learned to aim.
 """
