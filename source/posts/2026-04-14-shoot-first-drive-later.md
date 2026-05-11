@@ -23,7 +23,7 @@ throttle and two keys for right throttle did the job for human interaction.
 </figure>
 
 Then I wired up the learning part, it got much easier since I switched to C++ because I can structure and reuse the code much better than Blueprints.
-It is really satisfying watching the agent having random thoughts and spasms in the environment after wiring up its brain. There is a primal feeling about seeing a virtual being trying to survive in a hostile environment, compared to rule-based AI where you intentionally create its logic.
+It is really satisfying watching the agent have random thoughts and spasms in the environment after wiring up its brain. There is a primal feeling about seeing a virtual being trying to survive in a hostile environment, compared to rule-based AI where you intentionally create its logic.
 
 <figure>
     <video src="/assets/2026-04-14-shoot-first-drive-later/it_is_alive.mp4" controls playsinline>
@@ -39,9 +39,9 @@ This worked but contrary to the car example, the tank has no front or back and s
 it learned to travel backwards to the target. To solve this I first decreased backwards speed,
 hoping that the policy will figure it out since going forward would yield more rewards.
 It didn't work, at least in a short amount of training time. I think once the agent finds a way to reach the target, the direction
-of movement is already baked in the network that it is really hard to change later.
+of movement is already baked into the network that it is really hard to change later.
 
-I then decided to reward the tank's alignment with the target. Meaning that fully facing the target yields the maximum reward and facing the opposite direction yields the minimum reward, the range being [-1, 1]. This worked nicely, almost.
+I then decided to reward the tank's alignment with the target, meaning that fully facing the target yields the maximum reward and facing the opposite direction yields the minimum reward, the range being [-1, 1]. This worked nicely, almost.
 
 <figure>
     <video src="/assets/2026-04-14-shoot-first-drive-later/1000.mp4" controls playsinline>
@@ -51,7 +51,7 @@ I then decided to reward the tank's alignment with the target. Meaning that full
 </figure>
 
 The agent learned to navigate quickly to the target just after 1000 steps but as I trained it more to make the movement smoother,
-it found an interesting exploit. Because the target moved to a random location when overlapped with the agent, the agent was punished heavily until it faced the target at its new location again. So as soon as inference started the agent was facing the target and moving really slowly towards it, without reaching the target and causing it to relocate, so that it can complete an episode with the highest reward possible.
+it found an interesting exploit. Because the target moved to a random location when overlapped with the agent, the agent was punished heavily until it faced the target at its new location again. So as soon as inference started the agent was facing the target and moving really slowly towards it, without reaching the target and causing it to relocate, so that it could complete an episode with the highest reward possible.
 
 <figure>
     <video src="/assets/2026-04-14-shoot-first-drive-later/23k.mp4" controls playsinline>
@@ -60,7 +60,7 @@ it found an interesting exploit. Because the target moved to a random location w
     <figcaption>Sneaky bastard at 23000 steps</figcaption>
 </figure>
 
-To fix this sneaky behaviour, I introduced a reward for actually reaching the target. And it kind of broke my environment. I was assuming that the plugin could only output normalized values, but when I trained the agent with the new reward shape, the agent became incredibly fast that broke the physics configuration.
+To fix this sneaky behaviour, I introduced a reward for actually reaching the target. And it kind of broke my environment. I was assuming that the plugin could only output normalized values, but when I trained the agent with the new reward shape, the agent became so incredibly fast that it broke the physics configuration.
 
 Here is the final reward for navigation
 <pre class="prettyprint linenums">
@@ -97,7 +97,7 @@ After debugging some time I realized that the network does not necessarily outpu
 
 ### Learning Ballistics
 I had two options for shooting, hitscan or projectile. I knew that hitscan would be very easy to teach the agent, since it is very similar to the navigation alignment problem. So I decided to go with projectile to make things more interesting.
-I added a turret in the back of the tank which proved to be huge pain in the ass, as I'll discuss later in this post. This was also a great introduction to how physics works in Unreal Engine. Coming from Unity, I found that Unreal is not as simple. I especially disliked that labels in the editor and the enum in C++ do not match.
+I added a turret in the back of the tank which proved to be a huge pain in the ass, as I'll discuss later in this post. This was also a great introduction to how physics works in Unreal Engine. Coming from Unity, I found that Unreal is not as simple. I especially disliked that labels in the editor and the enum in C++ do not match.
 
 <figure>
     <video src="/assets/2026-04-14-shoot-first-drive-later/caviar_laying_armored_vehicle.mp4" controls playsinline>
@@ -106,11 +106,11 @@ I added a turret in the back of the tank which proved to be huge pain in the ass
     <figcaption>Behold! The caviar laying armored vehicle, CLAV</figcaption>
 </figure>
 
-I decided to start simple. I just let the agent output a random vector for the direction of the projectile, the force factor was a predefined value on the game side. And I defined a reward based on how close the projectile landed to the target. It didn't work at all. As I found out later in the RL book, this kind of reward structure is almost impossible to learn for a PPO network. The projectile was in the air for several seconds and when it landed, the reward was already too disconnected to the action. So it was just random noise for the agent.
+I decided to start simple. I just let the agent output a random vector for the direction of the projectile, the force factor was a predefined value on the game side. And I defined a reward based on how close the projectile landed to the target. It didn't work at all. As I found out later in the RL book, this kind of reward structure is almost impossible to learn for a PPO network. The projectile was in the air for several seconds and when it landed, the reward was already too disconnected from the action. So it was just random noise for the agent.
 
-To fix this I simply calculated where the projectile might land given the velocity, mass and gravity and rewarded the agent immediately at the time of the shooting action. Since my calculation was simple and didn't take into account uneven terrain and height difference, I needed to level the terrain and also decided to train for shooting without movement. Somewhat a downgrade but it was necessary.
+To fix this I simply calculated where the projectile might land given the velocity, mass and gravity and rewarded the agent immediately at the time of the shooting action. Since my calculation was simple and didn't take into account uneven terrain and height difference, I needed to level the terrain and also decided to train for shooting without movement. Somewhat of a downgrade, but it was necessary.
 
-As I mentioned earlier, I added the turret at the back of the tank with a small offset from the center and started training from there. It was a debugging hell. TensorBoard always showed great convergence but whenever I tried inference, it was completely off. Instead of using the slightly offset turret position, the agent was using its own location for calculating trajectory. It found a good approximation which never hit the target but good enough to collect near miss rewards, that's why TensorBoard was looking good. I then calculated everything relative the turret position. Things improved but it was still not great. I then realized that the plugin already did the conversion internally.
+As I mentioned earlier, I added the turret at the back of the tank with a small offset from the center and started training from there. It was a debugging hell. TensorBoard always showed great convergence but whenever I tried inference, it was completely off. Instead of using the slightly offset turret position, the agent was using its own location for calculating trajectory. It found a good approximation which never hit the target but good enough to collect near miss rewards, that's why TensorBoard was looking good. I then calculated everything relative to the turret position. Things improved but it was still not great. I then realized that the plugin already did the conversion internally.
 I was doing double conversion when writing and reading the direction observation.
 
 <pre class="prettyprint linenums">
@@ -120,8 +120,8 @@ ULearningAgentsObservations::MakeDirectionObservation(
     Player->GetActorTransform())); // Function accepts relative transform
 </pre>
 
-After fixing this, shooting has improved a lot but there was still some bias to some orientations. I then realized that
-I always spawned the tank with the same position and rotation at every episode. I just randomized those, trained again for some time and voila, the agent was able hit targets with good precision.
+After fixing this, shooting improved a lot, but there was still some bias to some orientations. I then realized that
+I always spawned the tank with the same position and rotation at every episode. I just randomized those, trained again for some time and voila, the agent was able to hit targets with good precision.
 
 <figure>
     <video src="/assets/2026-04-14-shoot-first-drive-later/nice_aim.mp4" controls playsinline>
@@ -137,9 +137,9 @@ I had a tank that could drive or shoot and it was time to combine these.
 
 ### Combining Driving and Shooting
 
-With these two features successfully converged individually, I then wanted to combine them in a single agent
-First I thought, maybe I could make use of multiple interactors but then found that Learning Agents plugin didn't support that.
-Then I thought maybe I can have multiple networks, one for driving and one for shooting. That sounded like a good idea
+With these two features successfully converged individually, I then wanted to combine them in a single agent.
+First, I thought maybe I could make use of multiple interactors but then found that the Learning Agents plugin didn't support that.
+Then I thought maybe I could have multiple networks, one for driving and one for shooting. That sounded like a good idea
 but it required too much change and I ditched the idea.
 As I expected it didn't converge successfully with these two features enabled from the beginning. After 24k steps of training, which is much longer than my usual training amount, the agent learned to drive a little bit but shooting was completely random. On the contrary, both features converged successfully after 2k steps when trained individually.
 
@@ -159,8 +159,14 @@ With the new curriculum, the agent successfully learned to shoot first and then 
     <figcaption>Stop, align, fire, accelerate</figcaption>
 </figure>
 
-But again developed a quirky behaviour. Reinforcement learning never ceases to surprise me. When it is time to shoot the agent slows down and aligns, takes a shot and accelerates to the next waypoint. I'm not sure why this happens because the projectile does not have an initial velocity but it might because the shooting training was without movement until driving is enabled by the curriculum.
+But it again developed a quirky behaviour. Reinforcement learning never ceases to surprise me. When it is time to shoot, the agent slows down and aligns, takes a shot and accelerates to the next waypoint. I'm not sure why this happens because the projectile does not have an initial velocity but it might be because the shooting training was without movement until driving was enabled by the curriculum.
 
-I was planning to add obstacle avoidance as well but I'll stop here since I'm happy how this experiment turned out. I want to work on
-more on physics based locomotion.
+<figure>
+    <video src="/assets/2026-04-14-shoot-first-drive-later/extravaganza.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Extravaganza!</figcaption>
+</figure>
+
+I was planning to add obstacle avoidance as well but I'll stop here since I'm happy with how this experiment turned out. I want to work more on physics-based locomotion.
 """
