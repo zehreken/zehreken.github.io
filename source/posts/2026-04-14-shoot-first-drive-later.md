@@ -161,12 +161,5 @@ With the new curriculum, the agent successfully learned to shoot first and then 
 
 But it again developed a quirky behaviour. Reinforcement learning never ceases to surprise me. When it is time to shoot, the agent slows down and aligns, takes a shot and accelerates to the next waypoint. I'm not sure why this happens because the projectile does not have an initial velocity but it might be because the shooting training was without movement until driving was enabled by the curriculum.
 
-<figure>
-    <video src="/assets/2026-04-14-shoot-first-drive-later/extravaganza.mp4" controls playsinline>
-        Your browser does not support the video tag.
-    </video>
-    <figcaption>Extravaganza!</figcaption>
-</figure>
-
 I was planning to add obstacle avoidance as well but I'll stop here since I'm happy with how this experiment turned out. I want to work more on physics-based locomotion.
 """
