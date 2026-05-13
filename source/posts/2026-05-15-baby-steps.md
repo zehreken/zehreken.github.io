@@ -1,5 +1,5 @@
 layout = "post"
-title = "[DRAFT]"
+title = "Baby Steps"
 created = "2026-05-15"
 updated = "2026-05-15"
 tags = "#reinforcement-learning #artificial-intelligence"
@@ -14,7 +14,7 @@ headstart by making the legs long and connecting them on the top corners so the 
 lower.
 
 <figure>
-    <video src="/assets/2026-05-15/headcrab.mp4" controls playsinline>
+    <video src="/assets/2026-05-15-baby-steps/headcrab.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Testing the limbs with keyboard controls, reminds me the infamous headcrab</figcaption>
@@ -29,7 +29,7 @@ their respective parts.
 It gets easier and easier as I collect more and more code with these projects. After writing some
 boilerplate code and moving files around, the agent had a brain. The actions I designed for the agent were controlling target velocity for each joint with a float action. And the observation space was the joint angle for each joint.
 <figure>
-    <video src="/assets/2026-05-15/newborn.mp4" controls playsinline>
+    <video src="/assets/2026-05-15-baby-steps/newborn.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Like a newborn fawn, it wants to stand up</figcaption>
@@ -37,158 +37,66 @@ boilerplate code and moving files around, the agent had a brain. The actions I d
 
 I spent a lot of time figuring out how to reset the the agent's body. Since it was driven by physics simply rotating and positioning didn't work. I needed to detach all the limbs, reset all the velocity on them and reattach. This approach worked fine.
 
-I was expecting that learning how to stand up to be fairly easy and quick. Based on my learning from the previous experiments, the agent had all the information it needed. I also added a termination case
-which should have enforced it even more.
+I was expecting that learning how to stand up to be fairly easy and quick. Based on my learnings from the previous experiments, the agent had all the information it needed. I also added a termination case which should have enforced it even more.
 
-### 0934 - Wide body
-This one failed to learn how to stand upright, even after 50k steps it was able to stand for a couple seconds
-<figure>
-    <img src="/assets/2026-05-15/0934_tb.png" alt="">
-    <figcaption></figcaption>
-</figure>
-if (Alignment < 0.9f) // threshold
+My first reward shaping was like below
+<pre class="prettyprint linenums">
+if (Alignment < 0.9f) // Termination threshold
 {
 	bHasFlipped = true;
 }
-, constexpr float VelocityFactor = 10.0f;
-reward shape
 float Reward = 0.0f;
 	
 float Alignment = FVector::DotProduct(Player->GetActorUpVector(), FVector::UpVector);
 Reward += Alignment * 0.1f;
 
-if (Player->bHasFlipped)
+if (bHasFlipped)
 {
 	Reward -= 1.0f;
 }
-
 OutReward = Reward;
-### 1310 and 2231 - new reward shape
-This one is a great improvement over the previous one, agents can stand upright much longer, they fidget a little bit
-I think this instability is great for future tasks, turning and moving towards a target and such
-if (Alignment < 0.95f) // increased threshold
+</pre>
+
+This one failed to learn how to stand upright, even after 50k steps it was able to stand only for a couple seconds
+<figure>
+    <img src="/assets/2026-05-15-baby-steps/stand_up_fail_after_50k.png" alt="">
+    <figcaption></figcaption>
+</figure>
+
+<figure>
+    <video src="/assets/2026-05-15-baby-steps/first_try.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Can't stand up</figcaption>
+</figure>
+
+Then I made the termination case stricted and also changed the reward curve
+<pre class="prettyprint linenums">
+if (Alignment < 0.95f) // Termination threshold
 {
 	bHasFlipped = true;
 }
-reward shape
 float Reward = 0.0f;
 	
 float Alignment = FVector::DotProduct(Player->GetActorUpVector(), FVector::UpVector);
 Reward += FMath::Pow(Alignment, 8.0f);
 
-if (Player->bHasFlipped)
+if (bHasFlipped)
 {
 	Reward -= 1.0f;
 }
 
 OutReward = Reward;
+</pre>
 
-matplotlib
-import matplotlib.pyplot as plt
-import numpy as np
+This one was a great improvement over the previous one, agent could stand upright much longer
 
-chosen_font = 'Arial' 
-
-plt.rcParams.update({
-    'font.family': 'sans-serif',      # Base family
-    'font.sans-serif': [chosen_font], # Specific font
-    'mathtext.default': 'regular'     # Forces math ($x$) to use the same font
-})
-
-# 1. Setup Data
-x = np.linspace(-1, 1, 2000)
-# Reward is x^8 if above 0.95, otherwise it's a termination penalty of -1
-reward = np.where(x > 0.9, x*0.1, -1)
-
-# 2. Initialize Plot
-fig, ax = plt.subplots(figsize=(5, 3))
-
-# Plot the reward curve
-ax.plot(x, reward, color='#5500FF', linewidth=2, label='Stepwise Reward $r_t$')
-
-# 3. Enhance Convention: Shading Regions
-# Green for the "Active/Safe" zone, Red for the "Termination" zone
-ax.fill_between(x, -1.2, 1.2, where=(x > 0.9), color='green', alpha=0.2, label='Active State')
-ax.fill_between(x, -1.2, 1.2, where=(x <= 0.9), color='red', alpha=0.2, label='Termination Zone')
-
-# 4. Threshold Formatting
-threshold = 0.9
-ax.axvline(x=threshold, color='black', linestyle='--', linewidth=1.2, alpha=0.7)
-ax.text(threshold - 0.02, 0.5, 'Termination Boundary', rotation=90, 
-        verticalalignment='center', fontweight='bold', alpha=0.7)
-
-# 5. Conventional Labeling
-ax.set_xlabel('Alignment Score ($x$)', fontsize=11)
-ax.set_ylabel('Reward ($r$)', fontsize=11)
-ax.set_title(r'Old Reward: $r(x)$ with Boundary Constraint', fontsize=13, pad=15)
-
-# Set Axis Limits
-ax.set_xlim(-1, 1)
-ax.set_ylim(-1.1, 1.1)
-
-# Grid and Aesthetics
-ax.grid(True, which='both', linestyle=':', alpha=0.4)
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
-
-# Legend
-ax.legend(loc='upper left', frameon=True)
-
-plt.tight_layout()
-plt.show()
-//==================================
-import matplotlib.pyplot as plt
-import numpy as np
-
-chosen_font = 'Arial' 
-
-plt.rcParams.update({
-    'font.family': 'sans-serif',      # Base family
-    'font.sans-serif': [chosen_font], # Specific font
-    'mathtext.default': 'regular'     # Forces math ($x$) to use the same font
-})
-
-# 1. Setup Data
-x = np.linspace(-1, 1, 2000)
-# Reward is x^8 if above 0.95, otherwise it's a termination penalty of -1
-reward = np.where(x > 0.95, x**8, -1)
-
-# 2. Initialize Plot
-fig, ax = plt.subplots(figsize=(5, 3))
-
-# Plot the reward curve
-ax.plot(x, reward, color='#5500FF', linewidth=2, label='Stepwise Reward $r_t$')
-
-# 3. Enhance Convention: Shading Regions
-# Green for the "Active/Safe" zone, Red for the "Termination" zone
-ax.fill_between(x, -1.2, 1.2, where=(x > 0.95), color='green', alpha=0.2, label='Active State')
-ax.fill_between(x, -1.2, 1.2, where=(x <= 0.95), color='red', alpha=0.2, label='Termination Zone')
-
-# 4. Threshold Formatting
-threshold = 0.95
-ax.axvline(x=threshold, color='black', linestyle='--', linewidth=1.2, alpha=0.7)
-ax.text(threshold - 0.02, 0.5, 'Termination Boundary', rotation=90, 
-        verticalalignment='center', fontweight='bold', alpha=0.7)
-
-# 5. Conventional Labeling
-ax.set_xlabel('Alignment Score ($x$)', fontsize=11)
-ax.set_ylabel('Reward ($r$)', fontsize=11)
-ax.set_title(r'New Reward: $r(x)$ with Boundary Constraint', fontsize=13, pad=15)
-
-# Set Axis Limits
-ax.set_xlim(-1, 1)
-ax.set_ylim(-1.1, 1.1)
-
-# Grid and Aesthetics
-ax.grid(True, which='both', linestyle=':', alpha=0.4)
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
-
-# Legend
-ax.legend(loc='upper left', frameon=True)
-
-plt.tight_layout()
-plt.show()
+<figure>
+    <video src="/assets/2026-05-15-baby-steps/second_try_success.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Looks very dystopian</figcaption>
+</figure>
 
 ### Part 2: Look at the target
 Stand-up training took unusually long. After doing the previous experiments I thought I developed some intuition.
@@ -210,7 +118,7 @@ relieved at the same time. I immediately knew that this was the main problem. I 
 The looking curriculum kicked in very quickly since episode length passed 250 very quickly. The agent also learned to look at a certain direction but there was always a bias, it was either clockwise and ccw regardless if the one of them is closer to the target direction.
 
 <figure>
-    <video src="/assets/2026-05-15/mix.mp4" controls playsinline>
+    <video src="/assets/2026-05-15-baby-steps/mix.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>standing and steering success</figcaption>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang='en_US'>
+
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-60769427-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-60769427-1');
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>lab.guchanalkan.com</title>
+    <meta name="generator" content="https://github.com/zehreken/simple-blog-generator" />
+    <meta property="og:title" content="lab.guchanalkan.com" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="description" content="programming notes" />
+    <meta property="og:description" content="programming notes" />
+    <link rel="canonical" href="https://lab.guchanalkan.com/" />
+    <meta property="og:url" content="https://lab.guchanalkan.com/" />
+    <meta property="og:site_name" content="lab.guchanalkan.com" />
+    <script type="application/ld+json">
+{"@type":"WebSite","url":"https://lab.guchanalkan.com/","name":"lab.guchanalkan.com","description":"programming notes","@context":"https://schema.org"}</script>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>
+            <h1><a class="site-title" rel="author" href="/">lab.guchanalkan.com</a></h1>
+            <nav>
+                <a href="/about.html">about</a>
+                <a href="/projects.html">projects</a>
+            </nav>
+        </header>
+        <br>
+        <hr>
+        <main>
+            <h5>2026-05-15</h5>
+            <div class="tag-nav"><a href="tags/reinforcement-learning.html" class="tag-pill">#reinforcement-learning</a><a href="tags/artificial-intelligence.html" class="tag-pill">#artificial-intelligence</a></div>
+            <h1>Baby Steps</h1>
+            <p>In this prototype I wanted to play more with physics. I wanted the agent to physically interact with the world by learning how to use its weight, its limbs, friction etc. I think this is where reinforcement learning really shines. In the previous prototypes one can argue that the problems
+would be solved by rule-based AI in a much more efficient way and I agree. Reinforcement learning is
+not a silver bullet. After working almost 2 decades in the games industry, I know that there is
+silver bullet.</p>
+<p>I started by designing a simple agent. 1 big body, 4 legs and 4 joints. I tried to give the agent a
+headstart by making the legs long and connecting them on the top corners so the center of mass is
+lower.</p>
+<figure>
+    <video src="/assets/2026-05-15/headcrab.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Testing the limbs with keyboard controls, reminds me the infamous headcrab</figcaption>
+</figure>
+<p>After making sure that the joints moved the legs as expected, it was time for giving it a brain
+that it deserved. I already had an idea for a curriculum for the agent. I was going to teach it to
+stand, and then face a direction and then finally walk to a location. I'll try to explain these in
+their respective parts.</p>
+<h3>Part 1: Standing up</h3>
+<p>It gets easier and easier as I collect more and more code with these projects. After writing some
+boilerplate code and moving files around, the agent had a brain. The actions I designed for the agent were controlling target velocity for each joint with a float action. And the observation space was the joint angle for each joint.</p>
+<figure>
+    <video src="/assets/2026-05-15/newborn.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Like a newborn fawn, it wants to stand up</figcaption>
+</figure>
+<p>I spent a lot of time figuring out how to reset the the agent's body. Since it was driven by physics simply rotating and positioning didn't work. I needed to detach all the limbs, reset all the velocity on them and reattach. This approach worked fine.</p>
+<p>I was expecting that learning how to stand up to be fairly easy and quick. Based on my learnings from the previous experiments, the agent had all the information it needed. I also added a termination case which should have enforced it even more.</p>
+<p>My first reward shaping was like below</p>
+<pre class="prettyprint linenums">
+if (Alignment < 0.9f) // Termination threshold
+{
+	bHasFlipped = true;
+}
+float Reward = 0.0f;
+	
+float Alignment = FVector::DotProduct(Player->GetActorUpVector(), FVector::UpVector);
+Reward += Alignment * 0.1f;
+
+if (bHasFlipped)
+{
+	Reward -= 1.0f;
+}
+OutReward = Reward;
+</pre>
+<p>This one failed to learn how to stand upright, even after 50k steps it was able to stand only for a couple seconds</p>
+<figure>
+    <img src="/assets/2026-05-15/stand_up_fail_after_50k.png" alt="">
+    <figcaption></figcaption>
+</figure>
+<figure>
+    <video src="/assets/2026-05-15/first_try.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Can't stand up</figcaption>
+</figure>
+<p>Then I made the termination case stricted and also changed the reward curve</p>
+<pre class="prettyprint linenums">
+if (Alignment < 0.95f) // Termination threshold
+{
+	bHasFlipped = true;
+}
+float Reward = 0.0f;
+	
+float Alignment = FVector::DotProduct(Player->GetActorUpVector(), FVector::UpVector);
+Reward += FMath::Pow(Alignment, 8.0f);
+
+if (bHasFlipped)
+{
+	Reward -= 1.0f;
+}
+
+OutReward = Reward;
+</pre>
+<p>This one was a great improvement over the previous one, agent could stand upright much longer</p>
+<figure>
+    <video src="/assets/2026-05-15/second_try_success.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Looks very dystopian</figcaption>
+</figure>
+<h3>Part 2: Look at the target</h3>
+<p>Stand-up training took unusually long. After doing the previous experiments I thought I developed some intuition.
+And my intuition was given all the observations (joint angles) the agent should learn to stand still pretty quickly. It didn't happen.
+It took around 30k steps to stabilize. But I was happy with it regardless, since I could now start with the next feature.
+For looking I added a direction vector which was randomized every episode reset. 
+I configured my curriculum to enable looking training when the episode length reached 250. 250 sounded like a good spot based on TensorBoard data.</p>
+<p>After some minor adjustments, I left it to train for almost 8 hours. This was the longest training I have ever done. The Tensorboard graphs
+somehow look good. When I tried inference though, the agent behaviour was completely wrong. Even the standing behavior was gone and the agent was flipping after doing some fancy dance move.
+// Add balerina video here
+// Could be the caption: In the mean time I was having some fun with unreal engine, working on a fur shader</p>
+<p>I decided to make things easier for the agent. First I thought the cube colliders disturbing the stability so I changed them with capsule ones thinking that the legs would glide easier. I also made the legs shorter moved them a bit further in the front and back. This actually made the balance base smaller but the agent didn't have giant legs that can trip it off easily. And I also lowered the center of mass of the body (I reverted this and still trains fine, so you can remove it). None of these really helped.</p>
+<p>And then I got hit with a huge bug. I was feeding the network with joint twist values instead of swing values. I felt very frustrated and 
+relieved at the same time. I immediately knew that this was the main problem. I just fixed the functions that return joint angles and the stand still training just converged in less than 500 steps, yes five and double zero! (mind blown). I mean all the agent has to do was extending the legs anyways.</p>
+<p>The looking curriculum kicked in very quickly since episode length passed 250 very quickly. The agent also learned to look at a certain direction but there was always a bias, it was either clockwise and ccw regardless if the one of them is closer to the target direction.</p>
+<figure>
+    <video src="/assets/2026-05-15/mix.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>standing and steering success</figcaption>
+</figure>
+<h3>Part3: Walking</h3>
+<p>I implemented a reward shaping very similar to the previous tank example. Basically rewarding alignment with the target and distance delta.
+It worked well as I expected. I then disabled looking curriculum and it actually fixed the cw/ccw bias problem. I knew from the start
+that looking training is unnecessary if the agent learned walking to the target eventually. Looking is just emergent behaviour to accomplish the task anyways. But it was great learning regardless since I saw cw/ccw bias which I still don't understand why. My guess is that the network learns to steer to a certain direction early in the training and sticks with it forever.</p>
+<p>I then disabled all curriculum and enabled walking training from the start. This worked much better actually since I had the termination case based on vertical alignment. The agent had to stand upright to proceed in training anyways. And the agent learned to walk to the target.</p>
+<p>The gait was not great though. The agent relied on one front and one rear leg on opposite sides. To turn right it used rear-left leg and to turn left it used front-right leg. And the other two legs were for balance. Honestly I think this is a great strategy given that the agent only observes joint twist angle and leg angular velocity. I then played around with physics config a little. Added angular and linear damping to legs and also changed the physics material to rubber, which had higher friction factor. I think it helped with speed and stability but not with the gait.</p>
+<p>// you can talk about adding leg-ground contact observations</p>
+
+        </main>
+        <hr>
+        <footer>
+            <p><a href="https://github.com/zehreken">github</a> | <a href="https://x.com/zehreken">x.com</a> | <a href="https://www.instagram.com/fotografiagucci/">instagram</a> | <a href="/zettelkasten/">zettel</a></p>
+        </footer>
+    </div>
+    <img src="https://librecounter.org/counter.svg" referrerPolicy="unsafe-url" width="0" />
+</body>
+
+</html>
