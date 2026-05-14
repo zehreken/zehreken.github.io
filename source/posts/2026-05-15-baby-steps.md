@@ -34,7 +34,7 @@ boilerplate code and moving files around, the agent had a brain. The actions I d
     <figcaption>Like a newborn fawn, it wants to stand up</figcaption>
 </figure>
 
-I spent a lot of time figuring out how to reset the the agent's body. Since it was driven by physics, simply rotating and positioning didn't work. I needed to detach all the limbs, reset all the velocity on them and reattach. This approach worked fine.
+I spent a lot of time figuring out how to reset the agent's body. Since it was driven by physics, simply rotating and positioning didn't work. I needed to detach all the limbs, reset all the velocity on them and reattach. This approach worked fine.
 
 I was expecting that learning how to stand up to be fairly easy and quick. Based on my learnings from the previous experiments, the agent had all the information it needed. I also added a termination case which should have enforced it even more.
 
@@ -108,14 +108,14 @@ After some minor adjustments, I left it to train for almost 8 hours. This was th
 somehow looked good.
 
 <figure>
-    <img src="/assets/2026-05-15-baby-steps/balerina_failed_angle_observation_bug.png" alt="Longest training ever">
+    <img src="/assets/2026-05-15-baby-steps/ballerina_failed_angle_observation_bug.png" alt="Longest training ever">
     <figcaption>Longest training ever</figcaption>
 </figure>
 
 When I tried inference though, the agent behaviour was completely wrong. Even the standing behavior was gone and the agent was flipping after doing some fancy dance move.
 
 <figure>
-    <video src="/assets/2026-05-15-baby-steps/balerina.mp4" controls playsinline>
+    <video src="/assets/2026-05-15-baby-steps/ballerina.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Dancing without knowing how to stand</figcaption>
@@ -123,8 +123,8 @@ When I tried inference though, the agent behaviour was completely wrong. Even th
 
 I decided to make things easier for the agent. First I thought the cube colliders were disturbing the stability, so I changed them with capsule ones thinking that the legs would glide easier. I also made the legs shorter moved them a bit further in the front and back. This actually made the balance base smaller but the agent didn't have giant legs that can trip it off easily. None of these really helped.
 
-And then I got hit with a huge bug. I was feeding the network with joint twist values instead of swing values. It was very frustratin but also
-relieving at the same time. I immediately knew that this was the main problem. I just fixed the functions that return joint angles and the ing training just converged in less than 500 steps, yes five, zero, zero! My mind was blown. I was happy that my initial intuition was correct. I mean all the agent has to do was extending its legs anyways.
+And then I got hit with a huge bug. I was feeding the network with joint twist values instead of swing values. It was very frustrating but also
+relieving at the same time. I immediately knew that this was the main problem. I just fixed the functions that return joint angles and the standing training just converged in less than 500 steps, yes five, zero, zero! My mind was blown. I was happy that my initial intuition was correct. I mean all the agent has to do was extending its legs anyways.
 
 The looking curriculum kicked in very quickly since episode length passed 250 very fast. The agent also learned to look at a certain direction but there was always a bias, it was either clockwise or counterclockwise regardless if either one of them is closer to the target direction.
 
@@ -138,7 +138,7 @@ The looking curriculum kicked in very quickly since episode length passed 250 ve
 As you can see the agent has evolved a lot, both visually and physically. It was fun to work on visual stuff during long trainigs.
 I didn't want to spend any more time on the turning bias problem and continued with the walking training.
 
-### Part3: Walking
+### Part 3: Walking
 I implemented a reward shaping very similar to the previous tank example. Basically rewarding alignment with the target and distance delta. I also improved observation space by adding angular velocity for each leg.
 It worked well as I expected. I then disabled looking curriculum and it actually fixed the cw/ccw bias problem. I knew from the start
 that looking training was unnecessary. If the agent learned walking to the target eventually, looking is just an emergent behaviour to accomplish the task anyway. But it was great learning regardless, since I saw cw/ccw bias which I still don't understand why. My guess is that the network learns to steer to a certain direction early in the training and sticks with it forever. Maybe punishing extra movement might have resolved this.
@@ -155,7 +155,7 @@ And the agent learned to walk to the target.
 
 I love that the agent has developed this cute gallop but I was not satisfied with the gait. The agent relied on one front and one rear leg on opposite sides. To turn right it used rear-left(or rear-right) leg and to turn left it used front-right(or front-left) leg. And the other two legs were used mostly for balance. Honestly I think this is a great strategy given that the agent only observes joint swing angle and angular velocity for each leg. I then played around with physics config a little. Added angular and linear damping to legs and also changed the physics material to rubber, which had higher friction factor. I think it helped with speed and stability but not with the gait.
 
-I was already satisfied with the result but I wanted to see if I could improve it somehow. I wanted to add some more observations, this time contact information for each leg. I feeded the network with 4 booleans, representing contact information for each leg. Unfortunately this made the gait even worse but increased stability a lot. You can see in the image below how average episode length climbed when contact information is observed.
+I was already satisfied with the result but I wanted to see if I could improve it somehow. I wanted to add some more observations, this time contact information for each leg. I fed the network with 4 booleans, representing contact information for each leg. Unfortunately this made the gait even worse but increased stability a lot. You can see in the image below how average episode length climbed when contact information is observed.
 
 <figure>
     <img src="/assets/2026-05-15-baby-steps/before_and_after_contact_points.png" alt="Longest training ever">
