@@ -51,7 +51,7 @@ silver bullet.</p>
 headstart by making the legs long and connecting them on the top corners so the center of mass is
 lower.</p>
 <figure>
-    <video src="/assets/2026-05-15/headcrab.mp4" controls playsinline>
+    <video src="/assets/2026-05-15-baby-steps/headcrab.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Testing the limbs with keyboard controls, reminds me the infamous headcrab</figcaption>
@@ -64,7 +64,7 @@ their respective parts.</p>
 <p>It gets easier and easier as I collect more and more code with these projects. After writing some
 boilerplate code and moving files around, the agent had a brain. The actions I designed for the agent were controlling target velocity for each joint with a float action. And the observation space was the joint angle for each joint.</p>
 <figure>
-    <video src="/assets/2026-05-15/newborn.mp4" controls playsinline>
+    <video src="/assets/2026-05-15-baby-steps/newborn.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Like a newborn fawn, it wants to stand up</figcaption>
@@ -90,11 +90,11 @@ OutReward = Reward;
 </pre>
 <p>This one failed to learn how to stand upright, even after 50k steps it was able to stand only for a couple seconds</p>
 <figure>
-    <img src="/assets/2026-05-15/stand_up_fail_after_50k.png" alt="">
+    <img src="/assets/2026-05-15-baby-steps/stand_up_fail_after_50k.png" alt="">
     <figcaption></figcaption>
 </figure>
 <figure>
-    <video src="/assets/2026-05-15/first_try.mp4" controls playsinline>
+    <video src="/assets/2026-05-15-baby-steps/first_try.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Can't stand up</figcaption>
@@ -119,7 +119,7 @@ OutReward = Reward;
 </pre>
 <p>This one was a great improvement over the previous one, agent could stand upright much longer</p>
 <figure>
-    <video src="/assets/2026-05-15/second_try_success.mp4" controls playsinline>
+    <video src="/assets/2026-05-15-baby-steps/second_try_success.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Looks very dystopian</figcaption>
@@ -139,7 +139,7 @@ somehow look good. When I tried inference though, the agent behaviour was comple
 relieved at the same time. I immediately knew that this was the main problem. I just fixed the functions that return joint angles and the stand still training just converged in less than 500 steps, yes five and double zero! (mind blown). I mean all the agent has to do was extending the legs anyways.</p>
 <p>The looking curriculum kicked in very quickly since episode length passed 250 very quickly. The agent also learned to look at a certain direction but there was always a bias, it was either clockwise and ccw regardless if the one of them is closer to the target direction.</p>
 <figure>
-    <video src="/assets/2026-05-15/mix.mp4" controls playsinline>
+    <video src="/assets/2026-05-15-baby-steps/mix.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>standing and steering success</figcaption>
