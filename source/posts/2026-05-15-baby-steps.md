@@ -143,7 +143,8 @@ I implemented a reward shaping very similar to the previous tank example. Basica
 It worked well as I expected. I then disabled looking curriculum and it actually fixed the cw/ccw bias problem. I knew from the start
 that looking training was unnecessary. If the agent learned walking to the target eventually, looking is just an emergent behaviour to accomplish the task anyway. But it was great learning regardless, since I saw cw/ccw bias which I still don't understand why. My guess is that the network learns to steer to a certain direction early in the training and sticks with it forever. Maybe punishing extra movement might have resolved this.
 
-I then disabled all curriculum and enabled walking training from the start. This worked much better actually since I had the termination case based on vertical alignment. The agent had to stand upright to proceed in training anyways. And the agent learned to walk to the target.
+I then disabled all curriculum and enabled walking training from the start. This worked much better actually since I had the termination case for vertical misalignment. The agent had to stand upright to proceed during the training anyways.
+And the agent learned to walk to the target.
 
 <figure>
     <video src="/assets/2026-05-15-baby-steps/walk.mp4" controls playsinline>
@@ -152,7 +153,14 @@ I then disabled all curriculum and enabled walking training from the start. This
     <figcaption>Run, cow, run!</figcaption>
 </figure>
 
-I love that the agent has developed this cute gallop but I was not satisfied with the gait. The agent relied on one front and one rear leg on opposite sides. To turn right it used rear-left leg and to turn left it used front-right leg. And the other two legs were for balance. Honestly I think this is a great strategy given that the agent only observes joint twist angle and leg angular velocity for each leg. I then played around with physics config a little. Added angular and linear damping to legs and also changed the physics material to rubber, which had higher friction factor. I think it helped with speed and stability but not with the gait.
+I love that the agent has developed this cute gallop but I was not satisfied with the gait. The agent relied on one front and one rear leg on opposite sides. To turn right it used rear-left(or rear-right) leg and to turn left it used front-right(or front-left) leg. And the other two legs were used mostly for balance. Honestly I think this is a great strategy given that the agent only observes joint swing angle and angular velocity for each leg. I then played around with physics config a little. Added angular and linear damping to legs and also changed the physics material to rubber, which had higher friction factor. I think it helped with speed and stability but not with the gait.
 
-// you can talk about adding leg-ground contact observations
+I was already satisfied with the result but I wanted to see if I could improve it somehow. I wanted to add some more observations, this time contact information for each leg. I feeded the network with 4 booleans, representing contact information for each leg. Unfortunately this made the gait even worse but increased stability a lot. You can see in the image below how average episode length climbed when contact information is observed.
+
+<figure>
+    <img src="/assets/2026-05-15-baby-steps/before_and_after_contact_points.png" alt="Longest training ever">
+    <figcaption>Blue represents the training with contact information</figcaption>
+</figure>
+
+
 """
