@@ -1,2 +1,3 @@
 use 'sbg' to generate
-use 'miniserve docs -i 127.0.0.1' to serve locally
+use to serve locally
+miniserve docs -i 127.0.0.1
