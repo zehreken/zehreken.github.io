@@ -56,7 +56,8 @@ if (bHasFlipped)
 OutReward = Reward;
 </pre>
 
-This one failed to learn how to stand upright, even after 50k steps it was able to stand only for a couple seconds
+This one failed to learn how to stand upright, even after 50k steps it was able to stand only for a couple seconds.
+
 <figure>
     <img src="/assets/2026-05-15-baby-steps/stand_up_fail_after_50k.png" alt="">
     <figcaption>Episode length stuck at around 100 out of 500</figcaption>
