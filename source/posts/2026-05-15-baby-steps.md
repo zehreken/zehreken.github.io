@@ -155,7 +155,8 @@ And the agent learned to walk to the target.
 
 I love that the agent has developed this cute gallop but I was not satisfied with the gait. The agent relied on one front and one rear leg on opposite sides. To turn right it used rear-left(or rear-right) leg and to turn left it used front-right(or front-left) leg. And the other two legs were used mostly for balance. Honestly I think this is a great strategy given that the agent only observes joint swing angle and angular velocity for each leg. I then played around with physics config a little. Added angular and linear damping to legs and also changed the physics material to rubber, which had higher friction factor. I think it helped with speed and stability but not with the gait.
 
-I was already satisfied with the result but I wanted to see if I could improve it somehow. I wanted to add some more observations, this time contact information for each leg. I fed the network with 4 booleans, representing contact information for each leg. Unfortunately this made the gait even worse but increased stability a lot. You can see in the image below how average episode length climbed when contact information is observed.
+I was already satisfied with the result but I wanted to see if I could improve it somehow. I wanted to add some more observations, this time contact information for each leg. I fed the network with 4 booleans, representing contact information for each leg. And more importantly I added small negative reward of -0.01 on every tick to increase urgency. The gait has changed and the cute gallop disapaered. And stability has improved a lot. You can see in the image below how average episode length climbed when contact information is observed.
+At this point it is a matter of taste which agent looks better. If you want a cute agent, then probably the first one and if you want an agent that is more stable, second one is to go.
 
 <figure>
     <img src="/assets/2026-05-15-baby-steps/before_and_after_contact_points.png" alt="Longest training ever">
@@ -163,4 +164,13 @@ I was already satisfied with the result but I wanted to see if I could improve i
 </figure>
 
 
+<figure>
+    <video src="/assets/2026-05-15-baby-steps/walk2.mp4" controls playsinline>
+        Your browser does not support the video tag.
+    </video>
+    <figcaption>Lost the gallop but more stable</figcaption>
+</figure>
+
+### Final Words
+I'm quite happy with how this experiment turned out. I learned a lot about physics and how chaotic it can get. I also developed more intuition about reinforcement learning.
 """
