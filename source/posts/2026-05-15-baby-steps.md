@@ -120,7 +120,7 @@ When I tried inference though, the agent behaviour was completely wrong. Even th
     <figcaption>Dancing without knowing how to stand</figcaption>
 </figure>
 
-I decided to make things easier for the agent. First I thought the cube colliders were disturbing the stability, so I changed them with capsule ones thinking that the legs would glide easier. I also made the legs shorter moved them a bit further in the front and back. This actually made the balance base smaller but the agent didn't have giant legs that can trip it off easily. None of these really helped.
+I decided to make things easier for the agent. First I thought the cube colliders were disturbing the stability, so I changed them with capsule ones thinking that the legs would glide easier. I also made the legs shorter, moved them a bit further in the front and back. This actually made the balance base smaller but the agent didn't have giant legs that can trip it off easily. None of these really helped.
 
 And then I got hit with a huge bug. I was feeding the network with joint twist values instead of swing values. It was very frustrating but also
 relieving at the same time. I immediately knew that this was the main problem. I fixed the functions that return joint angles and the standing training converged in less than 500 steps, yes five, zero, zero! My mind was blown. I was happy that my initial intuition was correct. I mean all the agent has to do was extending its legs anyways.
@@ -164,7 +164,7 @@ At this point it is a matter of taste which agent looks better. If you want a cu
 
 
 <figure>
-    <video src="/assets/2026-05-15-baby-steps/walk2.mp4" controls playsinline>
+    <video src="/assets/2026-05-15-baby-steps/split.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
     <figcaption>Lost the gallop but more stable</figcaption>
