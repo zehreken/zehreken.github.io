@@ -16,7 +16,7 @@ lower.
     <video src="/assets/2026-05-15-baby-steps/headcrab.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
-    <figcaption>Testing the limbs with keyboard controls, reminds me the infamous headcrab</figcaption>
+    <figcaption>Testing the limbs with keyboard controls, reminds me of the infamous headcrab</figcaption>
 </figure>
 
 After making sure that the joints moved the legs as expected, it was time for giving it a brain
@@ -59,14 +59,14 @@ OutReward = Reward;
 This one failed to learn how to stand upright, even after 50k steps it was able to stand only for a couple seconds
 <figure>
     <img src="/assets/2026-05-15-baby-steps/stand_up_fail_after_50k.png" alt="">
-    <figcaption></figcaption>
+    <figcaption>Episode length stuck at around 100 out of 500</figcaption>
 </figure>
 
 <figure>
     <video src="/assets/2026-05-15-baby-steps/first_try.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
-    <figcaption>Can't stand up</figcaption>
+    <figcaption>Neurotic and anxious</figcaption>
 </figure>
 
 Then I made the termination case stricter and also changed the reward curve
@@ -131,7 +131,7 @@ The looking curriculum kicked in very quickly since episode length passed 250 ve
     <video src="/assets/2026-05-15-baby-steps/mix.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
-    <figcaption>After a long training, the agent was able to both stand and look at a certain direction</figcaption>
+    <figcaption>Standing and looking, finally</figcaption>
 </figure>
 
 As you can see, the agent has evolved a lot, both visually and physically. It was fun to work on visual stuff during long trainings.
@@ -159,7 +159,7 @@ At this point it is a matter of taste which agent looks better. If you want a cu
 
 <figure>
     <img src="/assets/2026-05-15-baby-steps/before_and_after_contact_points.png" alt="Longest training ever">
-    <figcaption>Blue represents the training with contact information</figcaption>
+    <figcaption>Orange without and blue with contact information</figcaption>
 </figure>
 
 
@@ -167,7 +167,7 @@ At this point it is a matter of taste which agent looks better. If you want a cu
     <video src="/assets/2026-05-15-baby-steps/split.mp4" controls playsinline>
         Your browser does not support the video tag.
     </video>
-    <figcaption>Lost the gallop but more stable</figcaption>
+    <figcaption>More stable but the cute gallop is gone</figcaption>
 </figure>
 
 ### Final Words
