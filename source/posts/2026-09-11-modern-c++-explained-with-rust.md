@@ -1,0 +1,7 @@
+layout = "post"
+title = "Modern C++ Explained with Rust"
+created = "2026-09-11"
+updated = "2026-11-09"
+tags = "#c++ #rust #computer-science"
+markdown = """
+"""
