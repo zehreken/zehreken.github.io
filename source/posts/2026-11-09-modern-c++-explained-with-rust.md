@@ -1,7 +1,7 @@
 layout = "post"
 title = "Modern C++ Explained with Rust"
-created = "2026-09-11"
-updated = "2026-11-09"
+created = "2026-11-09"
+updated = "2026-11-16"
 tags = "#c++ #rust #computer-science"
 markdown = """
 I have been doing a lot of C++ recently. I think nowadays it is especially good area to discover. I always wanted to get into robotics and electronics and these require low level thinking etc.
@@ -18,4 +18,5 @@ This pointer type is what I love most about Rust, strict single ownership. In Ru
 Shared pointer is similar to Rust's Arc. It is reference counted pointer meaning, there can multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with Arc, there can only be 1 mutable reference.
 
 ### std::weak_ptr
+As the name suggest this is almost the same thing as Weak in Rust.
 """
