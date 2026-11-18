@@ -1,5 +1,5 @@
 layout = "post"
-title = "Modern C++ Explained with Rust"
+title = "Modern C++ for Rust Programmers"
 created = "2026-11-09"
 updated = "2026-11-16"
 tags = "#c++ #rust #computer-science"
@@ -8,7 +8,7 @@ I have been doing a lot of C++ recently. I think nowadays it is especially a goo
 
 I've programmed with C++ extensively more than a decade ago. And then I became a Unity developer. To be frank I think I had a good run with Unity but now with the advancement of AI, I think commercial game engines might become a thing of the past. It is going to take a long time but I think it will quite possible for anyone to roll out their own engine, maybe not even engine but games with their own specific tech that is only for that game.
 
-Since I have good Rust knowledge, when I started to study modern C++, I thought that most of these modern concepts were borrowed from Rust and I understood them better in Rust terms but then realized that these were actually introduced in C++11 and Rust actually borrowed some of the ideas. Maybe I should change the title to Modern C++ for Rust Programmers.
+Since I have good Rust knowledge, when I started to study modern C++, I thought that most of these modern concepts were borrowed from Rust and I understood them better in Rust terms but then realized that these were actually introduced in C++11 and Rust actually borrowed some of the ideas.
 
 Let's go:
 ### std::unique_ptr
