@@ -63,7 +63,7 @@ it found an interesting exploit. Because the target moved to a random location w
 To fix this sneaky behaviour, I introduced a reward for actually reaching the target. And it kind of broke my environment. I was assuming that the plugin could only output normalized values, but when I trained the agent with the new reward shape, the agent became so incredibly fast that it broke the physics configuration.
 
 Here is the final reward for navigation
-<pre class="prettyprint linenums">
+<pre class="prettyprint lang-cpp linenums">
 FVector TargetLocation = Player->Target->GetActorLocation();
 FVector ToTargetPrev = TargetLocation - Player->GetActorPreviousLocation();
 FVector ToTarget = TargetLocation - Player->GetActorLocation();
@@ -113,7 +113,7 @@ To fix this I simply calculated where the projectile might land given the veloci
 As I mentioned earlier, I added the turret at the back of the tank with a small offset from the center and started training from there. It was a debugging hell. TensorBoard always showed great convergence but whenever I tried inference, it was completely off. Instead of using the slightly offset turret position, the agent was using its own location for calculating trajectory. It found a good approximation which never hit the target but good enough to collect near miss rewards, that's why TensorBoard was looking good. I then calculated everything relative to the turret position. Things improved but it was still not great. I then realized that the plugin already did the conversion internally.
 I was doing double conversion when writing and reading the direction observation.
 
-<pre class="prettyprint linenums">
+<pre class="prettyprint lang-cpp linenums">
 ObservationMap.Add("ShellTargetDirection",
 ULearningAgentsObservations::MakeDirectionObservation(
     InObservationObject, bShootingEnabled ? WorldDelta : FVector::ForwardVector,

@@ -10,11 +10,13 @@ I've programmed with C++ extensively more than a decade ago. And then I became a
 
 Since I have good Rust knowledge, when I started to study modern C++, I thought that most of these modern concepts were borrowed from Rust and I understood them better in Rust terms but then realized that these were actually introduced in C++11 and Rust actually borrowed some of the ideas.
 
+I tried to come up
+
 Let's go:
 ### std::unique_ptr
 This pointer type is what I love most about Rust, strict single ownership. In Rust terms, this is the same as Box. There can only be one pointer to the same resource. Explain more about ownership rules
 
-<pre class="prettyprint linenums">
+<pre class="prettyprint lang-cpp linenums">
 #include <iostream>
 #include <unordered_map>
 #include <vector>

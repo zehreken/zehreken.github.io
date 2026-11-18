@@ -45,7 +45,7 @@ I also added a termination rule which didn't exist before. The new rule was if t
 But the real breakthrough came after I fixed the sentinel values. Neural networks work best with normalized
 values. In my simulation the agent is always at z=0.0 and obstacles spawn at z=600.0. Instead of passing the distance in absolute UE units, I normalize them.
 
-<pre class="prettyprint linenums">
+<pre class="prettyprint lang-cpp linenums">
 // Step 1: normalize to [0, 1]
 normalized = absolute_distance / max_distance  // 1.0 when spawned, 0.0 at ground
 
