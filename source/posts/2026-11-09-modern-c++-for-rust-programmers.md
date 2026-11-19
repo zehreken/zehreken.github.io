@@ -4,11 +4,11 @@ created = "2026-11-09"
 updated = "2026-11-16"
 tags = "#c++ #rust #computer-science"
 markdown = """
-I have been doing a lot of C++ recently. I think nowadays it is especially a good area to discover. I always wanted to get into robotics and electronics and these require low level thinking etc.
+I have been doing a lot of C++ recently. I think nowadays it is especially a good area to explore. I always wanted to get into robotics and electronics and these require low level thinking etc.
 
-I've programmed with C++ extensively more than a decade ago. And then I became a Unity developer. To be frank I think I had a good run with Unity but now with the advancement of AI, I think commercial game engines might become a thing of the past. It is going to take a long time but I think it will quite possible for anyone to roll out their own engine, maybe not even engine but games with their own specific tech that is only for that game.
+I've programmed extensively in C++ more than a decade ago. And then I became a Unity developer. To be frank I think I had a good run with Unity but now with the advancement of AI, I think commercial game engines might become a thing of the past. It is going to take a long time but I think it will be quite possible for anyone to roll out their own engine, maybe not even an engine but games will have their own specific tech that is only for that game. This was not feasible before LLMs.
 
-Since I know Rust, when I started to study modern C++, I thought that most of these modern concepts were borrowed from Rust and I understand them better in Rust terms but then realized that these were actually introduced in C++11 and Rust actually borrowed most of the ideas.
+Since I know Rust, when I started to study modern C++, I thought that most of these modern concepts were borrowed from Rust and I understand them better in Rust terms but then realized that these were actually introduced in C++11 and Rust actually borrowed some of the ideas.
 
 I came up with this simple example which uses all three smart pointers in C++ and also resembles real code, I think.
 
@@ -33,7 +33,8 @@ struct Texture {
 };
 </pre>
 
-And this is our current main function, note that I included two cases where the program does not compile. Because of the unique_ptr, the compiler deletes copy ctor and copy assignment and this is good because unique_ptr should be the only one pointing. There is an important issue with move operations. As you can see, width and height is copied but path is empty and pixels is null. I think this part is better handled in Rust. You can't use the object that is moved from after the operation.
+And this is our current main function, note that I included two cases where the program does not compile. Because of the unique_ptr, the compiler deletes copy ctor and copy assignment and this is good because unique_ptr should be the only one pointing. There is an important issue with move operations. As you can see, width and height is copied but path is empty and pixels is null. 
+
 <pre class="prettyprint lang-cpp linenums">
 int main() {
     Texture foo{"foo.png", 2, 2};
@@ -46,69 +47,17 @@ int main() {
 }
 </pre>
 
-<pre class="prettyprint lang-cpp linenums">
-#include <iostream>
-#include <unordered_map>
-#include <vector>
-
-struct Texture {
-  public:
-    explicit Texture(std::string p, int w, int h)
-        : path_(std::move(p)), width_{w}, height_{h},
-          pixels_{std::make_unique<uint8_t[]>(w * h * 4)} {
-        std::cout << "Loading " << path_ << '\n';
-    }
-    ~Texture() { std::cout << "Free " << path_ << '\n'; }
-    std::string_view path() { return path_; }
-
-  private:
-    std::string path_;
-    int width_, height_;
-    std::unique_ptr<uint8_t[]> pixels_;
-};
-
-struct TextureCache {
-  public:
-    std::shared_ptr<Texture> load(const std::string& path, int w, int h) {
-        if (auto it = cache_.find(path); it != cache_.end()) {
-            if (auto texture = it->second.lock()) {
-                return texture;
-            }
-        }
-
-        auto texture = std::make_shared<Texture>(path, w, h);
-        cache_[path] = texture;
-        return texture;
-    }
-
-  private:
-    std::unordered_map<std::string, std::weak_ptr<Texture>> cache_;
-};
-
-struct Enemy {
-  public:
-    explicit Enemy(std::shared_ptr<Texture> t) : texture_{std::move(t)} {
-        std::cout << "Creating Enemy: " << texture_->path() << '\n';
-    }
-    ~Enemy() { std::cout << "Destroying Enemy: " << texture_->path() << '\n'; }
-    std::string name_;
-    void render() const { std::cout << "Rendering " << name_ << '\n'; }
-
-  private:
-    std::shared_ptr<Texture> texture_;
-};
-
-int main() {
-    TextureCache texture_cache;
-    std::string textures[] = {"orc.png", "goblin.png", "troll.png"};
-    std::vector<Enemy> enemies;
-    enemies.reserve(11);
-
-    for (size_t i = 0; i < 11; ++i) {
-        const auto& path = textures[i % 3];
-        enemies.emplace_back(texture_cache.load(path, 64, 128));
-    }
+I think this part is better handled in Rust. You can't use the object that is moved from after the operation. You can see it in the very simple example below.
+<pre class="prettyprint linenums">
+fn main() {
+    let box_a = Box::new(5);
+    
+    let box_b = box_a;
+    
+    // Compile error
+    // println!("box_a: {:p}->{}", box_a, box_a);
 }
+
 </pre>
 
 ### std::shared_ptr
