@@ -16,7 +16,7 @@ Let's go:
 ### std::unique_ptr
 This pointer type is what I love most about Rust, strict single ownership. In Rust terms, this is the same as Box. There can only be one pointer to the same resource. Let's look at this Texture struct
 
-<pre class="prettyprint lang-cpp linenums">
+```cpp
 struct Texture {
   public:
     explicit Texture(std::string p, int w, int h)
@@ -31,11 +31,11 @@ struct Texture {
     int width_, height_;
     std::unique_ptr<uint8_t[]> pixels_;
 };
-</pre>
+```
 
 And this is our current main function, note that I included two cases where the program does not compile. Because of the unique_ptr, the compiler deletes copy ctor and copy assignment and this is good because unique_ptr should be the only one pointing. There is an important issue with move operations. As you can see, width and height is copied but path is empty and pixels is null. 
 
-<pre class="prettyprint lang-cpp linenums">
+```cpp
 int main() {
     Texture foo{"foo.png", 2, 2};
     Texture bar("bar.png", 2, 2);
@@ -45,10 +45,10 @@ int main() {
     foo = std::move(bar);
     std::cout << bar.path() << " " << bar.size() << " " << bar.has_pixels() << '\n';
 }
-</pre>
+```
 
 I think this part is better handled in Rust. You can't use the object that is moved from after the operation. You can see it in the very simple example below.
-<pre class="prettyprint linenums">
+```
 fn main() {
     let box_a = Box::new(5);
     
@@ -57,7 +57,7 @@ fn main() {
     // Compile error: Rust compiler complains that box_a is moved, so we can't use it anymore
     // println!("box_a: {:p}->{}", box_a, box_a);
 }
-</pre>
+```
 
 ### std::shared_ptr
 Shared pointer is similar to Rust's Arc. It is reference counted pointer meaning, there can be multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with Arc, it is not mutable.
