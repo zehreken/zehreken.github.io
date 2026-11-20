@@ -54,14 +54,33 @@ fn main() {
     
     let box_b = box_a;
     
-    // Compile error
+    // Compile error: Rust compiler complains that box_a is moved, so we can't use it anymore
     // println!("box_a: {:p}->{}", box_a, box_a);
 }
-
 </pre>
 
 ### std::shared_ptr
 Shared pointer is similar to Rust's Arc. It is reference counted pointer meaning, there can be multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with Arc, it is not mutable.
+
+<pre class="prettyprint lang-cpp linenums">
+struct TextureCache {
+  public:
+    std::shared_ptr<Texture> load(const std::string& path, int w, int h) {
+        if (auto it = cache_.find(path); it != cache_.end()) {
+            if (auto texture = it->second.lock()) {
+                return texture;
+            }
+        }
+
+        auto texture = std::make_shared<Texture>(path, w, h);
+        cache_[path] = texture;
+        return texture;
+    }
+
+  private:
+    std::unordered_map<std::string, std::weak_ptr<Texture>> cache_;
+};
+</pre>
 
 ### std::weak_ptr
 As the name suggest this is almost the same thing as Weak in Rust.
