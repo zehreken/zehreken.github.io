@@ -71,14 +71,13 @@ boilerplate code and moving files around, the agent had a brain. The actions I d
 <p>I spent a lot of time figuring out how to reset the agent's body. Since it was driven by physics, simply rotating and positioning didn't work. I needed to detach all the limbs, reset all the velocity on them and reattach. This approach worked fine.</p>
 <p>I was expecting learning how to stand up to be fairly easy and quick. Based on my learnings from the previous experiments, the agent had all the information it needed. I also added a termination case which should have enforced it even more.</p>
 <p>My first reward shaping was like below</p>
-<pre class="prettyprint lang-cpp linenums">
-if (Alignment < 0.9f) // Termination threshold
+<pre class="prettyprint linenums lang-cpp">if (Alignment &lt; 0.9f) // Termination threshold
 {
 	bHasFlipped = true;
 }
 float Reward = 0.0f;
 	
-float Alignment = FVector::DotProduct(Player->GetActorUpVector(), FVector::UpVector);
+float Alignment = FVector::DotProduct(Player-&gt;GetActorUpVector(), FVector::UpVector);
 Reward += Alignment * 0.1f;
 
 if (bHasFlipped)
@@ -99,14 +98,13 @@ OutReward = Reward;
     <figcaption>Neurotic and anxious</figcaption>
 </figure>
 <p>Then I made the termination case stricter and also changed the reward curve</p>
-<pre class="prettyprint lang-cpp linenums">
-if (Alignment < 0.95f) // Termination threshold
+<pre class="prettyprint linenums lang-cpp">if (Alignment &lt; 0.95f) // Termination threshold
 {
 	bHasFlipped = true;
 }
 float Reward = 0.0f;
 	
-float Alignment = FVector::DotProduct(Player->GetActorUpVector(), FVector::UpVector);
+float Alignment = FVector::DotProduct(Player-&gt;GetActorUpVector(), FVector::UpVector);
 Reward += FMath::Pow(Alignment, 8.0f);
 
 if (bHasFlipped)

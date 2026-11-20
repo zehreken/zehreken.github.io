@@ -78,8 +78,7 @@
 </script>
 <!-- ![fuzzy chart](/assets/2010-02-23-fuzzy-logic-essentials/fuzzy_logic_essentials_chart.jpg)   -->
 <p>The graph above shows the <strong>degree of membership</strong> of the black ones to the closeness fuzzy set according to their distance to the green one. As you see, the closest one has the highest degree of membership and the farthest one has the lowest.</p>
-<pre class="prettyprint linenums">
-pub fn update_big_cell(&mut self, delta_time: f32, cells: &mut Vec<Cell>) {
+<pre class="prettyprint linenums">pub fn update_big_cell(&amp;mut self, delta_time: f32, cells: &amp;mut Vec&lt;Cell&gt;) {
     let mut closeness = [0.0; 10];
     let mut sizes = [0.0; 10];
 
@@ -88,7 +87,7 @@ pub fn update_big_cell(&mut self, delta_time: f32, cells: &mut Vec<Cell>) {
             continue;
         }
         let distance = (self.position - cells[i].get_position()).length();
-        closeness[i] = if distance > 300.0 {
+        closeness[i] = if distance &gt; 300.0 {
             0.0
         } else {
             1.0 - distance / 250.0

@@ -61,30 +61,25 @@ Puffin is opensource is and code is available on <a href="https://github.com/Emb
 It is very simple to add puffin to your project and there is also a egui plugin so that you can have
 a live flamegraph in your program.</p>
 <p>The simplest integration is like this. First you need to set scopes on at start up.</p>
-<pre class="prettyprint linenums">
-puffin::set_scopes_on(true);
+<pre class="prettyprint linenums">puffin::set_scopes_on(true);
 </pre>
 <p>I'm using miniquad and egui in my program so rendering the window is as simple as adding just a line.</p>
-<pre class="prettyprint linenums">
-self.egui_mq.run(ctx, |egui_ctx| {
-    draw_ui(&mut self.windows, egui_ctx, &mut self.modul);
-    puffin_egui::profiler_window(egui_ctx); <-- this line only
+<pre class="prettyprint linenums">self.egui_mq.run(ctx, |egui_ctx| {
+    draw_ui(&amp;mut self.windows, egui_ctx, &amp;mut self.modul);
+    puffin_egui::profiler_window(egui_ctx); &lt;-- this line only
 });
 </pre>
 <p>And once per frame you need to call</p>
-<pre class="prettyprint linenums">
-fn update() {
+<pre class="prettyprint linenums">fn update() {
     ...
     puffin::GlobalProfiler::lock().new_frame();
 }
 </pre>
 <p>You can then profile the scope or the function using puffin macros and also assign a name for easier analysis.</p>
-<pre class="prettyprint linenums">
-puffin::profile_function!("function");
+<pre class="prettyprint linenums">puffin::profile_function!(&quot;function&quot;);
 </pre>
 <p>or</p>
-<pre class="prettyprint linenums">
-puffin::profile_scope!("scope");
+<pre class="prettyprint linenums">puffin::profile_scope!(&quot;scope&quot;);
 </pre>
 <h3>pprof</h3>
 <p><strong>pprof</strong> is a very useful tool for profiling your program's CPU footprint.</p>

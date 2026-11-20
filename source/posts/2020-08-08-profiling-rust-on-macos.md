@@ -24,34 +24,34 @@ It is very simple to add puffin to your project and there is also a egui plugin 
 a live flamegraph in your program.
 
 The simplest integration is like this. First you need to set scopes on at start up.
-<pre class="prettyprint linenums">
+```
 puffin::set_scopes_on(true);
-</pre>
+```
 
 I'm using miniquad and egui in my program so rendering the window is as simple as adding just a line.
-<pre class="prettyprint linenums">
+```
 self.egui_mq.run(ctx, |egui_ctx| {
     draw_ui(&mut self.windows, egui_ctx, &mut self.modul);
     puffin_egui::profiler_window(egui_ctx); <-- this line only
 });
-</pre>
+```
 
 And once per frame you need to call
-<pre class="prettyprint linenums">
+```
 fn update() {
     ...
     puffin::GlobalProfiler::lock().new_frame();
 }
-</pre>
+```
 
 You can then profile the scope or the function using puffin macros and also assign a name for easier analysis.
-<pre class="prettyprint linenums">
+```
 puffin::profile_function!("function");
-</pre>
+```
 or
-<pre class="prettyprint linenums">
+```
 puffin::profile_scope!("scope");
-</pre>
+```
 
 ### pprof
 **pprof** is a very useful tool for profiling your program's CPU footprint.

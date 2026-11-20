@@ -17,9 +17,9 @@ When I finished the first part, it was really cool seeing the cars learning how 
 My interest in this just grew as I started reading the Reinforcement Learning bible by Richard S. Sutton and Andrew G. Barto and I decided to revisit the same tutorial to understand what is going on under the hood. The book is freely available [here](https://web.stanford.edu/class/psych209/Readings/SuttonBartoIPRLBook2ndEd.pdf) and highly recommended. While doing some reading I bumped into a debugging tool called TensorBoard, the standard for debugging artificial neural networks. Honestly it gave me the same feeling I had when I first learned about proper debuggers almost 2 decades ago.
 
 First you need to install TensorBoard specifically for the Python environment that ships with Unreal Editor. I really like that Unreal comes with its own Python Environment, unlike Unity. It is easier to start and I personally hate installing libraries without knowing what they are for.
-<pre class="prettyprint linenums">
+```
 pip -m install tensorboard
-</pre>
+```
 
 To be able to use TensorBoard with Unreal Editor, you also need to enable it in **Trainer Training Settings** in your **BP_SportsCarManager** blueprint.
 <figure>
@@ -28,15 +28,15 @@ To be able to use TensorBoard with Unreal Editor, you also need to enable it in 
 </figure>
 
 Even though I successfully installed TensorBoard, I got the following warning when I started the simulation.
-<pre class="prettyprint linenums">
+```
 LogLearning: Display: Subprocess: Warning: Failed to Load TensorBoard: No module named 'tensorboard'. Please add manually to site-packages.
 LogLearning: Display: Subprocess:         "UseTensorBoard": false,
-</pre>
+```
 
 Since Unreal logs are really crappy, it took me some time to figure this out. I needed to add this path
-<pre class="prettyprint linenums">
+```
 C:/Program Files/Epic Games/UE_5.5/Engine/Binaries/ThirdParty/Python3/Win64/Lib/site-packages
-</pre>
+```
 to the Additional Paths list under Edit>Project Settings>Plugins>Python in Unreal Editor.
 
 <figure>
@@ -45,19 +45,19 @@ to the Additional Paths list under Edit>Project Settings>Plugins>Python in Unrea
 </figure>
 
 After adding the path to the list, I got this log which means that logging is active.
-<pre class="prettyprint linenums">
+```
 LogLearning: Display: Subprocess:         "UseTensorBoard": true,
-</pre>
+```
 
 And then finally to see the visualized data, you need to run TensorBoard. Go to C:/Program Files/Epic Games/UE_5.5/Engine/Binaries/ThirdParty/Python3/Win64/Scripts and you should have tensorboard.exe there. If not that means you did not install it properly. You can do it by running the command below.
-<pre class="prettyprint linenums">
+```
 tensorboard.exe --logdir="[YourProjectPath]/Intermediate/LearningAgents/TensorBoard/runs"
-</pre>
+```
 
 If it starts successfully, you should see a log like this
-<pre class="prettyprint linenums">
+```
 TensorBoard 2.20.0 at http://localhost:6006/ (Press CTRL+C to quit)
-</pre>
+```
 The Address is where you can see the visualized data, just open your browser and paste the address.
 
 You need to run your simulation for a while to see some data in TensorBoard.

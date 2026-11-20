@@ -57,29 +57,25 @@ https://docs.microsoft.com/en-us/learn/paths/rust-first-steps/</li>
 Any variable that goes out of scope is <em>dropped</em>. Dropping means releasing the resources that are tied(bound) to that variable.
 Only one thing can own a piece of data at a time in Rust.</p>
 <p>A small note about lifetimes</p>
-<pre class="prettyprint linenums">
-struct MyStruct<'lifetime>(&'lifetime str);
+<pre class="prettyprint linenums">struct MyStruct&lt;'lifetime&gt;(&amp;'lifetime str);
 </pre>
 <p>This annotation means that the lifetime of MyStruct can not outlive the reference that holds in its fields.</p>
 <p>As of April 1st 2022, I understand the mut keyword better.</p>
-<pre class="prettyprint linenums">
-fn my_function(mut x: i32)
+<pre class="prettyprint linenums">fn my_function(mut x: i32)
 </pre>
 <p>In this case <strong>mut</strong> modifies the variable x, not the variable that is passed. The passed variable
 does not need to be defined as <strong>mut</strong>.</p>
-<pre class="prettyprint linenums">
-let v0 = vec![0, 1, 2];
+<pre class="prettyprint linenums">let v0 = vec![0, 1, 2];
 // v0.push(3); // error
 let mut v1 = v0;
 v1.push(3);
 </pre>
 <p>This is another interesting case. <strong>v0</strong> is not defined as <strong>mut</strong> and when I try to push into it, the compiler throws an error but you can bind <strong>v0</strong> to a mutable variable, in this case <strong>v1</strong>.</p>
 <p>As you know you can only have one mutable reference at a time. The code below does not compile because at the execution of line 5 there are 2 mutable references to the same variable <strong>x</strong>. But if you switch line 4 and 5 it compiles because mutable reference <strong>y</strong> is not used at that point.</p>
-<pre class="prettyprint linenums">
-fn main() {
+<pre class="prettyprint linenums">fn main() {
     let mut x = 100;
-    let y = &mut x;
-    let z = &mut x;
+    let y = &amp;mut x;
+    let z = &amp;mut x;
     *y += 100;
     *z += 1000;
     assert_eq!(x, 1200);
@@ -101,46 +97,42 @@ Arrays are useful when you want your data allocated on the stack rather than the
 <h3>Option</h3>
 <p>Option<T> enum is used when the absence of a value is a possibility, known as null reference in some other languages.
 The two examples below are identical, a good explanation for <em>if let</em></p>
-<pre class="prettyprint linenums">
-// 1
-let some_number: Option<u8> = Some(7);
+<pre class="prettyprint linenums">// 1
+let some_number: Option&lt;u8&gt; = Some(7);
 match some_number {
-    Some(7) => println!("That's my lucky number!"),
-    _ => {},
+    Some(7) =&gt; println!(&quot;That's my lucky number!&quot;),
+    _ =&gt; {},
 }
 // 2
-let some_number: Option<u8> = Some(7);
+let some_number: Option&lt;u8&gt; = Some(7);
 if let Some(7) = some_number {
-    println!("That's my lucky number!");
+    println!(&quot;That's my lucky number!&quot;);
 }
 </pre>
 <h3>Traits</h3>
 <p>Two ways of having trait bounds</p>
-<pre class="prettyprint linenums">
-// 1
-fn fn_one(value: &impl Trait) { ... }
+<pre class="prettyprint linenums">// 1
+fn fn_one(value: &amp;impl Trait) { ... }
 // 2
-fn fn_two&lt;T: Trait&gt;(value: &T) { ... }
+fn fn_two&amp;lt;T: Trait&amp;gt;(value: &amp;T) { ... }
 </pre>
 <p>Iterator trait looks like this in Rust standard library
 One interesting thing is 'type Item'. It means every implementation of Iterator should return an associated type Item. </p>
-<pre class="prettyprint linenums">
-trait Iterator {
+<pre class="prettyprint linenums">trait Iterator {
     type Item;
-    fn next(&mut self) -> Option&lt;Self::Item&gt;;
+    fn next(&amp;mut self) -&gt; Option&amp;lt;Self::Item&amp;gt;;
 }
 </pre>
 <h3>(?) syntax sugar</h3>
 <p>(?) is used to propagate errors. The two functions below are equivalent.</p>
-<pre class="prettyprint linenums">
-fn function_1() -> Result(Success, Failure) {
+<pre class="prettyprint linenums">fn function_1() -&gt; Result(Success, Failure) {
 	match operation_that_might_fail() {
-		Ok(success) => success,
-		Err(failure) => return Err(failure),
+		Ok(success) =&gt; success,
+		Err(failure) =&gt; return Err(failure),
 	}
 }
 
-fn function_2() -> Result(Success, Failuer) {
+fn function_2() -&gt; Result(Success, Failuer) {
 	operation_that_might_fail()?
 }
 </pre>
@@ -148,29 +140,28 @@ fn function_2() -> Result(Success, Failuer) {
 https://doc.rust-lang.org/reference/tokens.html#raw-string-literals</p>
 <h3>Conditional Compilation for Debug and Release Builds</h3>
 <p>Here is a way to conditionally compile Rust code for Debug and Release builds</p>
-<pre class="prettyprint linenums">
-#[cfg(debug_assertions)]
+<pre class="prettyprint linenums">#[cfg(debug_assertions)]
 fn example() {
-    println!("Debugging enabled");
+    println!(&quot;Debugging enabled&quot;);
 }
 
 #[cfg(not(debug_assertions))]
 fn example() {
-    println!("Debugging disabled");
+    println!(&quot;Debugging disabled&quot;);
 }
 
 fn main() {
     if cfg!(debug_assertions) {
-        println!("Debugging enabled");
+        println!(&quot;Debugging enabled&quot;);
     } else {
-        println!("Debugging disabled");
+        println!(&quot;Debugging disabled&quot;);
     }
 
     #[cfg(debug_assertions)]
-    println!("Debugging enabled");
+    println!(&quot;Debugging enabled&quot;);
 
     #[cfg(not(debug_assertions))]
-    println!("Debugging disabled");
+    println!(&quot;Debugging disabled&quot;);
 
     example();
 }

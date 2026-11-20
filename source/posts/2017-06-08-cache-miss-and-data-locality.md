@@ -16,7 +16,7 @@ The computer I am writing this post on is a Mid 2011 Mac Mini and according to t
 The reason for a cache miss is bad data locality. Let's examine this simple code piece written in c++.
 
 <figure>
-<pre class="prettyprint linenums">
+```
 class Big
 {
 	private:
@@ -29,13 +29,13 @@ class Big
 		float getSizeInMB();
 		void fillClutter();
 };
-</pre>
+```
 <figcaption>A class when instanced creates an object which is 1KB in size</figcaption>
 </figure>
 
 
 <figure>
-<pre class="prettyprint linenums">
+```
 class Small
 {
 	private:
@@ -46,13 +46,13 @@ class Small
 		float getSizeInKB();
 		float getSizeInMB();
 };
-</pre>
+```
 <figcaption>A class when instanced creates an object which is 32b in size</figcaption>
 </figure>
 
 
 <figure>
-<pre class="prettyprint linenums">
+```
 void loop()
 {
 	const int SIZE = 50000;
@@ -67,7 +67,7 @@ void loop()
 		smalls[i].setActor(i);
 	}
 }
-</pre>
+```
 <figcaption>Here, we loop through the arrays</figcaption>
 </figure>
 
@@ -77,37 +77,37 @@ On average the second loop completes ~7 times faster than the first loop on my m
 Let's examine how our data is placed on the actual memory using **lldb**. You can also use **gdb**, they are very similar.
 
 Compile the script above using clang++ with -g flag to enable debugging with extra information. Here is the simple compile command.
-<pre class="prettyprint linenums">
+```
 clang++ -g -o p main.cpp
-</pre>
+```
 
 Load the program to lldb using
-<pre class="prettyprint linenums">
+```
 lldb p
-</pre>
+```
 
 and then add a simple breakpoint to pause the process without terminating it.
-<pre class="prettyprint linenums">
+```
 (lldb) b main.cpp: 125
-</pre>
+```
 
 Run the program.
-<pre class="prettyprint linenums">
+```
 run
-</pre>
+```
 
 At some point lldb will show the addresses of our two arrays because it is the output of our program, using those addresses we can examine the memory and see what they have - it may show different addresses on your computer.
-<pre class="prettyprint linenums">
+```
 Address of smalls: 0x1000c4000
 Address of bigs: 0x101000000
-</pre>
+```
 
 Lets examine the first 32 elements of the _smalls_ array using
-<pre class="prettyprint linenums">
+```
 memory read -fx 0x1000c4000 0x1000c4000+128
-</pre>
+```
 
-<pre class="prettyprint linenums">
+```
 0x1000c4000: 0x00000000 0x00000001 0x00000002 0x00000003
 0x1000c4010: 0x00000004 0x00000005 0x00000006 0x00000007
 0x1000c4020: 0x00000008 0x00000009 0x0000000a 0x0000000b
@@ -117,16 +117,16 @@ memory read -fx 0x1000c4000 0x1000c4000+128
 0x1000c4060: 0x00000018 0x00000019 0x0000001a 0x0000001b
 0x1000c4070: 0x0000001c 0x0000001d 0x0000001e 0x0000001f
 ...
-</pre>
+```
 
 Look at how nicely the elements are stored on the memory. The first element is 0, the second is 1, the third is 2 and so on, as expected.
 
 Now let's examine the first 32 elements of the _bigs_ array using
-<pre class="prettyprint linenums">
+```
 memory read -fx 0x101000000 0x101000000+128
-</pre>
+```
 
-<pre class="prettyprint linenums">
+```
 0x100200000: 0x00000000 0xffffffff 0xffffffff 0xffffffff
 0x100200010: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
 0x100200020: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
@@ -136,7 +136,7 @@ memory read -fx 0x101000000 0x101000000+128
 0x100200060: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
 0x100200070: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
 ...
-</pre>
+```
 See, it's full of unnecessary data that causes the CPU to miss the cache.
 
 ### Conclusion

@@ -72,21 +72,20 @@ Unity, at its core is also an entity-component based engine. The most advised pr
 </ol>
 <p>The test project is a simple project. The program creates 5000 cubes and all of the cubes run these two simple logic;</p>
 <p>Move</p>
-<pre class="prettyprint linenums">
-void Update()
+<pre class="prettyprint linenums">void Update()
 {
 	_transform.Translate(_xVel * Time.deltaTime, _yVel * Time.deltaTime, _zVel * Time.deltaTime, Space.World);
-	if (_transform.position.x < -TestConfig.BORDER || _transform.position.x > TestConfig.BORDER)
+	if (_transform.position.x &lt; -TestConfig.BORDER || _transform.position.x &gt; TestConfig.BORDER)
 	{
 		_transform.position = new Vector3(TestConfig.BORDER * Mathf.Sign(_transform.position.x), _transform.position.y, _transform.position.z);
 		_xVel *= -1f;
 	}
-	if (_transform.position.y < -TestConfig.BORDER || _transform.position.y > TestConfig.BORDER)
+	if (_transform.position.y &lt; -TestConfig.BORDER || _transform.position.y &gt; TestConfig.BORDER)
 	{
 		_transform.position = new Vector3(_transform.position.x, TestConfig.BORDER * Mathf.Sign(_transform.position.y), _transform.position.z);
 		_yVel *= -1f;
 	}
-	if (_transform.position.z < -TestConfig.BORDER || _transform.position.z > TestConfig.BORDER)
+	if (_transform.position.z &lt; -TestConfig.BORDER || _transform.position.z &gt; TestConfig.BORDER)
 	{
 		_transform.position = new Vector3(_transform.position.x, _transform.position.y, TestConfig.BORDER * Mathf.Sign(_transform.position.z));
 		_zVel *= -1f;
@@ -94,8 +93,7 @@ void Update()
 }
 </pre>
 <p>Rotate</p>
-<pre class="prettyprint linenums">
-void Update()
+<pre class="prettyprint linenums">void Update()
 {
 	_transform.Rotate(_xVel * Time.deltaTime, _yVel * Time.deltaTime, _zVel * Time.deltaTime);
 }

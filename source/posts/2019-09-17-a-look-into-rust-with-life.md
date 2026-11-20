@@ -18,13 +18,13 @@ So what is Conway's game of life? I've already provided a link above but it is a
 I'm using [**macroquad**](https://github.com/not-fl3/macroquad), a nice library written in Rust, to provide an easy way for game development. The author claims that macroquad is especially created to avoid some Rust specific concepts like lifetimes and ownership. Of course that sounds counter-intuitive since I want to learn Rust but the main reason I chose this library is that it is so easy to create wasm binaries.
 
 So for starters we should add macroquad to the Cargo.toml as a dependency.
-<pre class="prettyprint linenums">
+```
 [dependencies]
 macroquad = "0.3"
-</pre>
+```
 
 Every Rust program starts with a *main* function. My plan is to create all my future wasm programs in this repo, so I already created a specific folder for this post, in this case it is life. Folder names are important in Rust since folder name is also the name for the module. I've had a hard time understanding Rust's approach to project structure, [this part](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html) from the book is quite helpful.
-<pre class="prettyprint">
+```
 .
 ├── Cargo.lock
 ├── Cargo.toml
@@ -34,10 +34,10 @@ Every Rust program starts with a *main* function. My plan is to create all my fu
     │   ├── grid.rs
     │   └── mod.rs
     └── main.rs
-</pre>
+```
 
 So our cellular automata actually starts in mod.rs, run function. Rust does not have classes but it has structs. Here is the Cell struct. Point is also a struct I defined. pub defines the visibility of the variable and the part after the colon is the type. Rust is a *statically typed* language meaning the types have to be known at compile time but Rust compiler can also infer the type of a variable most of the times. For structs you have to define the types explicitly.
-<pre class="prettyprint linenums">
+```
 #[derive(Debug, Copy, Clone)]
 pub struct Cell {
     pub position: Point,
@@ -46,11 +46,11 @@ pub struct Cell {
     pub future_state: i32,
     pub on_count: i32,
 }
-</pre>
+```
 There is another interesting thing in the above snippet. Checkout the [**#\\[derive\\]**](https://doc.rust-lang.org/reference/attributes/derive.html) attribute in the original Rust documentation, basically what it does is implementing the traits automatically.
 
 We can bind functions to our Cell struct using the impl keyword.
-<pre class="prettyprint linenums">
+```
 impl Cell {
     pub fn new(x: i32, y: i32, current_state: i32) -> Self {
         Self {
@@ -77,6 +77,6 @@ impl Cell {
         ...
     }
 }
-</pre>
+```
 I think "new" is conventionally used to name the function which creates the instance of the struct, there is no actual restriction. Another interesting thing is the "Self" keyword. We could also use Cell instead of Self but since we are implementing Cell, the compiler knows what Self is. You can also see the other functions related to the Cell struct. All these functions are called **associated functions** since they are associated to an instance of the Cell struct.
 """

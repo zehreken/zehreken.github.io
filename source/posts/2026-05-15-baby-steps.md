@@ -39,7 +39,7 @@ I spent a lot of time figuring out how to reset the agent's body. Since it was d
 I was expecting learning how to stand up to be fairly easy and quick. Based on my learnings from the previous experiments, the agent had all the information it needed. I also added a termination case which should have enforced it even more.
 
 My first reward shaping was like below
-<pre class="prettyprint lang-cpp linenums">
+```cpp
 if (Alignment < 0.9f) // Termination threshold
 {
 	bHasFlipped = true;
@@ -54,7 +54,7 @@ if (bHasFlipped)
 	Reward -= 1.0f;
 }
 OutReward = Reward;
-</pre>
+```
 
 This one failed to learn how to stand upright, even after 50k steps it was able to stand only for a couple seconds.
 
@@ -71,7 +71,7 @@ This one failed to learn how to stand upright, even after 50k steps it was able 
 </figure>
 
 Then I made the termination case stricter and also changed the reward curve
-<pre class="prettyprint lang-cpp linenums">
+```cpp
 if (Alignment < 0.95f) // Termination threshold
 {
 	bHasFlipped = true;
@@ -87,7 +87,7 @@ if (bHasFlipped)
 }
 
 OutReward = Reward;
-</pre>
+```
 
 This one was a great improvement over the previous one, agent could stand upright much longer. Though the training still took a very long time.
 

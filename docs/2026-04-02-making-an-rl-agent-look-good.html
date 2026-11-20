@@ -79,8 +79,7 @@ able to run agents in parallel.
 I also added a termination rule which didn't exist before. The new rule was if the agent got hit 3 times, it was out.
 But the real breakthrough came after I fixed the sentinel values. Neural networks work best with normalized
 values. In my simulation the agent is always at z=0.0 and obstacles spawn at z=600.0. Instead of passing the distance in absolute UE units, I normalize them.</p>
-<pre class="prettyprint lang-cpp linenums">
-// Step 1: normalize to [0, 1]
+<pre class="prettyprint linenums lang-cpp">// Step 1: normalize to [0, 1]
 normalized = absolute_distance / max_distance  // 1.0 when spawned, 0.0 at ground
 
 // Step 2: invert so the value increases as the obstacle approaches

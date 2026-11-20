@@ -52,13 +52,11 @@
 <p>So what is Conway's game of life? I've already provided a link above but it is arguably the most popular cellular automaton. A system that can show complex behaviour with a few simple rules.</p>
 <p>I'm using <a href="https://github.com/not-fl3/macroquad"><strong>macroquad</strong></a>, a nice library written in Rust, to provide an easy way for game development. The author claims that macroquad is especially created to avoid some Rust specific concepts like lifetimes and ownership. Of course that sounds counter-intuitive since I want to learn Rust but the main reason I chose this library is that it is so easy to create wasm binaries.</p>
 <p>So for starters we should add macroquad to the Cargo.toml as a dependency.</p>
-<pre class="prettyprint linenums">
-[dependencies]
-macroquad = "0.3"
+<pre class="prettyprint linenums">[dependencies]
+macroquad = &quot;0.3&quot;
 </pre>
 <p>Every Rust program starts with a <em>main</em> function. My plan is to create all my future wasm programs in this repo, so I already created a specific folder for this post, in this case it is life. Folder names are important in Rust since folder name is also the name for the module. I've had a hard time understanding Rust's approach to project structure, <a href="https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html">this part</a> from the book is quite helpful.</p>
-<pre class="prettyprint">
-.
+<pre class="prettyprint linenums">.
 ├── Cargo.lock
 ├── Cargo.toml
 └── src
@@ -69,8 +67,7 @@ macroquad = "0.3"
     └── main.rs
 </pre>
 <p>So our cellular automata actually starts in mod.rs, run function. Rust does not have classes but it has structs. Here is the Cell struct. Point is also a struct I defined. pub defines the visibility of the variable and the part after the colon is the type. Rust is a <em>statically typed</em> language meaning the types have to be known at compile time but Rust compiler can also infer the type of a variable most of the times. For structs you have to define the types explicitly.</p>
-<pre class="prettyprint linenums">
-#[derive(Debug, Copy, Clone)]
+<pre class="prettyprint linenums">#[derive(Debug, Copy, Clone)]
 pub struct Cell {
     pub position: Point,
     pub neighbours: [Point; 8],
@@ -81,9 +78,8 @@ pub struct Cell {
 </pre>
 <p>There is another interesting thing in the above snippet. Checkout the <a href="https://doc.rust-lang.org/reference/attributes/derive.html"><strong>#[derive]</strong></a> attribute in the original Rust documentation, basically what it does is implementing the traits automatically.</p>
 <p>We can bind functions to our Cell struct using the impl keyword.</p>
-<pre class="prettyprint linenums">
-impl Cell {
-    pub fn new(x: i32, y: i32, current_state: i32) -> Self {
+<pre class="prettyprint linenums">impl Cell {
+    pub fn new(x: i32, y: i32, current_state: i32) -&gt; Self {
         Self {
             position: Point { x, y },
             neighbours: get_moore_neighbours(x, y),
@@ -92,19 +88,19 @@ impl Cell {
         }
     }
     
-    pub fn tick(&mut self, live_neighbour_count: i32) {
+    pub fn tick(&amp;mut self, live_neighbour_count: i32) {
         ...
     }
 
-    pub fn swap(&mut self) {
+    pub fn swap(&amp;mut self) {
         ...
     }
 
-    pub fn get_live_neighbour_count(&self, grid: &Vec<Vec<Cell>>) -> i32 {
+    pub fn get_live_neighbour_count(&amp;self, grid: &amp;Vec&lt;Vec&lt;Cell&gt;&gt;) -&gt; i32 {
         ...
     }
 
-    pub fn get_current_state(&self) -> i32 {
+    pub fn get_current_state(&amp;self) -&gt; i32 {
         ...
     }
 }

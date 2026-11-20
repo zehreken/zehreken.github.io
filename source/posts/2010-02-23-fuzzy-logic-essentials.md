@@ -44,7 +44,7 @@ The decision-making process of the green entity revolves around the evaluation o
 <!-- ![fuzzy chart](/assets/2010-02-23-fuzzy-logic-essentials/fuzzy_logic_essentials_chart.jpg)   -->
 The graph above shows the **degree of membership** of the black ones to the closeness fuzzy set according to their distance to the green one. As you see, the closest one has the highest degree of membership and the farthest one has the lowest.
 
-<pre class="prettyprint linenums">
+```
 pub fn update_big_cell(&mut self, delta_time: f32, cells: &mut Vec<Cell>) {
     let mut closeness = [0.0; 10];
     let mut sizes = [0.0; 10];
@@ -66,7 +66,7 @@ pub fn update_big_cell(&mut self, delta_time: f32, cells: &mut Vec<Cell>) {
         sizes[i] = 1.0 - size_diff;
     }
 }
-</pre>
+```
 
 To calculate the degrees of membership to the midsized-ness fuzzy set, the process is very similar to the one above. Alright, we have calculated the degrees of membership but how do we use them? In practice we can use these membership values to decide or to make something decide. For example if you are interested in something that is close to you then you should choose the one which has the greatest degree of membership to the closeness fuzzy set. Programming with fuzzy logic is like having **unlimited number of if clauses but with high performance**.
 
