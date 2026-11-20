@@ -62,7 +62,7 @@ fn main() {
 ### std::shared_ptr
 Shared pointer is similar to Rust's Arc. It is reference counted pointer meaning, there can be multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with Arc, it is not mutable.
 
-<pre class="prettyprint lang-cpp linenums">
+```cpp
 struct TextureCache {
   public:
     std::shared_ptr<Texture> load(const std::string& path, int w, int h) {
@@ -80,7 +80,7 @@ struct TextureCache {
   private:
     std::unordered_map<std::string, std::weak_ptr<Texture>> cache_;
 };
-</pre>
+```
 
 ### std::weak_ptr
 As the name suggest this is almost the same thing as Weak in Rust.
