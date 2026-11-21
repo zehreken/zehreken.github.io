@@ -55,8 +55,7 @@
     explicit Texture(std::string p, int w, int h)
         : path_(std::move(p)), width_{w}, height_{h},
           pixels_{std::make_unique&lt;uint8_t[]&gt;(w * h * 4)} {
-        std::cout &lt;&lt; &quot;Loading &quot; &lt;&lt; path_ &lt;&lt; '
-';
+        std::cout &lt;&lt; &quot;Loading &quot; &lt;&lt; path_ &lt;&lt; '\n';
     }
     std::string_view path() { return path_; }
 
@@ -74,8 +73,7 @@
     // foo = bar; // Does not compile because copy assignment is deleted
     Texture move_ctor{std::move(foo)};
     foo = std::move(bar);
-    std::cout &lt;&lt; bar.path() &lt;&lt; &quot; &quot; &lt;&lt; bar.size() &lt;&lt; &quot; &quot; &lt;&lt; bar.has_pixels() &lt;&lt; '
-';
+    std::cout &lt;&lt; bar.path() &lt;&lt; &quot; &quot; &lt;&lt; bar.size() &lt;&lt; &quot; &quot; &lt;&lt; bar.has_pixels() &lt;&lt; '\n';
 }
 </pre>
 <p>I think this part is better handled in Rust. You can't use the object that is moved from after the operation. You can see it in the very simple example below.</p>

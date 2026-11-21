@@ -22,7 +22,7 @@ struct Texture {
     explicit Texture(std::string p, int w, int h)
         : path_(std::move(p)), width_{w}, height_{h},
           pixels_{std::make_unique<uint8_t[]>(w * h * 4)} {
-        std::cout << "Loading " << path_ << '\n';
+        std::cout << "Loading " << path_ << '\\n';
     }
     std::string_view path() { return path_; }
 
@@ -43,7 +43,7 @@ int main() {
     // foo = bar; // Does not compile because copy assignment is deleted
     Texture move_ctor{std::move(foo)};
     foo = std::move(bar);
-    std::cout << bar.path() << " " << bar.size() << " " << bar.has_pixels() << '\n';
+    std::cout << bar.path() << " " << bar.size() << " " << bar.has_pixels() << '\\n';
 }
 ```
 
