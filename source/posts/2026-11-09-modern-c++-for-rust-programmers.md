@@ -46,7 +46,7 @@ int main() {
     Texture move_ctor{std::move(foo)};
     foo = std::move(bar);
     std::cout << "path: " << bar.path() << "\nsize: " << bar.size()
-              << "\nhas_pixels: " << bar.has_pixels() << '\n';
+              << "\nhas_pixels: " << bar.has_pixels() << '\\n';
 }
 ```
 The output of the program is 
@@ -76,11 +76,11 @@ Rust has two reference counted pointers, Arc and Rc. Shared pointer is similar t
 struct Enemy {
   public:
     explicit Enemy(std::shared_ptr<Texture> t) : texture_{std::move(t)} {
-        std::cout << "Creating Enemy: " << texture_->path() << '\n';
+        std::cout << "Creating Enemy: " << texture_->path() << '\\n';
     }
-    ~Enemy() { std::cout << "Destroying Enemy: " << texture_->path() << '\n'; }
+    ~Enemy() { std::cout << "Destroying Enemy: " << texture_->path() << '\\n'; }
     std::string name_;
-    void render() const { std::cout << "Rendering " << name_ << '\n'; }
+    void render() const { std::cout << "Rendering " << name_ << '\\n'; }
 
   private:
     std::shared_ptr<Texture> texture_;
@@ -94,7 +94,7 @@ int main() {
     enemies.reserve(3);
     for (size_t i = 0; i < 3; ++i) {
         enemies.emplace_back(orc_texture);
-        std::cout << "Use count: " << orc_texture.use_count() << '\n';
+        std::cout << "Use count: " << orc_texture.use_count() << '\\n';
     }
 }
 ```

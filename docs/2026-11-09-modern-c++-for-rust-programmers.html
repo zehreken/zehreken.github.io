@@ -78,8 +78,7 @@
     std::cout &lt;&lt; &quot;path: &quot; &lt;&lt; bar.path() &lt;&lt; &quot;
 size: &quot; &lt;&lt; bar.size()
               &lt;&lt; &quot;
-has_pixels: &quot; &lt;&lt; bar.has_pixels() &lt;&lt; '
-';
+has_pixels: &quot; &lt;&lt; bar.has_pixels() &lt;&lt; '\n';
 }
 </pre>
 <p>The output of the program is </p>
@@ -103,14 +102,11 @@ has_pixels: 0
 <pre class="prettyprint linenums lang-cpp">struct Enemy {
   public:
     explicit Enemy(std::shared_ptr&lt;Texture&gt; t) : texture_{std::move(t)} {
-        std::cout &lt;&lt; &quot;Creating Enemy: &quot; &lt;&lt; texture_-&gt;path() &lt;&lt; '
-';
+        std::cout &lt;&lt; &quot;Creating Enemy: &quot; &lt;&lt; texture_-&gt;path() &lt;&lt; '\n';
     }
-    ~Enemy() { std::cout &lt;&lt; &quot;Destroying Enemy: &quot; &lt;&lt; texture_-&gt;path() &lt;&lt; '
-'; }
+    ~Enemy() { std::cout &lt;&lt; &quot;Destroying Enemy: &quot; &lt;&lt; texture_-&gt;path() &lt;&lt; '\n'; }
     std::string name_;
-    void render() const { std::cout &lt;&lt; &quot;Rendering &quot; &lt;&lt; name_ &lt;&lt; '
-'; }
+    void render() const { std::cout &lt;&lt; &quot;Rendering &quot; &lt;&lt; name_ &lt;&lt; '\n'; }
 
   private:
     std::shared_ptr&lt;Texture&gt; texture_;
@@ -123,8 +119,7 @@ has_pixels: 0
     enemies.reserve(3);
     for (size_t i = 0; i &lt; 3; ++i) {
         enemies.emplace_back(orc_texture);
-        std::cout &lt;&lt; &quot;Use count: &quot; &lt;&lt; orc_texture.use_count() &lt;&lt; '
-';
+        std::cout &lt;&lt; &quot;Use count: &quot; &lt;&lt; orc_texture.use_count() &lt;&lt; '\n';
     }
 }
 </pre>
