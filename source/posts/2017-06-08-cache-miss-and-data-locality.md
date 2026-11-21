@@ -15,7 +15,6 @@ The computer I am writing this post on is a Mid 2011 Mac Mini and according to t
 ### Cache Miss
 The reason for a cache miss is bad data locality. Let's examine this simple code piece written in c++.
 
-<figure>
 ```
 class Big
 {
@@ -31,10 +30,8 @@ class Big
 };
 ```
 <figcaption>A class when instanced creates an object which is 1KB in size</figcaption>
-</figure>
 
 
-<figure>
 ```
 class Small
 {
@@ -48,10 +45,8 @@ class Small
 };
 ```
 <figcaption>A class when instanced creates an object which is 32b in size</figcaption>
-</figure>
 
 
-<figure>
 ```
 void loop()
 {
@@ -69,7 +64,6 @@ void loop()
 }
 ```
 <figcaption>Here, we loop through the arrays</figcaption>
-</figure>
 
 
 On average the second loop completes ~7 times faster than the first loop on my machine. The process is the same, which is setting an int field of an object. Why is that? Because the **clutter** in the Big object causes the CPU to miss the cached data, because the L1 and L2 caches are full of unnecessary data.
