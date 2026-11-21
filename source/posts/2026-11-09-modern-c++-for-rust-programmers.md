@@ -25,6 +25,8 @@ struct Texture {
         std::cout << "Loading " << path_ << '\\n';
     }
     std::string_view path() { return path_; }
+    int size() { return width_ * height_; }
+    bool has_pixels() { return pixels_ != nullptr; }
 
   private:
     std::string path_;
@@ -43,9 +45,17 @@ int main() {
     // foo = bar; // Does not compile because copy assignment is deleted
     Texture move_ctor{std::move(foo)};
     foo = std::move(bar);
-    std::cout << bar.path() << " " << bar.size() << " " << bar.has_pixels() << '\\n';
+    std::cout << "path: " << bar.path() << "\nsize: " << bar.size()
+              << "\nhas_pixels: " << bar.has_pixels() << '\n';
 }
 ```
+The output of the program is 
+```
+path: 
+size: 4
+has_pixels: 0
+```
+As you can see, path is empty but valid, size is copied so bar still has size 4 and has_pixels is false because pixels is now nullptr. It is important to be careful here because now there is a mismatch between size and actual contents of the texture.
 
 I think this part is better handled in Rust. You can't use the object that is moved from after the operation. You can see it in the very simple example below.
 ```
@@ -60,26 +70,46 @@ fn main() {
 ```
 
 ### std::shared_ptr
-Shared pointer is similar to Rust's Arc. It is reference counted pointer meaning, there can be multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with Arc, it is not mutable.
+Rust has two reference counted pointers, Arc and Rc. Shared pointer is similar to Rust's Arc, because the counter is atomic. Reference counted pointer means, there can be multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with Arc, it is not mutable. To continue with the example, let's add an Enemy struct. Enemy struct has a sahre
 
 ```cpp
-struct TextureCache {
+struct Enemy {
   public:
-    std::shared_ptr<Texture> load(const std::string& path, int w, int h) {
-        if (auto it = cache_.find(path); it != cache_.end()) {
-            if (auto texture = it->second.lock()) {
-                return texture;
-            }
-        }
-
-        auto texture = std::make_shared<Texture>(path, w, h);
-        cache_[path] = texture;
-        return texture;
+    explicit Enemy(std::shared_ptr<Texture> t) : texture_{std::move(t)} {
+        std::cout << "Creating Enemy: " << texture_->path() << '\n';
     }
+    ~Enemy() { std::cout << "Destroying Enemy: " << texture_->path() << '\n'; }
+    std::string name_;
+    void render() const { std::cout << "Rendering " << name_ << '\n'; }
 
   private:
-    std::unordered_map<std::string, std::weak_ptr<Texture>> cache_;
+    std::shared_ptr<Texture> texture_;
 };
+```
+and we update the main function to use Enemy
+```cpp
+int main() {
+    std::shared_ptr<Texture> orc_texture = std::make_shared<Texture>("orc.png", 64, 128);
+    std::vector<Enemy> enemies;
+    enemies.reserve(3);
+    for (size_t i = 0; i < 3; ++i) {
+        enemies.emplace_back(orc_texture);
+        std::cout << "Use count: " << orc_texture.use_count() << '\n';
+    }
+}
+```
+and we get the this output
+```
+Loading orc.png
+Creating Enemy: orc.png
+Use count: 2
+Creating Enemy: orc.png
+Use count: 3
+Creating Enemy: orc.png
+Use count: 4
+Destroying Enemy: orc.png 
+Destroying Enemy: orc.png 
+Destroying Enemy: orc.png 
 ```
 
 ### std::weak_ptr

@@ -58,6 +58,8 @@
         std::cout &lt;&lt; &quot;Loading &quot; &lt;&lt; path_ &lt;&lt; '\n';
     }
     std::string_view path() { return path_; }
+    int size() { return width_ * height_; }
+    bool has_pixels() { return pixels_ != nullptr; }
 
   private:
     std::string path_;
@@ -73,9 +75,19 @@
     // foo = bar; // Does not compile because copy assignment is deleted
     Texture move_ctor{std::move(foo)};
     foo = std::move(bar);
-    std::cout &lt;&lt; bar.path() &lt;&lt; &quot; &quot; &lt;&lt; bar.size() &lt;&lt; &quot; &quot; &lt;&lt; bar.has_pixels() &lt;&lt; '\n';
+    std::cout &lt;&lt; &quot;path: &quot; &lt;&lt; bar.path() &lt;&lt; &quot;
+size: &quot; &lt;&lt; bar.size()
+              &lt;&lt; &quot;
+has_pixels: &quot; &lt;&lt; bar.has_pixels() &lt;&lt; '
+';
 }
 </pre>
+<p>The output of the program is </p>
+<pre class="prettyprint linenums">path: 
+size: 4
+has_pixels: 0
+</pre>
+<p>As you can see, path is empty but valid, size is copied so bar still has size 4 and has_pixels is false because pixels is now nullptr. It is important to be careful here because now there is a mismatch between size and actual contents of the texture.</p>
 <p>I think this part is better handled in Rust. You can't use the object that is moved from after the operation. You can see it in the very simple example below.</p>
 <pre class="prettyprint linenums">fn main() {
     let box_a = Box::new(5);
@@ -87,24 +99,46 @@
 }
 </pre>
 <h3>std::shared_ptr</h3>
-<p>Shared pointer is similar to Rust's Arc. It is reference counted pointer meaning, there can be multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with Arc, it is not mutable.</p>
-<pre class="prettyprint linenums lang-cpp">struct TextureCache {
+<p>Rust has two reference counted pointers, Arc and Rc. Shared pointer is similar to Rust's Arc, because the counter is atomic. Reference counted pointer means, there can be multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with Arc, it is not mutable. To continue with the example, let's add an Enemy struct. Enemy struct has a sahre</p>
+<pre class="prettyprint linenums lang-cpp">struct Enemy {
   public:
-    std::shared_ptr&lt;Texture&gt; load(const std::string&amp; path, int w, int h) {
-        if (auto it = cache_.find(path); it != cache_.end()) {
-            if (auto texture = it-&gt;second.lock()) {
-                return texture;
-            }
-        }
-
-        auto texture = std::make_shared&lt;Texture&gt;(path, w, h);
-        cache_[path] = texture;
-        return texture;
+    explicit Enemy(std::shared_ptr&lt;Texture&gt; t) : texture_{std::move(t)} {
+        std::cout &lt;&lt; &quot;Creating Enemy: &quot; &lt;&lt; texture_-&gt;path() &lt;&lt; '
+';
     }
+    ~Enemy() { std::cout &lt;&lt; &quot;Destroying Enemy: &quot; &lt;&lt; texture_-&gt;path() &lt;&lt; '
+'; }
+    std::string name_;
+    void render() const { std::cout &lt;&lt; &quot;Rendering &quot; &lt;&lt; name_ &lt;&lt; '
+'; }
 
   private:
-    std::unordered_map&lt;std::string, std::weak_ptr&lt;Texture&gt;&gt; cache_;
+    std::shared_ptr&lt;Texture&gt; texture_;
 };
+</pre>
+<p>and we update the main function to use Enemy</p>
+<pre class="prettyprint linenums lang-cpp">int main() {
+    std::shared_ptr&lt;Texture&gt; orc_texture = std::make_shared&lt;Texture&gt;(&quot;orc.png&quot;, 64, 128);
+    std::vector&lt;Enemy&gt; enemies;
+    enemies.reserve(3);
+    for (size_t i = 0; i &lt; 3; ++i) {
+        enemies.emplace_back(orc_texture);
+        std::cout &lt;&lt; &quot;Use count: &quot; &lt;&lt; orc_texture.use_count() &lt;&lt; '
+';
+    }
+}
+</pre>
+<p>and we get the this output</p>
+<pre class="prettyprint linenums">Loading orc.png
+Creating Enemy: orc.png
+Use count: 2
+Creating Enemy: orc.png
+Use count: 3
+Creating Enemy: orc.png
+Use count: 4
+Destroying Enemy: orc.png 
+Destroying Enemy: orc.png 
+Destroying Enemy: orc.png 
 </pre>
 <h3>std::weak_ptr</h3>
 <p>As the name suggest this is almost the same thing as Weak in Rust.</p>
