@@ -2,7 +2,7 @@ layout = "post"
 title = "WGSL Notes"
 created = "2023-11-22"
 updated = "2024-01-06"
-tags = "#computer-graphics #shaders #wgls #rust #wgpu #webgpu"
+tags = "#computer-graphics #shaders #wgsl #rust #wgpu #webgpu"
 markdown = """
 Pretty dumb vertex shader. It is dumb because it uses
 
