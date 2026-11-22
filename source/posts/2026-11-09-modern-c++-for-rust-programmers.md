@@ -14,10 +14,10 @@ I came up with this simple example which uses all three smart pointers in C++ an
 
 Let's go:
 ### std::unique_ptr
-This pointer type is what I love most about Rust, strict single ownership. In Rust terms, this is the same as Box. There can only be one pointer to the same resource. Let's look at this Texture struct
+This pointer type is what I love most about Rust, strict single ownership. In Rust terms, this is the same as Box. There can only be one pointer to the same resource. Let's look at this Texture class
 
 ```cpp
-struct Texture {
+class Texture {
   public:
     explicit Texture(std::string p, int w, int h)
         : path_(std::move(p)), width_{w}, height_{h},
@@ -45,8 +45,8 @@ int main() {
     // foo = bar; // Does not compile because copy assignment is deleted
     Texture move_ctor{std::move(foo)};
     foo = std::move(bar);
-    std::cout << "path: " << bar.path() << "\nsize: " << bar.size()
-              << "\nhas_pixels: " << bar.has_pixels() << '\\n';
+    std::cout << "path: " << bar.path() << "\\nsize: " << bar.size()
+              << "\\nhas_pixels: " << bar.has_pixels() << '\\n';
 }
 ```
 The output of the program is 
@@ -70,10 +70,10 @@ fn main() {
 ```
 
 ### std::shared_ptr
-Rust has two reference counted pointers, Arc and Rc. Shared pointer is similar to Rust's Arc, because the counter is atomic. Reference counted pointer means, there can be multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with Arc, it is not mutable. To continue with the example, let's add an Enemy struct. Enemy struct has a sahre
+Rust has two reference counted pointers, Arc and Rc. Shared pointer is similar to Rust's Arc, because the counter is atomic. Reference counted pointer means, there can be multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with Arc, it is not mutable. To continue with the example, let's add an Enemy class. Enemy objects holds their textures through a shared pointer.
 
 ```cpp
-struct Enemy {
+class Enemy {
   public:
     explicit Enemy(std::shared_ptr<Texture> t) : texture_{std::move(t)} {
         std::cout << "Creating Enemy: " << texture_->path() << '\\n';
@@ -90,12 +90,16 @@ and we update the main function to use Enemy
 ```cpp
 int main() {
     std::shared_ptr<Texture> orc_texture = std::make_shared<Texture>("orc.png", 64, 128);
-    std::vector<Enemy> enemies;
-    enemies.reserve(3);
-    for (size_t i = 0; i < 3; ++i) {
-        enemies.emplace_back(orc_texture);
-        std::cout << "Use count: " << orc_texture.use_count() << '\\n';
+    {
+        std::vector<Enemy> enemies;
+        enemies.reserve(3);
+        for (size_t i = 0; i < 3; ++i) {
+            enemies.emplace_back(orc_texture);
+            std::cout << "Use count: " << orc_texture.use_count() << '\\n';
+        }
     }
+
+    std::cout << "Use count: " << orc_texture.use_count() << '\\n';
 }
 ```
 and we get the this output
@@ -110,8 +114,29 @@ Use count: 4
 Destroying Enemy: orc.png 
 Destroying Enemy: orc.png 
 Destroying Enemy: orc.png 
+Use count: 1
 ```
+You can see in the output of our new program that as we create more enemies and pass the texture as a shared pointer, the use count on the shared pointer goes up. And I specifically put the enemies in their own scope so that they get destroyed before the program ends and just after that the use count drops to 1 again.
 
 ### std::weak_ptr
-As the name suggest this is almost the same thing as Weak in Rust.
+As the name suggest this is the same thing as Weak in Rust. To utilize weak pointer I'll add one more class to our program. TextureCache is responsible for loading the texture once and handing it over to the Enemy with a shared pointer. In the cache it holds a weak reference, the reason for that is we don't want to keep the textures alive at all times. What will happen with this implementation is when all the enemies that use the same texture are destroyed, the texture will also be destroyed because the Shared pointer count will reach 0.
+```cpp
+class TextureCache {
+  public:
+    std::shared_ptr<Texture> load(const std::string& path, int w, int h) {
+        if (auto it = cache_.find(path); it != cache_.end()) {
+            if (auto texture = it->second.lock()) {
+                return texture;
+            }
+        }
+
+        auto texture = std::make_shared<Texture>(path, w, h);
+        cache_[path] = texture;
+        return texture;
+    }
+
+  private:
+    std::unordered_map<std::string, std::weak_ptr<Texture>> cache_;
+};
+```
 """
