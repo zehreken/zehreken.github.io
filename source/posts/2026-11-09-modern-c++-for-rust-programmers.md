@@ -139,4 +139,48 @@ class TextureCache {
     std::unordered_map<std::string, std::weak_ptr<Texture>> cache_;
 };
 ```
+Let's update the main function one last time. I again put the vector of enemies and creation in an inner scope
+```cpp
+int main() {
+    TextureCache texture_cache;
+    std::string textures[] = {"orc.png", "goblin.png", "troll.png"};
+
+    {
+        std::vector<Enemy> enemies;
+        enemies.reserve(10);
+        for (size_t i = 0; i < 6; ++i) {
+            const auto& path = textures[i % 3];
+            enemies.emplace_back(texture_cache.load(path, 64, 128));
+        }
+    }
+
+    texture_cache.print();
+}
+```
+```
+Loading orc.png
+[2] Use count: 1
+Creating Enemy: orc.png
+Loading goblin.png
+[2] Use count: 1
+Creating Enemy: goblin.png
+Loading troll.png
+[2] Use count: 1
+Creating Enemy: troll.png
+[1] Use count: 2
+Creating Enemy: orc.png
+[1] Use count: 2
+Creating Enemy: goblin.png
+[1] Use count: 2
+Creating Enemy: troll.png
+Destroying Enemy: orc.png 
+Destroying Enemy: goblin.png 
+Destroying Enemy: troll.png 
+Destroying Enemy: orc.png 
+Destroying Enemy: goblin.png 
+Destroying Enemy: troll.png 
+orc.png 0
+goblin.png 0
+troll.png 0
+```
 """
