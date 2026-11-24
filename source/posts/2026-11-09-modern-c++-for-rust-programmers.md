@@ -119,7 +119,7 @@ Use count: 1
 You can see in the output of our new program that as we create more enemies and pass the texture as a shared pointer, the use count on the shared pointer goes up. And I specifically put the enemies in their own scope so that they get destroyed before the program ends and just after that the use count drops to 1 again.
 
 ### std::weak_ptr
-As the name suggest this is the same thing as Weak in Rust. To utilize weak pointer I'll add one more class to our program. TextureCache is responsible for loading the texture once and handing it over to the Enemy with a shared pointer. In the cache it holds a weak reference, the reason for that is we don't want to keep the textures alive at all times. What will happen with this implementation is when all the enemies that use the same texture are destroyed, the texture will also be destroyed because the Shared pointer count will reach 0.
+As the name suggest this is the same thing as Weak in Rust. To utilize weak pointer I'll add one more class to our program. TextureCache is responsible for loading the texture once and handing it over to the Enemy with a shared pointer. In the cache it holds a weak reference, the reason for that is we don't want to keep the textures alive when there are no enemies using it. What will happen with this implementation is when all the enemies that use the same texture are destroyed, the texture will also be destroyed because the Shared pointer count will reach 0. Since weak pointer does not increase the counter, it is perfect for this use case. 
 ```cpp
 class TextureCache {
   public:
