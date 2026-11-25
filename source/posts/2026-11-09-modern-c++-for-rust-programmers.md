@@ -126,13 +126,25 @@ class TextureCache {
     std::shared_ptr<Texture> load(const std::string& path, int w, int h) {
         if (auto it = cache_.find(path); it != cache_.end()) {
             if (auto texture = it->second.lock()) {
+                std::cout << "Reused " << path
+                          << "->Use count: " << texture.use_count() << '\\n';
                 return texture;
             }
         }
 
         auto texture = std::make_shared<Texture>(path, w, h);
         cache_[path] = texture;
+        std::cout << "Created " << path
+                  << "->Use count: " << texture.use_count() << '\\n';
+
         return texture;
+    }
+
+    void print() {
+        for (auto p : cache_) {
+            std::cout << p.first << "->Use count: " << p.second.use_count()
+                      << '\\n';
+        }
     }
 
   private:
@@ -143,13 +155,13 @@ Let's update the main function one last time. I again put the vector of enemies 
 ```cpp
 int main() {
     TextureCache texture_cache;
-    std::string textures[] = {"orc.png", "goblin.png", "troll.png"};
+    std::string textures[] = {"orc.png", "troll.png"};
 
     {
         std::vector<Enemy> enemies;
-        enemies.reserve(10);
-        for (size_t i = 0; i < 6; ++i) {
-            const auto& path = textures[i % 3];
+        enemies.reserve(5);
+        for (size_t i = 0; i < 5; ++i) {
+            const auto& path = textures[i % 2];
             enemies.emplace_back(texture_cache.load(path, 64, 128));
         }
     }
@@ -158,29 +170,22 @@ int main() {
 }
 ```
 ```
-Loading orc.png
-[2] Use count: 1
+Created orc.png->Use count: 1
 Creating Enemy: orc.png
-Loading goblin.png
-[2] Use count: 1
-Creating Enemy: goblin.png
-Loading troll.png
-[2] Use count: 1
+Created troll.png->Use count: 1
 Creating Enemy: troll.png
-[1] Use count: 2
+Reused orc.png->Use count: 2
 Creating Enemy: orc.png
-[1] Use count: 2
-Creating Enemy: goblin.png
-[1] Use count: 2
+Reused troll.png->Use count: 2
 Creating Enemy: troll.png
+Reused orc.png->Use count: 3
+Creating Enemy: orc.png
 Destroying Enemy: orc.png 
-Destroying Enemy: goblin.png 
 Destroying Enemy: troll.png 
 Destroying Enemy: orc.png 
-Destroying Enemy: goblin.png 
 Destroying Enemy: troll.png 
-orc.png 0
-goblin.png 0
-troll.png 0
+Destroying Enemy: orc.png 
+orc.png->Use count: 0
+troll.png->Use count: 0
 ```
 """

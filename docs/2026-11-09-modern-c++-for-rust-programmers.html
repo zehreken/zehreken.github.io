@@ -146,13 +146,25 @@ Use count: 1
     std::shared_ptr&lt;Texture&gt; load(const std::string&amp; path, int w, int h) {
         if (auto it = cache_.find(path); it != cache_.end()) {
             if (auto texture = it-&gt;second.lock()) {
+                std::cout &lt;&lt; &quot;Reused &quot; &lt;&lt; path
+                          &lt;&lt; &quot;-&gt;Use count: &quot; &lt;&lt; texture.use_count() &lt;&lt; '\n';
                 return texture;
             }
         }
 
         auto texture = std::make_shared&lt;Texture&gt;(path, w, h);
         cache_[path] = texture;
+        std::cout &lt;&lt; &quot;Created &quot; &lt;&lt; path
+                  &lt;&lt; &quot;-&gt;Use count: &quot; &lt;&lt; texture.use_count() &lt;&lt; '\n';
+
         return texture;
+    }
+
+    void print() {
+        for (auto p : cache_) {
+            std::cout &lt;&lt; p.first &lt;&lt; &quot;-&gt;Use count: &quot; &lt;&lt; p.second.use_count()
+                      &lt;&lt; '\n';
+        }
     }
 
   private:
@@ -162,13 +174,13 @@ Use count: 1
 <p>Let's update the main function one last time. I again put the vector of enemies and creation in an inner scope</p>
 <pre class="prettyprint linenums lang-cpp">int main() {
     TextureCache texture_cache;
-    std::string textures[] = {&quot;orc.png&quot;, &quot;goblin.png&quot;, &quot;troll.png&quot;};
+    std::string textures[] = {&quot;orc.png&quot;, &quot;troll.png&quot;};
 
     {
         std::vector&lt;Enemy&gt; enemies;
-        enemies.reserve(10);
-        for (size_t i = 0; i &lt; 6; ++i) {
-            const auto&amp; path = textures[i % 3];
+        enemies.reserve(5);
+        for (size_t i = 0; i &lt; 5; ++i) {
+            const auto&amp; path = textures[i % 2];
             enemies.emplace_back(texture_cache.load(path, 64, 128));
         }
     }
@@ -176,30 +188,23 @@ Use count: 1
     texture_cache.print();
 }
 </pre>
-<pre class="prettyprint linenums">Loading orc.png
-[2] Use count: 1
+<pre class="prettyprint linenums">Created orc.png-&gt;Use count: 1
 Creating Enemy: orc.png
-Loading goblin.png
-[2] Use count: 1
-Creating Enemy: goblin.png
-Loading troll.png
-[2] Use count: 1
+Created troll.png-&gt;Use count: 1
 Creating Enemy: troll.png
-[1] Use count: 2
+Reused orc.png-&gt;Use count: 2
 Creating Enemy: orc.png
-[1] Use count: 2
-Creating Enemy: goblin.png
-[1] Use count: 2
+Reused troll.png-&gt;Use count: 2
 Creating Enemy: troll.png
+Reused orc.png-&gt;Use count: 3
+Creating Enemy: orc.png
 Destroying Enemy: orc.png 
-Destroying Enemy: goblin.png 
 Destroying Enemy: troll.png 
 Destroying Enemy: orc.png 
-Destroying Enemy: goblin.png 
 Destroying Enemy: troll.png 
-orc.png 0
-goblin.png 0
-troll.png 0
+Destroying Enemy: orc.png 
+orc.png-&gt;Use count: 0
+troll.png-&gt;Use count: 0
 </pre>
 
         </main>
