@@ -4,9 +4,9 @@ created = "2026-11-09"
 updated = "2026-11-16"
 tags = "#c++ #rust #computer-science"
 markdown = """
-I have been doing a lot of C++ recently. I think nowadays it is especially a good area to explore. I always wanted to get into robotics and electronics. Even though I don't have any hardware knowledge, I can still be useful by going as low as possible.
+I have been doing a lot of C++ recently. I think nowadays it is especially a good area to explore due to the increased demand and investment in robotics. I always wanted to get into robotics and electronics. Even though I don't have any hardware knowledge, I can get closer to it by working as low-level as possible.
 
-I've programmed extensively in C++ more than a decade ago. And then I became a Unity developer. I think I had a really good run with Unity but now with the advancement of AI, I believe general purpose commercial game engines will become a thing of the past. We are not there yet but I think it will be possible for anyone to roll out their own engine, specifically made for the game or application they want to make. This was not feasible before LLMs.
+I programmed extensively in C++ more than a decade ago. Then I became a Unity developer. I think I had a really good run with Unity but now with the advancement of AI, I believe general purpose commercial game engines will become a thing of the past. We are not there yet but I think it will be possible for anyone to roll out their own engine, specifically made for the game or application they want to make. This was not feasible before LLMs.
 
 Since I have some knowledge of Rust, when I started to study modern C++, I thought that most of these modern concepts were borrowed from Rust. I understand them better in Rust terms but then realized that these were actually introduced in C++11 and Rust actually borrowed some of the ideas.
 
@@ -40,7 +40,7 @@ And this is our current main function, note that I included two cases where the 
 int main() {
     Texture foo{"foo.png", 2, 2};
     Texture bar("bar.png", 2, 2);
-    // Texture foo{bar}; // Does not compile because copy ctor is deleted
+    // Texture foo{baz}; // Does not compile because copy ctor is deleted
     // foo = bar; // Does not compile because copy assignment is deleted
     Texture move_ctor{std::move(foo)};
     foo = std::move(bar);
@@ -67,9 +67,10 @@ fn main() {
     // println!("box_a: {:p}->{}", box_a, box_a);
 }
 ```
+Rust catches the problem during compilation and prevents you to shoot yourself in the foot.
 
 ### std::shared_ptr
-Rust has two reference counted pointers, Arc and Rc. Shared pointer is similar to Rust's Arc, because the counter is atomic. Reference counted pointer means, there can be multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with Arc, it is not mutable. To continue with the example, let's add an Enemy class. Enemy objects holds their textures through a shared pointer.
+Rust has two reference counted pointers, Arc and Rc. Because the reference counter is atomic for the shared pointer in C++, it is similar to Rust's Arc. Reference counted pointer means, there can be multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with Arc, it is not mutable. To continue with the example, let's add an Enemy class. Enemy objects hold their textures through a shared pointer. But why don't we use a unique pointer? We can't use a unique pointer here because that would mean each enemy would have their own copy for their texture. Which will increase the memory usage.
 
 ```cpp
 class Enemy {
