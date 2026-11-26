@@ -140,8 +140,8 @@ class TextureCache {
         return texture;
     }
 
-    void print() {
-        for (auto p : cache_) {
+    void print() const {
+        for (auto& p : cache_) {
             std::cout << p.first << "->Use count: " << p.second.use_count()
                       << '\\n';
         }

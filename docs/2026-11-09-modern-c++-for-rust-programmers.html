@@ -160,8 +160,8 @@ Use count: 1
         return texture;
     }
 
-    void print() {
-        for (auto p : cache_) {
+    void print() const {
+        for (auto&amp; p : cache_) {
             std::cout &lt;&lt; p.first &lt;&lt; &quot;-&gt;Use count: &quot; &lt;&lt; p.second.use_count()
                       &lt;&lt; '\n';
         }
