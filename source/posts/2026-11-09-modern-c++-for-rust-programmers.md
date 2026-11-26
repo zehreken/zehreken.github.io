@@ -4,15 +4,14 @@ created = "2026-11-09"
 updated = "2026-11-16"
 tags = "#c++ #rust #computer-science"
 markdown = """
-I have been doing a lot of C++ recently. I think nowadays it is especially a good area to explore. I always wanted to get into robotics and electronics and these require low level thinking etc.
+I have been doing a lot of C++ recently. I think nowadays it is especially a good area to explore. I always wanted to get into robotics and electronics. Even though I don't have any hardware knowledge, I can still be useful by going as low as possible.
 
-I've programmed extensively in C++ more than a decade ago. And then I became a Unity developer. To be frank I think I had a good run with Unity but now with the advancement of AI, I think commercial game engines might become a thing of the past. It is going to take a long time but I think it will be quite possible for anyone to roll out their own engine, maybe not even an engine but games will have their own specific tech that is only for that game. This was not feasible before LLMs.
+I've programmed extensively in C++ more than a decade ago. And then I became a Unity developer. I think I had a really good run with Unity but now with the advancement of AI, I believe general purpose commercial game engines will become a thing of the past. We are not there yet but I think it will be possible for anyone to roll out their own engine, specifically made for the game or application they want to make. This was not feasible before LLMs.
 
-Since I know Rust, when I started to study modern C++, I thought that most of these modern concepts were borrowed from Rust and I understand them better in Rust terms but then realized that these were actually introduced in C++11 and Rust actually borrowed some of the ideas.
+Since I have some knowledge of Rust, when I started to study modern C++, I thought that most of these modern concepts were borrowed from Rust. I understand them better in Rust terms but then realized that these were actually introduced in C++11 and Rust actually borrowed some of the ideas.
 
-I came up with this simple example which uses all three smart pointers in C++ and also resembles real code, I think.
+In this post, I want to explore smart pointers that C++ provides. Namely unique, shared and weak pointer types which are added to the language with C++11. I came up with this simple example which uses all three smart pointers in C++ and also resembles real-life code.
 
-Let's go:
 ### std::unique_ptr
 This pointer type is what I love most about Rust, strict single ownership. In Rust terms, this is the same as Box. There can only be one pointer to the same resource. Let's look at this Texture class
 
