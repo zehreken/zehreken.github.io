@@ -207,5 +207,5 @@ troll.png->Use count: 0
 On a side note, the term RAII (Resource Acquisition Is Initialization) never made sense to me. I always thought "so what?", and that was because the name mentions the less important part and leaves out the most important part: the resources are freed automatically. You can watch Bjarne Stroustrup jokingly admitting his mistake in [this short interview](https://www.youtube.com/watch?v=LlZWqkCMdfk) with Lex Fridman.
 
 ### Conclusion
-Smart pointers in C++ are definitely better alternatives to raw pointers. They also make the programmer's intention easier to understand. If you want a resource to have one owner, use unique. If you want to share it, use shared. If you just want to observe a shared resource without keepit it alive, use weak.
+Smart pointers in C++ are definitely better alternatives to raw pointers. They also make the programmer's intention easier to understand. If you want a resource to have one owner, use unique. If you want to share it, use shared. If you just want to observe a shared resource without keeping it alive, use weak.
 """
