@@ -1,19 +1,19 @@
 layout = "post"
-title = "[DRAFT] Modern C++ for Rust Programmers"
+title = "Modern C++ for Rust Programmers"
 created = "2026-11-09"
 updated = "2026-11-27"
 tags = "#c++ #rust #computer-science"
 markdown = """
-I have been doing a lot of C++ recently. I think nowadays it is especially a good area to explore due to the increased demand and investment in robotics. I always wanted to get into robotics and electronics. Even though I don't have any hardware knowledge, I can get closer to it by working as low-level as possible.
+I have been doing a lot of C++ recently. I think nowadays it is especially a good area to explore due to the increased demand and investment in robotics. I have always wanted to get into robotics and electronics. Even though I don't have any hardware knowledge, I can get closer to it by working as low-level as possible.
 
 I programmed extensively in C++ more than a decade ago. Then I became a Unity developer. I think I had a really good run with Unity but now with the advancement of AI, I believe general-purpose commercial game engines will become a thing of the past. We are not there yet but I think it will be possible for anyone to roll out their own engine, specifically made for the game or application they want to make. This was not feasible before LLMs.
 
-Since I have some knowledge of Rust, when I started to study modern C++, I thought that most of these modern concepts were borrowed from Rust. But then realized that these were actually introduced in C++11 and Rust borrowed some of the ideas. I think I understand them better in Rust terms.
+Since I have some knowledge of Rust, when I started to study modern C++, I thought that most of these modern concepts were borrowed from Rust. But then I realized that these were actually introduced in C++11 and Rust borrowed some of the ideas. I think I understand them better in Rust terms.
 
-In this post, I want to explore smart pointers that C++ provides. Namely unique, shared and weak pointer types which were added to the language with C++11. I came up with this simple example which uses all three smart pointers in C++ and also resembles real-life code.
+In this post, I want to explore the smart pointers that C++ provides, namely the unique, shared and weak pointer types, which were added to the language with C++11. I came up with this simple example which uses all three smart pointers in C++ and also resembles real-life code.
 
-### std::unique_ptr<T>
-This pointer type is what I love most about Rust, strict single ownership. In Rust terms, this is the same as Box<T>. There can only be one owner of a resource. Let's look at this Texture class:
+### `std::unique_ptr<T>`
+This pointer type is what I love most about Rust, strict single ownership. In Rust terms, this is the same as `Box<T>`. There can only be one owner of a resource. Let's look at this Texture class:
 
 ```cpp
 class Texture {
@@ -32,14 +32,14 @@ class Texture {
 };
 ```
 
-And this is our current main function, note that I included two cases where the program does not compile. Because of the unique_ptr, the compiler deletes copy ctor and copy assignment and this is good because unique_ptr should be the only one pointing. There is an important issue with move operations. As you can see, width and height are copied but path is empty and pixels is null. 
+And this is our current main function, note that I included two cases where the program does not compile. Because of the unique_ptr, the compiler deletes copy ctor and copy assignment and this is good because unique_ptr should be the only one pointing. There is an important issue with move operations. As you can see, width and height are copied but path is unspecified and pixels is null.
 
 ```cpp
 int main() {
     Texture foo{"foo.png", 2, 2};
     Texture bar("bar.png", 2, 2);
     // Texture baz{bar}; // Does not compile because copy ctor is deleted
-    // baz = bar; // Does not compile because copy assignment is deleted
+    // foo = bar; // Does not compile because copy assignment is deleted
     Texture move_ctor{std::move(foo)};
     foo = std::move(bar);
     std::cout << "path: " << bar.path() << "\\nsize: " << bar.size()
@@ -47,7 +47,7 @@ int main() {
 }
 ```
 
-The output of the program is
+The output of the program is:
 
 ```
 path: 
@@ -72,8 +72,10 @@ fn main() {
 
 Rust catches the problem during compilation and prevents you from shooting yourself in the foot.
 
-### std::shared_ptr<T>
-Rust has two reference counted pointers, Arc<T> and Rc<T>. Because the reference counter is atomic for the shared pointer in C++, it is similar to Rust's Arc<T>. Reference counted pointer means, there can be multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with Arc<T>, it is not mutable. To continue with the example, let's add an Enemy class. Enemy objects hold their textures through a shared pointer. But why don't we use a unique pointer? We can't use a unique pointer here because that would mean each enemy would have its own copy of the texture, which would increase the memory usage.
+### `std::shared_ptr<T>`
+Rust has two reference-counted pointers, `Arc<T>` and `Rc<T>`. Because the reference counter is atomic for the shared pointer in C++, it is similar to Rust's `Arc<T>`. Reference-counted pointer means there can be multiple pointers to the same resource and each pointer increments the counter. In Rust, there is a strict rule that even with `Arc<T>`, it is not mutable. In C++, `shared_ptr<T>` lets anyone mutate the value, but you can use `shared_ptr<const T>`.
+
+To continue with the example, let's add an Enemy class. Enemy objects hold their textures through a shared pointer. But why don't we use a unique pointer? We can't use a unique pointer here because that would mean each enemy would have its own copy of the texture, which would increase the memory usage.
 
 ```cpp
 class Enemy {
@@ -90,7 +92,7 @@ class Enemy {
 };
 ```
 
-And we update the main function to use Enemy class
+And we update the main function to use the Enemy class:
 
 ```cpp
 int main() {
@@ -108,7 +110,7 @@ int main() {
 }
 ```
 
-And we get this output
+And we get this output:
 
 ```
 Creating Enemy: orc.png
@@ -125,8 +127,8 @@ Use count: 1
 
 You can see in the output of our new program that as we create more enemies and pass the texture as a shared pointer, the use count on the shared pointer goes up. And I specifically put the enemies in their own scope so that they get destroyed before the program ends and just after that the use count drops to 1 again.
 
-### std::weak_ptr<T>
-As the name suggests, this is the same thing as Weak in Rust. To utilize weak pointer I'll add one more class to our program. TextureCache is responsible for loading the texture once and handing it over to the Enemy with a shared pointer. In the cache it holds a weak reference, the reason for that is we don't want to keep the textures alive when there are no enemies using them. What will happen with this implementation is when all the enemies that use the same texture are destroyed, the texture will also be destroyed because the shared pointer count will reach 0. Since weak pointer does not increase the counter, it is perfect for this use case. 
+### `std::weak_ptr<T>`
+As the name suggests, this is the same thing as Weak in Rust. To use a weak pointer, I'll add one more class to our program. TextureCache is responsible for loading the texture once and handing it over to the Enemy with a shared pointer. In the cache it holds a weak reference, the reason for that is we don't want to keep the textures alive when there are no enemies using them. What will happen with this implementation is when all the enemies that use the same texture are destroyed, the texture will also be destroyed because the shared pointer count will reach 0. Since weak pointer does not increase the counter, it is perfect for this use case.
 
 ```cpp
 class TextureCache {
@@ -180,7 +182,7 @@ int main() {
 }
 ```
 
-Let's look at the output. TextureCache loads each texture once and then hands out shared pointers to the enemies. As we create enemies reference counter goes up and as they get destroyed at the end of their scope the use count drops the zero and the resources are freed. This is RAII in action.
+Let's look at the output. TextureCache loads each texture once and then hands out shared pointers to the enemies. As we create enemies, the reference counter goes up, and as they get destroyed at the end of their scope, the use count drops to zero and the resources are freed. This is RAII in action.
 
 ```
 Created orc.png->Use count: 1
@@ -202,5 +204,8 @@ orc.png->Use count: 0
 troll.png->Use count: 0
 ```
 
-### Conlusion
+On a side note, the term RAII (Resource Acquisition Is Initialization) never made sense to me. I always thought "so what?", and that was because the name mentions the less important part and leaves out the most important part: the resources are freed automatically. You can watch Bjarne Stroustrup jokingly admitting his mistake in [this short interview](https://www.youtube.com/watch?v=LlZWqkCMdfk) with Lex Fridman.
+
+### Conclusion
+Smart pointers in C++ are definitely better alternatives to raw pointers. They also make the programmer's intention easier to understand. If you want a resource to have one owner, use unique. If you want to share it, use shared. If you just want to observe a shared resource without keepit it alive, use weak.
 """
